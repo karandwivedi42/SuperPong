@@ -9,12 +9,13 @@ public class Player {
 	boolean alive;
 	Wall wall2protect;
 	
-	public Player(String name, String side, Paddle paddle) {
+	public Player(String name, String side, Paddle paddle, Wall wall) {
 		this.name = name;
 		this.score = 0;
 		this.side = side;
 		this.AI = false;
 		this.paddle = paddle;
+		this.wall2protect = wall;
 	}
 
 	public void makeAI() {

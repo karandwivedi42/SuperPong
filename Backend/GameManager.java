@@ -6,6 +6,10 @@ public class GameManager {
 	ArrayList<Player> players;
 	Board board;
 	int currentRound;
+	
+	public GameManager(){
+		players = new ArrayList<>();
+	}
 
 	public void addPlayer(Player p) { // FUTURE: Ensure name uniqueness
 		players.add(p);
@@ -47,26 +51,46 @@ public class GameManager {
 		for (Puck p : board.pucks) {
 			for (Player pl : players) {
 				checkForBounce(p, pl.paddle); // changes vx and vy in p
-				boolean crashed = checkForCrash(p, pl.wall2protect);
+
+				boolean crashed = checkForCrash(p, pl);
 				if (crashed) {
 					upScore(pl.side);
 					startRound();
 				}
 			}
-			
-			p.update(i);
 
+			p.update(i);
+			System.out.println("PUCK: "+p.x + " "+p.y+ " # "+p.vx + " "+ p.vy);
 		}
 
 	}
 
-	private boolean checkForCrash(Puck p, Wall w) {
-		// Distance calc then reverse velocity if player is dead and bounced.. otherwise send true 
+	private boolean checkForCrash(Puck p, Player pl) {
+		double d = (p.y - pl.wall2protect.m * p.x - pl.wall2protect.c)/ Math.sqrt(1 + pl.wall2protect.m * pl.wall2protect.m);
+		if (Math.abs(d) < p.radius) {
+			if (pl.alive) {
+				return true;
+			}
+			if (pl.side == "TOP" || pl.side == "BOTTOM") {
+				p.vy = -p.vy;
+			} else {
+				p.vx = -p.vx;
+			}
+		}
 		return false;
 	}
 
 	private void checkForBounce(Puck p, Paddle paddle) {
-		// TODO Auto-generated method stub
+		if(paddle.orientation == "VERTICAL"){
+			double d = Math.abs(paddle.xc - p.x);
+			if(d<p.radius)
+				p.vx = -p.vx;
+		}
+		else if(paddle.orientation == "HORIZONTAL"){
+			double d = Math.abs(paddle.yc - p.y);
+			if (d<p.radius)
+				p.vy = - p.vy;
+		}
 
 	}
 

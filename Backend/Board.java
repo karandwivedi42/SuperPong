@@ -7,7 +7,8 @@ public class Board {
 	ArrayList<Wall> walls;
 
 	public Board() {
-		// TODO Auto-generated constructor stub
+		pucks = new ArrayList<>();
+		walls = new ArrayList<>();
 	}
 	
 	public void addWall(Wall w){

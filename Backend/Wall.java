@@ -10,7 +10,7 @@ public class Wall {
 		this.xb = xb;
 		this.ya = ya;
 		this.yb = yb;
-		m = (yb-ya)/(xb-xa);
+		this.m = (yb-ya)/(xb-xa);
 		c = yb - m*xb;
 		this.side = side;
 	}
