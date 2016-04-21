@@ -1,7 +1,7 @@
 
 public class Paddle {
 		
-	private static final double delta = 4;
+	static final double delta = 4;
 	double length;
 	String orientation;
 	double xc,yc;
@@ -16,26 +16,7 @@ public class Paddle {
 		else angle = 90;
 	}
 	
-	public void movePaddle(String direction){
-		if(orientation == "HORIZONTAL"){
-			if(direction == "LEFT"){
-				xc -= delta;
-			}
-			else if (direction == "RIGHT"){
-				xc += delta;
-			}
-		}
-		else if (orientation == "VERTICAL"){
-			if(direction == "UP"){
-				yc+= delta;
-			}
-			else{
-				yc-=delta;
-			}
-		}
-		
-		System.out.print(this.orientation + " - "+ this.xc + " " + this.yc);
-	}
+
 	
 	
 }

@@ -47,6 +47,55 @@ public class GameManager {
 
 	}
 
+	public void triggerAI(){
+		for(Player p : players){
+			if(p.AI){
+				if (p.AIlevel == "EASY"){
+					if(p.paddle.orientation == "VERTICAL"){
+						if(p.paddle.yc < board.pucks.get(0).y)
+							p.paddle.yc += p.paddle.delta;
+						else
+							p.paddle.yc -= p.paddle.delta;
+					}
+					else{
+						if(p.paddle.xc < board.pucks.get(0).x)
+							p.paddle.xc += p.paddle.delta;
+						else
+							p.paddle.xc -= p.paddle.delta;						
+					}
+				}
+				else if (p.AIlevel == "MEDIUM"){
+					if(p.paddle.orientation == "VERTICAL"){
+						if(p.paddle.yc < board.pucks.get(0).y)
+							p.paddle.yc += p.paddle.delta*2;
+						else
+							p.paddle.yc -= p.paddle.delta*2;
+					}
+					else{
+						if(p.paddle.xc < board.pucks.get(0).x)
+							p.paddle.xc += p.paddle.delta*2;
+						else
+							p.paddle.xc -= p.paddle.delta*2;						
+					}
+				}
+				else if (p.AIlevel == "HARD"){
+					if(p.paddle.orientation == "VERTICAL"){
+						if(p.paddle.yc < board.pucks.get(0).y)
+							p.paddle.yc += p.paddle.delta*4;
+						else
+							p.paddle.yc -= p.paddle.delta*4;
+					}
+					else{
+						if(p.paddle.xc < board.pucks.get(0).x)
+							p.paddle.xc += p.paddle.delta*4;
+						else
+							p.paddle.xc -= p.paddle.delta*4;						
+					}
+				}
+			}
+		}
+	}
+	
 	public void update(int i) {
 		for (Puck p : board.pucks) {
 			for (Player pl : players) {
@@ -55,7 +104,6 @@ public class GameManager {
 				boolean crashed = checkForCrash(p, pl);
 				if (crashed) {
 					upScore(pl.side);
-					startRound();
 				}
 			}
 

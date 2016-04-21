@@ -44,7 +44,7 @@ public class Emulator {
 		game.addPlayer(p3);
 		game.addPlayer(p4);
 		
-		p4.makeAI();
+		p4.makeAI("EASY");
 		
 		game.beginGame();
 		playing = true;
@@ -54,6 +54,9 @@ public class Emulator {
 	      
 	    KeyPresser kp = new KeyPresser( "Thread-2");
 	    kp.start();
+	    
+	    BotRunner br = new BotRunner("Thread -3");
+	    br.start();
 
         
 	}
@@ -73,41 +76,7 @@ public class Emulator {
 			System.out.print("Done");
 	    	
 	}
-/*
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		if(playing){
-			game.update(5);
-			System.out.println("yo");
-		}
-	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (playing) {
-            if (e.getKeyCode() == KeyEvent.VK_UP) {
-                p3.paddle.movePaddle("UP");
-            }
-            else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            	p3.paddle.movePaddle("DOWN");
-            }
-            else if (e.getKeyCode() == KeyEvent.VK_W) {
-            	p2.paddle.movePaddle("UP");
-            }
-            else if (e.getKeyCode() == KeyEvent.VK_S) {
-            	p2.paddle.movePaddle("DOWN");
-            }
-        }		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {		
-	}
-	*/
 	class Updater implements Runnable {
 		   private Thread t;
 		   private String threadName;
@@ -157,11 +126,46 @@ public class Emulator {
 		      try {
 		         while(playing){
 		        	 System.out.print(p3.name+ " ");
-		        	 p3.paddle.movePaddle("UP");
+		        	 p3.movePaddle("UP");
 		        	 Thread.sleep(500);
 		        	 System.out.print(p2.name+ " ");
-		        	 p2.paddle.movePaddle("DOWN");
+		        	 p2.movePaddle("DOWN");
 	        	 	 Thread.sleep(500);
+		         }
+		     } catch (InterruptedException e) {
+		         System.out.println("Thread " +  threadName + " interrupted.");
+		     }
+		     System.out.println("Thread " +  threadName + " exiting.");
+		   }
+		   
+		   public void start ()
+		   {
+		      System.out.println("Starting " +  threadName );
+		      if (t == null)
+		      {
+		         t = new Thread (this, threadName);
+		         t.start ();
+		      }
+		   }
+
+		}
+	
+	class BotRunner implements Runnable {
+		   private Thread t;
+		   private String threadName;
+		   
+		   BotRunner( String name){
+		       threadName = name;
+		       System.out.println("Creating " +  threadName );
+		   }
+		   public void run() {
+		      System.out.println("Running " +  threadName );
+		      try {
+		         while(playing){
+		        	 game.triggerAI();
+		        	 Thread.sleep(300);
+		        	 game.triggerAI();
+	        	 	 Thread.sleep(800);
 		         }
 		     } catch (InterruptedException e) {
 		         System.out.println("Thread " +  threadName + " interrupted.");

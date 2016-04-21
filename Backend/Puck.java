@@ -4,7 +4,6 @@ public class Puck {
 	double x,y,vx,vy;
 	
 	double radius;
-	
 	String color;
 	
 	public Puck(double i, String string) {
@@ -19,10 +18,6 @@ public class Puck {
 
 	public void update(int i) { // Change for friction
 		x+=vx;
-		y+=vy;
-		
+		y+=vy;		
 	}
-
-	
-	
 }
