@@ -2,7 +2,9 @@ import java.util.ArrayList;
 
 public class GameManager {
 
-	private static final double v_factor = 20;
+	private static final double v_factor = 50;
+	private static final double v_offset = 20;
+	
 	ArrayList<Player> players;
 	Board board;
 	int currentRound;
@@ -28,15 +30,12 @@ public class GameManager {
 
 	public void startRound() {
 		for (Puck p : board.pucks) {
-			p.x = 0;
-			p.y = 0;
-			p.vx = Math.random() * v_factor;
-			p.vy = Math.random() * v_factor;
+			p.x = board.width/2;
+			p.y = board.height/2;
+			p.vx = v_offset; // + Math.random() * v_factor *(Math.random()*2-1);
+			p.vy = v_offset; // + Math.random() * v_factor* (Math.random()*2-1);
 		}
-		for (Player p : players) {
-			p.paddle.xc = 0;
-			p.paddle.yc = 0;
-		}
+
 
 	}
 
@@ -108,7 +107,7 @@ public class GameManager {
 			}
 
 			p.update(i);
-			System.out.println("PUCK: "+p.x + " "+p.y+ " # "+p.vx + " "+ p.vy);
+		//	System.out.println("PUCK: "+p.x + " "+p.y+ " # "+p.vx + " "+ p.vy);
 		}
 
 	}

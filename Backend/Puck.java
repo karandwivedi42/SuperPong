@@ -1,14 +1,16 @@
+import java.awt.Color;
+
 
 public class Puck {
 	
 	double x,y,vx,vy;
 	
 	double radius;
-	String color;
+	Color color;
 	
-	public Puck(double i, String string) {
+	public Puck(double i, Color color2) {
 		radius = i;
-		color = string;
+		color = color2;
 		x=0;
 		y=0;
 		vx = 0;
