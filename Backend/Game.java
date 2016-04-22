@@ -63,14 +63,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 		
 		game.beginGame();
 		
-
+		setFocusable(true);
         addKeyListener(this);
-        javax.swing.Timer timer = new javax.swing.Timer(40, this);
+        javax.swing.Timer timer = new javax.swing.Timer(1, this);
         timer.start();
     }
 
     public void actionPerformed(ActionEvent e){
-    	game.update(40);
+    	game.update(1);
     	repaint();
         //TODO : Perform Checks on ball and Paddles
         //TODO : if ball goes out of bounds, call spawn_ball() such that initial velocity of the ball is towards the winner of the last point; function and update scores
@@ -105,7 +105,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         
         for (Player pl : game.players){
         	graphics.setColor(pl.paddle.color);
-        	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
+        //	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
         	if(pl.paddle.orientation == "VERTICAL")
         		graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
         	else
@@ -129,7 +129,16 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void keyTyped(KeyEvent e) {} //DON'T DO ANYTHING HERE
     
     public void keyPressed(KeyEvent e){
-        //TODO : Update on key press events
+    	//System.out.println("FUCK");
+    	if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+    		p1.movePaddle("RIGHT");
+    	else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+    		p1.movePaddle("LEFT");
+    	else if (e.getKeyCode() == KeyEvent.VK_UP)
+    		p2.movePaddle("UP");
+    	else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+    		p2.movePaddle("DOWN");
+    		
     }
     
     public void keyReleased(KeyEvent e){
@@ -145,7 +154,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         Game game = new Game();
         frame.add(game, BorderLayout.CENTER);
         
-        frame.setSize(600, 624);
+        frame.setSize(600, 600);
         frame.setVisible(true);
         
     }

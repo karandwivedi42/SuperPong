@@ -2,8 +2,10 @@ import java.util.ArrayList;
 
 public class GameManager {
 
-	private static final double v_factor = 50;
-	private static final double v_offset = 20;
+	private static final double v_factor = 3;
+	private static final double v_offset = 0.3;
+	
+	int padWidth = 8;
 	
 	ArrayList<Player> players;
 	Board board;
@@ -23,8 +25,10 @@ public class GameManager {
 
 	public void upScore(String side) {
 		for (Player p : players) {
-			if (p.side == side)
+			if (p.side == side){
+				//System.out.println (p.name);
 				p.score++;
+			}
 		}
 	}
 
@@ -32,8 +36,8 @@ public class GameManager {
 		for (Puck p : board.pucks) {
 			p.x = board.width/2;
 			p.y = board.height/2;
-			p.vx = v_offset; // + Math.random() * v_factor *(Math.random()*2-1);
-			p.vy = v_offset; // + Math.random() * v_factor* (Math.random()*2-1);
+			p.vx = v_offset + Math.random() * v_factor *(Math.random()*2-1);
+			p.vy = v_offset + Math.random() * v_factor* (Math.random()*2-1);
 		}
 
 
@@ -98,8 +102,7 @@ public class GameManager {
 	public void update(int i) {
 		for (Puck p : board.pucks) {
 			for (Player pl : players) {
-				checkForBounce(p, pl.paddle); // changes vx and vy in p
-
+	     		checkForBounce(p, pl); // changes vx and vy in p
 				boolean crashed = checkForCrash(p, pl);
 				if (crashed) {
 					upScore(pl.side);
@@ -113,9 +116,18 @@ public class GameManager {
 	}
 
 	private boolean checkForCrash(Puck p, Player pl) {
-		double d = (p.y - pl.wall2protect.m * p.x - pl.wall2protect.c)/ Math.sqrt(1 + pl.wall2protect.m * pl.wall2protect.m);
-		if (Math.abs(d) < p.radius) {
+	double d = 0;
+		if(pl.paddle.orientation == "VERTICAL")
+			d = Math.abs(pl.wall2protect.xa - p.x);
+		else
+			d = Math.abs(pl.wall2protect.ya - p.y);
+
+		if (d < p.radius) {
 			if (pl.alive) {
+				if( pl.paddle.orientation == "VERTICAL")
+					p.vx = -p.vx;
+				else
+					p.vy = - p.vy;
 				return true;
 			}
 			if (pl.side == "TOP" || pl.side == "BOTTOM") {
@@ -127,17 +139,30 @@ public class GameManager {
 		return false;
 	}
 
-	private void checkForBounce(Puck p, Paddle paddle) {
-		if(paddle.orientation == "VERTICAL"){
-			double d = Math.abs(paddle.xc - p.x);
-			if(d<p.radius)
+	private void checkForBounce(Puck p, Player player) {
+		if(player.side == "LEFT"){
+			if(( p.x - player.paddle.xc - padWidth/2  <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2)){
+				System.out.println(p.vx);
 				p.vx = -p.vx;
+			}
 		}
-		else if(paddle.orientation == "HORIZONTAL"){
-			double d = Math.abs(paddle.yc - p.y);
-			if (d<p.radius)
-				p.vy = - p.vy;
+		else if(player.side == "RIGHT"){
+			if((player.paddle.xc - padWidth/2 - p.x <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2)){
+				p.vx = -p.vx;
+			}
 		}
+		else if(player.side == "BOTTOM"){
+			if((player.paddle.yc - padWidth/2 - p.y <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)){
+				p.vy = -p.vy;
+			}
+		}
+		else if(player.side == "TOP"){
+			if((p.y - player.paddle.yc - padWidth/2 <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)){
+				p.vy = -p.vy;
+			}
+		}
+		
+
 
 	}
 
