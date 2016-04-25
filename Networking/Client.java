@@ -156,6 +156,7 @@ public class Client{
 		Thread threadSend = new Thread(s);
 		threadSend.start();
 		//sending thread started		
+    
     }
 	
 }
