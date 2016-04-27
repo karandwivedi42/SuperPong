@@ -18,31 +18,50 @@ public class ImageButton extends JPanel implements ActionListener{
     Color color;
     AudioClip intro;
     JButton b;
-    JTextArea textArea;
+    JButton b1;
+    JTextField textArea;
+    JTextField textArea1;
     ImageButton(){
         button = new JRadioButton("Red");
         button1 = new JRadioButton("Blue");
         button2 = new JRadioButton("Green");
         button3 = new JRadioButton("Pink");
-        b = new JButton("Proceed");
+        b = new JButton("Create Game");
+        b1 = new JButton("Join Game");
         intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
-        textArea = new JTextArea("Some text\nSome other text");
+        textArea = new JTextField("Some text\nSome other text");
+        textArea1 = new JTextField("Some text\nSome other text");
 
         button.setBounds(30, 285, 150, 30);
         button1.setBounds(285, 30, 150, 30);
         button2.setBounds(420, 285, 150, 30);
         button3.setBounds(285, 540, 150, 30);
-        b.setBounds(225, 300, 150, 30);
-        textArea.setBounds(100, 100, 50, 20);
+        b.setBounds(50, 140, 150, 30);
+        b1.setBounds(400, 140, 150, 30);
+        textArea.setBounds(50, 100, 150, 20);
+        textArea1.setBounds(400, 100, 150, 20);
         
-        b.addActionListener(this);
+        b.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        
+        b1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        
         ButtonGroup BG = new ButtonGroup();
         BG.add(button);
         BG.add(button1);
         BG.add(button2);
         BG.add(button3);
         add(textArea);
+        add(textArea1);
         add(b);
+        add(b1);
         add(button);
         add(button1);
         add(button2);
@@ -56,7 +75,7 @@ public class ImageButton extends JPanel implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e){
-        if(button.isSelected()){
+        /*if(button.isSelected()){
             JOptionPane.showMessageDialog(this, "Red");
             color = Color.RED;
         }
@@ -71,7 +90,7 @@ public class ImageButton extends JPanel implements ActionListener{
         else if(button3.isSelected()){
             JOptionPane.showMessageDialog(this, "Pink");
             color = Color.PINK;
-        }
+        }*/
     }
     
     public Color getColor(){
