@@ -1,9 +1,11 @@
-import java.util.*;
-import java.lang.*;
-import java.text.*;
 import javax.swing.*;
 import javax.swing.Timer;
-
+import java.io.File;
+import java.io.IOException;
+import java.applet.AudioClip;
+import javax.imageio.ImageIO;
+import java.lang.*;
+import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,30 +14,33 @@ import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
 	
+	NetworkManager nm;	
 	GameManager game;
+	Player me;
+	
 	Timer timer;
 	
 	public boolean playing;
-	Player p1,p2,p3,p4;
+	
+	Player p1,p2,p3;
 	Wall w1,w2,w3,w4;
 	
-    private static String[] choice = {"Left", "Right"};
+
     //Paddle Constants
-    public static int padWidth = 30;
+    public static int padWidth = 5;
     //Ball Variables
 
-
-    private int randomChoice;
     
     public Game() {
-
-                
-        game = new GameManager();
+    	
+    	game = new GameManager(nm);
 		
 		Board b = new Board(600, 600, new Color(0, 0, 0), new Color(255, 255, 255));
 		
-		Puck p = new Puck(10,new Color (0,0,255));
+		Puck p = new Puck("puck1",10,Color.decode("#1976D2"));
+		Puck pdash = new Puck("puck2",10,Color.decode("#19D276"));
 		b.addPuck(p);
+		b.addPuck(pdash);
 		
 		w1 = (new Wall(0,0,600,0,"TOP"));
 		w2 = (new Wall(0,0,0,600,"LEFT"));
@@ -49,17 +54,22 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 		
 		game.addBoard(b);
 		
-		p1 = new Player("KARAN", "TOP",new Paddle(150,"HORIZONTAL",300,4,Color.BLUE),w1);		
-		p2 = new Player("AKSHIT", "LEFT",new Paddle(150,"VERTICAL",4,300,Color.RED),w2);
-		p3 = new Player("RISHABH", "RIGHT",new Paddle(150,"VERTICAL",596,300,Color.GREEN),w4);
-		p4 = new Player("BOT", "BOTTOM",new Paddle(150,"HORIZONTAL",300,596,Color.WHITE),w3);
+		me = new Player("KARAN","my ip" ,"TOP",new Paddle(150,"HORIZONTAL",300,4,Color.decode("#FFA000")),w1);	
+		
+		p2 = new Player("AKSHIT","" ,"LEFT",new Paddle(150,"VERTICAL",4,300,Color.decode("#FFA000")),w2);
+		p3 = new Player("RISHABH","" ,"RIGHT",new Paddle(150,"VERTICAL",596,300,Color.decode("#FFA000")),w4);
+		p1 = new Player("BOT","" ,"BOTTOM",new Paddle(150,"HORIZONTAL",300,596,Color.decode("#FFA000")),w3);
 		
 		game.addPlayer(p1);
 		game.addPlayer(p2);
 		game.addPlayer(p3);
-		game.addPlayer(p4);
+		game.addPlayer(me);
+		game.me = me;
 		
-		p4.makeAI("EASY");
+		me.makeAI("HARD");
+		p3.makeAI("HARD");
+		p1.makeAI("HARD");
+		p2.makeAI("HARD");
 		
 		game.beginGame();
 		
@@ -68,35 +78,49 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         javax.swing.Timer timer = new javax.swing.Timer(1, this);
         timer.start();
     }
-
+    
+    public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
+        BufferedImage scaledImage = null;
+        if (imageToScale != null) {
+            scaledImage = new BufferedImage(dWidth, dHeight, imageToScale.getType());
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.drawImage(imageToScale, 0, 0, dWidth, dHeight, null);
+            graphics2D.dispose();
+        }
+        return scaledImage;
+    }
+    
     public void actionPerformed(ActionEvent e){
     	game.update(1);
     	repaint();
-        //TODO : Perform Checks on ball and Paddles
-        //TODO : if ball goes out of bounds, call spawn_ball() such that initial velocity of the ball is towards the winner of the last point; function and update scores
-        //TODO : Update Position of ball
-        //TODO : Update Position of Paddles; keep paddles inside the board
-        //TODO : Call repaint() function
     }
     
     public void paintComponent(Graphics graphics){
     	
     	super.paintComponent(graphics);
+    	
 
+        Graphics2D g2 = (Graphics2D) graphics;
+        try{
+            BufferedImage img1 = ImageIO.read(new File("nebula_blue.png"));
+            BufferedImage img = scale(img1, 600, 600);
+            g2.drawImage(img, 0, 0, this);
+            g2.finalize();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
         setBackground(Color.BLACK);
+
         
-        graphics.setColor(Color.BLUE);
+        graphics.setColor(Color.decode("#F44336"));
         
         //Drawing Lines on board
         graphics.drawLine((int) game.board.width / 2, 0, (int)game.board.width / 2, (int) game.board.height);
         graphics.drawLine(0, (int) game.board.height / 2, (int) game.board.width, (int) game.board.height/2);
-   //     graphics.drawLine(padWidth, 0, padWidth, frameHeight);
-   //     graphics.drawLine(frameWidth - padWidth, 0, frameWidth - padWidth, frameHeight);
-   //     graphics.drawLine(0, padWidth, frameWidth, padWidth);
-   //     graphics.drawLine(0, frameHeight - padWidth, frameWidth, frameHeight - padWidth);
         
         //Drawing Balls
         for (Puck p : game.board.pucks){
+        	graphics.setColor(p.color);
         	graphics.fillOval( (int) (p.x - p.radius), (int) (p.y - p.radius), (int) (2 * p.radius), (int) (2 * p.radius));
         }
         //Drawing Paddles
@@ -104,14 +128,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         //Vertical Paddles
         
         for (Player pl : game.players){
-        	graphics.setColor(pl.paddle.color);
-        //	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
-        	if(pl.paddle.orientation == "VERTICAL")
-        		graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
-        	else
-        		graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
+        	if(pl.alive){
+	        	graphics.setColor(pl.paddle.color);
+	        //	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
+	        	if(pl.paddle.orientation == "VERTICAL")
+	        		graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
+	        	else
+	        		graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
+           	}
         }
-        
         
         graphics.setColor(Color.WHITE);
         
@@ -138,7 +163,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     		p2.movePaddle("UP");
     	else if (e.getKeyCode() == KeyEvent.VK_DOWN)
     		p2.movePaddle("DOWN");
-    		
     }
     
     public void keyReleased(KeyEvent e){
@@ -147,7 +171,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     
     public static void main(String[] args){
         
-        JFrame frame = new JFrame("Ping The Pong");
+        JFrame frame = new JFrame("Star Pong");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         

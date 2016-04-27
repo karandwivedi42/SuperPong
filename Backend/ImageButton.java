@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.applet.AudioClip;
 import javax.imageio.ImageIO;
+import java.lang.*;
 
 public class ImageButton extends JPanel implements ActionListener{
 
@@ -14,7 +16,7 @@ public class ImageButton extends JPanel implements ActionListener{
     JRadioButton button2;
     JRadioButton button3;
     Color color;
-
+    AudioClip intro;
     JButton b;
     ImageButton(){
         button = new JRadioButton("Red");
@@ -22,6 +24,7 @@ public class ImageButton extends JPanel implements ActionListener{
         button2 = new JRadioButton("Green");
         button3 = new JRadioButton("Pink");
         b = new JButton("Proceed");
+        intro = JApplet.newAudioClip(getClass().getResource("0783.aiff"));
 
 
         button.setBounds(200, 100, 150, 30);
@@ -43,6 +46,9 @@ public class ImageButton extends JPanel implements ActionListener{
         setSize(300,300);
         setLayout(null);
         setVisible(true);
+        JLabel choose = new JLabel
+        ("Choose Your Colour", JLabel.CENTER);
+        add(choose, BorderLayout.NORTH);
     }
     
     public void actionPerformed(ActionEvent e){
@@ -83,7 +89,7 @@ public class ImageButton extends JPanel implements ActionListener{
     public void paintComponent(Graphics graphics){
         Graphics2D g2 = (Graphics2D) graphics;
         try{
-            BufferedImage img1 = ImageIO.read(new File("/Users/Shakti/Desktop/SuperPong/Pong.jpg"));
+            BufferedImage img1 = ImageIO.read(new File("nebula_brown.png"));
             BufferedImage img = scale(img1, 600, 600);
             g2.drawImage(img, 0, 0, this);
             g2.finalize();
@@ -93,7 +99,7 @@ public class ImageButton extends JPanel implements ActionListener{
         
         setBackground(Color.BLACK);
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Choose Your Paddle Colour", 220, 50);
+        
         graphics.setColor(Color.RED);
         graphics.fillRoundRect(270, 100, 100, 30, 5, 5);
         graphics.setColor(Color.BLUE);
@@ -107,15 +113,17 @@ public class ImageButton extends JPanel implements ActionListener{
     public static void main(String[] args){
         SplashScreen splash = new SplashScreen(10000);
         splash.showSplash();
-        JFrame frame = new JFrame("Ping The Pong");
+        JFrame frame = new JFrame("Star Pong");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         
         ImageButton game = new ImageButton();
         frame.add(game, BorderLayout.CENTER);
-        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(600, 624);
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
+        game.intro.play();
         
     }
 }

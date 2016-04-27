@@ -3,7 +3,7 @@ import java.awt.Color;
 
 public class Paddle {
 		
-	static final double delta = 10;
+	static final double delta = 20;
 	double length;
 	String orientation;
 	double xc,yc;
