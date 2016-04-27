@@ -3,7 +3,12 @@ import java.lang.*;
 import java.text.*;
 import javax.swing.*;
 import javax.swing.Timer;
-
+import java.io.File;
+import java.io.IOException;
+import java.applet.AudioClip;
+import javax.imageio.ImageIO;
+import java.lang.*;
+import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,7 +73,18 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         javax.swing.Timer timer = new javax.swing.Timer(1, this);
         timer.start();
     }
-
+    
+    public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
+        BufferedImage scaledImage = null;
+        if (imageToScale != null) {
+            scaledImage = new BufferedImage(dWidth, dHeight, imageToScale.getType());
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.drawImage(imageToScale, 0, 0, dWidth, dHeight, null);
+            graphics2D.dispose();
+        }
+        return scaledImage;
+    }
+    
     public void actionPerformed(ActionEvent e){
     	game.update(1);
     	repaint();
@@ -82,7 +98,15 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void paintComponent(Graphics graphics){
     	
     	super.paintComponent(graphics);
-
+        Graphics2D g2 = (Graphics2D) graphics;
+        try{
+            BufferedImage img1 = ImageIO.read(new File("nebula_blue.png"));
+            BufferedImage img = scale(img1, 600, 600);
+            g2.drawImage(img, 0, 0, this);
+            g2.finalize();
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
         setBackground(Color.BLACK);
         
         graphics.setColor(Color.BLUE);
@@ -147,7 +171,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     
     public static void main(String[] args){
         
-        JFrame frame = new JFrame("Ping The Pong");
+        JFrame frame = new JFrame("Star Pong");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         
