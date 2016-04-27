@@ -6,11 +6,11 @@ import java.lang.*;
 class Receiver implements Runnable{
 
 	int Port = 20000;
-
+	boolean isRunning;
 	@Override
 	public void run() {
 		//System.out.println("Receiver thread is running...");
-		
+		isRunning = true;
 		//Port no has been chosen as 20000
 		DatagramSocket serverSocket = null;
 		try{
@@ -21,7 +21,7 @@ class Receiver implements Runnable{
 			return;
 		}
 
-		while(true)
+		while(isRunning)
 		{
 			byte[] receiveData = new byte[2048];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
@@ -35,19 +35,24 @@ class Receiver implements Runnable{
 			System.out.println("Received: " + receivedString + " From: " + receivePacket.getAddress());
 		}
     }
+
+    public void terminate()
+    {
+    	isRunning = false;
+    }
 	
 }
 
 class Sender implements Runnable{
 
 	int Port = 20000;
-	String IP;
-	String message;
-	public Sender(String message,String ip)
-	{
-		this.message = message;
-		this.IP = ip;
-	}
+	public String IP;
+	public String message;
+	
+	// public Sender(String ip)
+	// {
+	// 	this.IP = ip;
+	// }
 
 	public static String getMachineAddress() throws RuntimeException
 	{
@@ -78,13 +83,11 @@ class Sender implements Runnable{
     	return requiredIp;
     }
 
+
     private volatile boolean isRunning;
 	@Override
 	public void run(){
 
-		isRunning = true;
-		while(isRunning)
-		{
 			DatagramSocket senderSocket = null;
 			try{
 				senderSocket = new DatagramSocket();
@@ -125,7 +128,7 @@ class Sender implements Runnable{
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to send");
 			}
-		}
+		
 	}
 
 	public void terminate()
@@ -142,21 +145,29 @@ public class Client{
 
 	public static void main(String[] args) throws Exception{
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter message to send:");
-		String message = scanner.nextLine();
 		System.out.println("Enter IP to send to:");
 		String IP = scanner.nextLine();
 		
 		Receiver r = new Receiver();
-		Thread threadReceive = new Thread(r);
+        Thread threadReceive = new Thread(r);
 		threadReceive.start();
 		//Reception started
 
-		Sender s = new Sender(message,IP);
-		Thread threadSend = new Thread(s);
-		threadSend.start();
-		//sending thread started		
-    
+		while(true)
+		{
+			System.out.println("Enter message to send:");
+			String message = scanner.nextLine();
+			if(message.equals("kill"))
+				r.terminate();
+				return;
+			Sender s = new Sender();
+			s.IP = IP;
+			s.message = message;
+			Thread threadSend = new Thread(s);
+			threadSend.start();
+		}//sending thread started
+
+		r.terminate();		
     }
 	
 }
