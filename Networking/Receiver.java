@@ -55,10 +55,15 @@ public class Receiver implements Runnable{
 
 		String receivedString = new String(receivePacket.getData());
 		String[] splitted = receivedString.split("_");
-		if(splitted.length!=2)
-			return;
-
-		currString.put(splitted[0],splitted[1]);
+		if(splitted[0]=="IP")
+		{
+			String ip = splitted[2];
+			currString.put("IP");
+			//KARAN ADD THIS TO THE LIST OF IPS THAT THE SPECIFIC PLAYER WILL CONTAIN
+			
+		}
+		if(splitted.length==2)
+			currString.put(splitted[0],splitted[1]);
 	}
 
 	public String getValue(String str)
