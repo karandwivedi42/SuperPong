@@ -18,26 +18,30 @@ public class ImageButton extends JPanel implements ActionListener{
     Color color;
     AudioClip intro;
     JButton b;
+    JTextArea textArea;
     ImageButton(){
         button = new JRadioButton("Red");
         button1 = new JRadioButton("Blue");
         button2 = new JRadioButton("Green");
         button3 = new JRadioButton("Pink");
         b = new JButton("Proceed");
-        intro = JApplet.newAudioClip(getClass().getResource("0783.aiff"));
+        intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
+        textArea = new JTextArea("Some text\nSome other text");
 
-
-        button.setBounds(200, 100, 150, 30);
-        button1.setBounds(200, 150, 150, 30);
-        button2.setBounds(200, 200, 150, 30);
-        button3.setBounds(200, 250, 150, 30);
+        button.setBounds(30, 285, 150, 30);
+        button1.setBounds(285, 30, 150, 30);
+        button2.setBounds(420, 285, 150, 30);
+        button3.setBounds(285, 540, 150, 30);
         b.setBounds(225, 300, 150, 30);
+        textArea.setBounds(100, 100, 50, 20);
+        
         b.addActionListener(this);
         ButtonGroup BG = new ButtonGroup();
         BG.add(button);
         BG.add(button1);
         BG.add(button2);
         BG.add(button3);
+        add(textArea);
         add(b);
         add(button);
         add(button1);
@@ -89,7 +93,7 @@ public class ImageButton extends JPanel implements ActionListener{
     public void paintComponent(Graphics graphics){
         Graphics2D g2 = (Graphics2D) graphics;
         try{
-            BufferedImage img1 = ImageIO.read(new File("nebula_brown.png"));
+            BufferedImage img1 = ImageIO.read(new File("res/nebula_brown.png"));
             BufferedImage img = scale(img1, 600, 600);
             g2.drawImage(img, 0, 0, this);
             g2.finalize();
@@ -101,17 +105,21 @@ public class ImageButton extends JPanel implements ActionListener{
         graphics.setColor(Color.WHITE);
         
         graphics.setColor(Color.RED);
-        graphics.fillRoundRect(270, 100, 100, 30, 5, 5);
+        graphics.fillRoundRect(0, 250, 30, 100, 5, 5);
         graphics.setColor(Color.BLUE);
-        graphics.fillRoundRect(270, 150, 100, 30, 5, 5);
+        graphics.fillRoundRect(250, 0, 100, 30, 5, 5);
         graphics.setColor(Color.GREEN);
-        graphics.fillRoundRect(270, 200, 100, 30, 5, 5);
+        graphics.fillRoundRect(570, 250, 30, 100, 5, 5);
         graphics.setColor(Color.PINK);
-        graphics.fillRoundRect(270, 250, 100, 30, 5, 5);
+        graphics.fillRoundRect(250, 570, 100, 30, 5, 5);
+    }
+    
+    public String getIP(){
+        return textArea.getText();
     }
     
     public static void main(String[] args){
-        SplashScreen splash = new SplashScreen(10000);
+        SplashScreen splash = new SplashScreen(5000);
         splash.showSplash();
         JFrame frame = new JFrame("Star Pong");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,6 +132,6 @@ public class ImageButton extends JPanel implements ActionListener{
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
         game.intro.play();
-        
+        System.out.println(game.getIP());
     }
 }

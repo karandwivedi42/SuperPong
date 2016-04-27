@@ -32,7 +32,7 @@ public class SplashScreen extends JWindow {
         setBounds(x,y,width,height);
 
         // Build the splash screen
-        JLabel label = new JLabel(new ImageIcon("Pong.jpg"));
+        JLabel label = new JLabel(new ImageIcon("res/Pong.jpg"));
         JLabel copyrt = new JLabel
         ("Made By, Akshit Tyagi, Rishabh Kumar, Karan Dwivedi", JLabel.CENTER);
         copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 12));
