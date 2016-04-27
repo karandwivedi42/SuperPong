@@ -3,12 +3,15 @@ import java.awt.Color;
 
 public class Puck {
 	
+	String name;
+	
 	double x,y,vx,vy;
 	
 	double radius;
 	Color color;
 	
-	public Puck(double i, Color color2) {
+	public Puck(String name,double i, Color color2) {
+		this.name = name;
 		radius = i;
 		color = color2;
 		x=0;
@@ -18,8 +21,5 @@ public class Puck {
 		
 	}
 
-	public void update(int i) { // Change for friction
-		x+=vx;
-		y+=vy;		
-	}
+
 }

@@ -29,7 +29,7 @@ public class SplashScreen extends JWindow {
     setBounds(x,y,width,height);
 
     // Build the splash screen
-    JLabel label = new JLabel(new ImageIcon("/Users/Shakti/Desktop/SuperPong/Pong.jpg"));
+    JLabel label = new JLabel(new ImageIcon("Pong.jpg"));
     JLabel copyrt = new JLabel
       ("Copyright 2016, Akshit Tyagi, Rishabh Kumar, Karan Dwivedi", JLabel.CENTER);
     copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 12));
@@ -49,7 +49,7 @@ public class SplashScreen extends JWindow {
 
   public void showSplashAndExit() {
     showSplash();
-    System.exit(0);
+   // System.exit(0);
   }
 
   public static void main(String[] args) {
@@ -57,6 +57,7 @@ public class SplashScreen extends JWindow {
     SplashScreen splash = new SplashScreen(10000);
     // Normally, we'd call splash.showSplash() and get on with the program.
     // But, since this is only a test...
+    System.out.print("dsf");
     splash.showSplashAndExit();
   }
 }
