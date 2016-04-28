@@ -40,7 +40,8 @@ public class Receiver implements Runnable{
 				{
 					playerAdded(arr,receivePacket.getAddress(),receivedString);
 				}
-				handlePacket(receivePacket);
+				else
+					{handlePacket(receivePacket);}
 			}
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to receive");
@@ -63,7 +64,7 @@ public class Receiver implements Runnable{
 				Sender curr = nm.list.get(i);
 				MyObj m = new MyObj();
 				m.myParam = false;
-				curr.sendMessage(ms,true, m);
+				curr.sendMessage(ms,true, m,20001);
 				if(!m.myParam)
 				{
 					System.out.println("refused from "+getMachineAddress());
@@ -72,12 +73,12 @@ public class Receiver implements Runnable{
 			}
 			
 			Sender s = new Sender(ip.toString());
-			s.sendMessage("success",false,null);
+			s.sendMessage("success",false,null,0);
 		}
 		else
 		{
 			Sender s = new Sender(ip.toString());
-			s.sendMessage("success", false, null);
+			s.sendMessage("success", false, null,0);
 		}
 		
 		

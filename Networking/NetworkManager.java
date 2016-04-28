@@ -227,7 +227,7 @@ public class NetworkManager{
 		Sender s = new Sender(adminIP);
 		MyObj m = new MyObj();
 		m.myParam = false;
-		s.sendMessage("playerno_"+playerNo+"_playerpos_"+playerPosition,true,m);
+		s.sendMessage("playerno_"+playerNo+"_playerpos_"+playerPosition,true,m,0);
 
 //		boolean isRunning = true;
 //		//Port no has been chosen as 20000
