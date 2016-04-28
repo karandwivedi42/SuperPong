@@ -133,7 +133,35 @@ public class ImageButton extends JPanel implements ActionListener{
         ("CHOOSE YOUR SIDE", JLabel.CENTER);
         add(choose, BorderLayout.NORTH);
     }
-
+<<<<<<< HEAD
+        
+=======
+    
+    public void actionPerformed(ActionEvent e){
+        /*if(button.isSelected()){
+            JOptionPane.showMessageDialog(this, "Red");
+            color = Color.RED;
+        }
+    	else if(button1.isSelected()){
+            JOptionPane.showMessageDialog(this, "Blue");
+            color = Color.BLUE;
+        }
+        else if(button2.isSelected()){
+            JOptionPane.showMessageDialog(this, "Green");
+            color = Color.GREEN;
+        }
+        else if(button3.isSelected()){
+            JOptionPane.showMessageDialog(this, "Pink");
+            color = Color.PINK;
+        }*/
+    }
+    
+    public Color getColor(){
+        return color;
+    }
+    
+    
+>>>>>>> 2ddbccf7ac2d7e3ee00edea3d1cdea371b345299
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
         BufferedImage scaledImage = null;
         if (imageToScale != null) {
