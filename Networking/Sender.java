@@ -83,10 +83,7 @@ public class Sender implements Runnable{
 			DatagramSocket serverSocket = null;
 			try {
 				serverSocket = new DatagramSocket(20000);
-			} catch (SocketException e1) {
-				// TODO Auto-generated catch block
-				System.out.println(e1.toString());
-			}
+			
 			
 			long starttime = System.currentTimeMillis();
 			while(true && (System.currentTimeMillis()-starttime)<=1000)
@@ -105,9 +102,15 @@ public class Sender implements Runnable{
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to receive");
 			}
-		m.myParam = false;
-		return;
-			}	
+		}
+
+			m.myParam = false;
+			return;
+			}
+			catch(SocketException e)
+			{
+				System.out.println("BOOB\n"+e.toString());
+			}
 		}
 	}
 
