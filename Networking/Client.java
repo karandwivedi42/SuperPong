@@ -27,6 +27,7 @@ class Receiver implements Runnable{
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
 			try{
 				serverSocket.receive(receivePacket);
+				handlePacket(receivePacket);
 			}
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to receive");
@@ -40,7 +41,24 @@ class Receiver implements Runnable{
     {
     	isRunning = false;
     }
+
+	HashMap<String,String>  currString = new HashMap<String,String>();
 	
+	public void handlePacket(DatagramPacket receivePacket)
+	{
+		String receivedString = new String(receivePacket.getData());
+		String[] processed = receivedString.split("_");
+		
+		if(processed.length>0)
+		{
+			currString.put(processed[0],processed[1]);
+		}
+	}
+
+	public String getValue(String str)
+	{
+		return currString.get(str);		
+	}
 }
 
 class Sender implements Runnable{
@@ -49,10 +67,46 @@ class Sender implements Runnable{
 	public String IP;
 	public String message;
 	
+	public Sender(String IP)
+	{
+		this.IP = IP;
+	}	
 	// public Sender(String ip)
-	// {
+	// {	
 	// 	this.IP = ip;
 	// }
+	public void sendMessage(String msg)
+	{
+		DatagramSocket senderSocket = null;
+			try{
+				senderSocket = new DatagramSocket();
+			}
+			catch(SocketException e){
+				System.out.println(e.toString());
+				return;	
+			}
+
+			InetAddress IPAddress = null;
+			try{
+				IPAddress = InetAddress.getByName(IP);
+			}
+			catch(UnknownHostException e){
+				System.out.println("Unnable to find host");
+				return;
+			}
+
+			byte[] sendData = new byte[2048];
+			sendData = message.getBytes();
+			DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
+			try{
+				senderSocket.send(sendPacket);
+			}
+			catch(IOException e){
+				System.out.println(e.toString()+"\nUnnable to send");
+			}		
+	}
+
+
 
 	public static String getMachineAddress() throws RuntimeException
 	{
