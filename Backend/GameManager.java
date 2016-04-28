@@ -1,9 +1,17 @@
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.applet.AudioClip;
+import java.lang.*;
+import javax.swing.*;
+import java.awt.*;
+
 
 public class GameManager {
 	
 	NetworkManager nm ;
-
+    AudioClip bounce;
+    AudioClip crash;
 	private static final double v_factor = 0.2;
 	private static final double v_offset = 0.4;
 	
@@ -22,6 +30,8 @@ public class GameManager {
 	public GameManager(NetworkManager n){
 		players = new ArrayList<>();
 		nm = n;
+        bounce = JApplet.newAudioClip(getClass().getResource("0614.aiff"));
+        crash = JApplet.newAudioClip(getClass().getResource("0342.aiff"));
 	}
 
 	public void addPlayer(Player p) { // FUTURE: Ensure name uniqueness
@@ -209,15 +219,23 @@ public class GameManager {
 		if (d < p.radius) {
 			if (pl.alive) {
 				if( pl.paddle.orientation == "VERTICAL")
-					p.vx = -p.vx;
+                {
+                    p.vx = -p.vx;
+                    crash.play();
+                }
 				else
-					p.vy = - p.vy;
+                {
+                    p.vy = - p.vy;
+                    crash.play();
+                }
 				return true;
 			}
 			if (pl.side == "TOP" || pl.side == "BOTTOM") {
 				p.vy = -p.vy;
+                crash.play();
 			} else {
 				p.vx = -p.vx;
+                crash.play();
 			}
 		}
 		return false;
@@ -228,24 +246,28 @@ public class GameManager {
 			if(( p.x - player.paddle.xc - padWidth/2  <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2) && (p.vx < 0)){
 				System.out.println(p.vx);
 				p.vx = -p.vx*(1-y_factor);
+                bounce.play();
 			//	p.vy =p.vy +  p.vy*Math.abs(p.y-player.paddle.yc-y_offset)*y_factor;
 			}
 		}
 		else if(player.side == "RIGHT"){
 			if((player.paddle.xc - padWidth/2 - p.x <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2)&& (p.vx > 0)){
 				p.vx = -p.vx*(1-y_factor);
+                bounce.play();
 				//p.vy = p.vy +  p.vy*Math.abs(p.y-player.paddle.yc-y_offset)*y_factor;
 			}
 		}
 		else if(player.side == "BOTTOM"){
 			if((player.paddle.yc - padWidth/2 - p.y <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)&& (p.vy > 0)){
 				p.vy = -p.vy*(1-y_factor);
+                bounce.play();
 				//p.vx = p.vx + p.vx*Math.abs(p.x-player.paddle.xc-y_offset)*y_factor;
 			}
 		}
 		else if(player.side == "TOP"){
 			if((p.y - player.paddle.yc - padWidth/2 <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)&& (p.vy < 0)){
 				p.vy = -p.vy*(1-y_factor);
+                bounce.play();
 				//p.vx = p.vx + p.vx*Math.abs(p.x-player.paddle.xc-y_offset)*y_factor;
 			}
 		}

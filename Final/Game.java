@@ -31,12 +31,14 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     //Ball Variables
 
     
+
     public Game(NetworkManager nm) {
     	
     	game = nm.getGame();
         game.beginGame();
 	
 	setFocusable(true);
+
         addKeyListener(this);
         javax.swing.Timer timer = new javax.swing.Timer(1, this);
         timer.start();
@@ -65,7 +67,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 
         Graphics2D g2 = (Graphics2D) graphics;
         try{
-            BufferedImage img1 = ImageIO.read(new File("nebula_blue.png"));
+
+            BufferedImage img1 = ImageIO.read(new File("res/nebula_blue.png"));
+
             BufferedImage img = scale(img1, 600, 600);
             g2.drawImage(img, 0, 0, this);
             g2.finalize();
@@ -83,8 +87,18 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         
         //Drawing Balls
         for (Puck p : game.board.pucks){
-        	graphics.setColor(p.color);
-        	graphics.fillOval( (int) (p.x - p.radius), (int) (p.y - p.radius), (int) (2 * p.radius), (int) (2 * p.radius));
+
+        	//graphics.setColor(p.color);
+        	//graphics.fillOval( (int) (p.x - p.radius), (int) (p.y - p.radius), (int) (2 * p.radius), (int) (2 * p.radius));
+            try{
+                BufferedImage img2 = ImageIO.read(new File("res/asteroid_blue.png"));
+                BufferedImage img_ball = scale(img2, (int) (2 * p.radius), (int) (2 * p.radius));
+                g2.drawImage(img_ball, (int) (p.x - p.radius), (int) (p.y - p.radius), this);
+                g2.finalize();
+            }catch(IOException e){
+                System.out.println(e.getMessage());
+            }
+
         }
         //Drawing Paddles
         
@@ -94,10 +108,30 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         	if(pl.alive){
 	        	graphics.setColor(pl.paddle.color);
 	        //	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
-	        	if(pl.paddle.orientation == "VERTICAL")
-	        		graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
-	        	else
-	        		graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
+
+                if(pl.paddle.orientation == "VERTICAL"){
+	        		//graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
+                    try{
+                        BufferedImage img3 = ImageIO.read(new File("paddle_vertical.png"));
+                        BufferedImage img_paddle = scale(img3, (int) padWidth, (int) pl.paddle.length);
+                        g2.drawImage(img_paddle, (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), this);
+                        g2.finalize();
+                    }catch(IOException e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                else{
+	        		//graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
+                    try{
+                        BufferedImage img3 = ImageIO.read(new File("paddle_horizontal.png"));
+                        BufferedImage img_paddle = scale(img3,  (int) pl.paddle.length, (int) padWidth);
+                        g2.drawImage(img_paddle, (int) (pl.paddle.xc - pl.paddle.length/2), (int) (pl.paddle.yc-padWidth/2), this);
+                        g2.finalize();
+                    }catch(IOException e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+
            	}
         }
         

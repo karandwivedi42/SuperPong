@@ -133,7 +133,7 @@ public class ImageButton extends JPanel implements ActionListener{
         ("CHOOSE YOUR SIDE", JLabel.CENTER);
         add(choose, BorderLayout.NORTH);
     }
-        
+
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
         BufferedImage scaledImage = null;
         if (imageToScale != null) {
@@ -155,7 +155,15 @@ public class ImageButton extends JPanel implements ActionListener{
         try{
             BufferedImage img1 = ImageIO.read(new File("res/nebula_brown.png"));
             BufferedImage img = scale(img1, 600, 600);
+            BufferedImage img2 = ImageIO.read(new File("res/paddle_horizontal.png"));
+            BufferedImage img_paddle_hor = scale(img2, 100, 30);
+            BufferedImage img3 = ImageIO.read(new File("res/paddle_horizontal.png"));
+            BufferedImage img_paddle_ver = scale(img3, 30, 100);
             g2.drawImage(img, 0, 0, this);
+            g2.drawImage(img_paddle_hor, 250, 0, this);
+            g2.drawImage(img_paddle_ver, 0, 250, this);
+            g2.drawImage(img_paddle_hor, 250, 570, this);
+            g2.drawImage(img_paddle_ver, 570, 250, this);
             g2.finalize();
         }catch(IOException e){
             System.out.println(e.getMessage());
@@ -164,14 +172,14 @@ public class ImageButton extends JPanel implements ActionListener{
         setBackground(Color.BLACK);
         graphics.setColor(Color.WHITE);
         
-        graphics.setColor(Color.RED);
+        /*graphics.setColor(Color.RED);
         graphics.fillRoundRect(0, 250, 30, 100, 5, 5);
         graphics.setColor(Color.BLUE);
         graphics.fillRoundRect(250, 0, 100, 30, 5, 5);
         graphics.setColor(Color.GREEN);
         graphics.fillRoundRect(570, 250, 30, 100, 5, 5);
         graphics.setColor(Color.PINK);
-        graphics.fillRoundRect(250, 570, 100, 30, 5, 5);
+        graphics.fillRoundRect(250, 570, 100, 30, 5, 5);*/
     }
     
     public String getIP(){
