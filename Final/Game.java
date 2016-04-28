@@ -154,7 +154,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	        		//graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
                     try{
                         BufferedImage img3 = ImageIO.read(new File("paddle_horizontal.png"));
-                        BufferedImage img_paddle = scale(img3,  (int) (pl.paddle.length), (int) padWidth);
+                        BufferedImage img_paddle = scale(img3,  (int) pl.paddle.length, (int) padWidth);
                         g2.drawImage(img_paddle, (int) (pl.paddle.xc - pl.paddle.length/2), (int) (pl.paddle.yc-padWidth/2), this);
                         g2.finalize();
                     }catch(IOException e){
