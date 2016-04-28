@@ -72,16 +72,18 @@ public class Receiver implements Runnable{
 				String[] splitted = str.split("_");
 				if(splitted[0].equals("playerNo") && nm.isServer)
 				{
-					String sender = "";
-					for(int i=0;i<nm.listOfSenders.size();i++)
+					String sender = "success_";
+					int i;
+					for(i=0;i<pm.listOfSenders.size();i++)
 					{
-						sender = sender+nm.listOfIps+"_";
-						if(!nm.listOfSenders.get(i).highPrioritySend(str,500))
+						sender = sender+pm.listOfIps+"_";
+						Sender curr = pm.listOfSenders.get(i);
+						if(!curr.highPrioritySend(str,500)[0].equals("success"))
 							break;
 					}
-					if(i==nm.listOfSenders.size())
+					if(i==pm.listOfSenders.size())
 					{
-						byte[] toSend = new bytes[2048];
+						byte[] toSend = new byte[2048];
 						toSend = sender.getBytes();
 						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
 						try{
@@ -97,8 +99,8 @@ public class Receiver implements Runnable{
 					String ip = receivePacket.getAddress().toString();
 					pm.listOfIps.add(ip);
 					pm.listOfSenders.add(new Sender(ip));
-					byte[] toSend = new bytes[2048];
-					String sender2="success";
+					byte[] toSend = new byte[2048];
+					String sender2="success_";
 					toSend = sender2.getBytes();
 					DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
 						try{
