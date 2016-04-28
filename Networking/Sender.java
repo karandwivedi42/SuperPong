@@ -51,7 +51,7 @@ public class Sender implements Runnable{
 		}
 		else
 		{
-			
+			System.out.println("this.IP "+this.IP);
 			DatagramSocket senderSocket = null;
 			try{
 				senderSocket = new DatagramSocket();
@@ -93,6 +93,7 @@ public class Sender implements Runnable{
 			{
 			byte[] receiveData = new byte[2048];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
+			System.out.println("receiveData "+receiveData);
 			try{
 				serverSocket.receive(receivePacket);
 				if(receivePacket.getData().equals("success"))
