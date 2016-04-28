@@ -7,7 +7,7 @@ public class Sender implements Runnable{
 
 	int Port = 20000;
 	public String IP;
-	public String message;
+	public String msge;
 	
 	public Sender(String IP)
 	{
@@ -40,7 +40,7 @@ public class Sender implements Runnable{
 			}
 
 			byte[] sendData = new byte[2048];
-			sendData = message.getBytes();
+			sendData = msg.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
 			try{
 				senderSocket.send(sendPacket);
@@ -71,7 +71,7 @@ public class Sender implements Runnable{
 			}
 
 			byte[] sendData = new byte[2048];
-			sendData = message.getBytes();
+			sendData = msg.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
 			try{
 				senderSocket.send(sendPacket);
@@ -178,7 +178,7 @@ public class Sender implements Runnable{
 			}
 
 			byte[] sendData = new byte[2048];
-			sendData = message.getBytes();
+			sendData = this.msge.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
 			try{
 				senderSocket.send(sendPacket);
