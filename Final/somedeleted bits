@@ -1,3 +1,4 @@
+
  // This game is the gamemanager object stored in the class
 		Board b = new Board(600, 600, new Color(0, 0, 0), new Color(255, 255, 255));
 		

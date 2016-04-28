@@ -1,3 +1,20 @@
+/*
+
+TYAGI:
+
+Usage 1:
+
+nm.createGame(me);
+
+
+Usage 2:
+
+Player me = new Player(nm.getMachineAddress(),nm.getMachineAddress(),side,p,w3);
+String status = nm.requestGameJoin(me);
+if(status) loadGame();
+
+*/
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -147,7 +164,9 @@ public class ImageButton extends JPanel implements ActionListener{
     
     
     public void loadGame(){
-        new Game(nm).setVisible(true);
+      //  new Game(nm).setVisible(true);
+      System.out.println("Game Loaded!!");
+      System.out.println("Tyagi this is where game loads and nm is passed as parameter expecting that nm stores an object that has all the data of the game.. yahaan check kar ki jo nm object hai usme jo gamestate hai us gamestate mein kitna players hain aur kitne pucks. Ideally nm ke gamestate me 1 player hona chahiye when server loads game and 2 players when client loads game. Cool?")
     }
     
     public void paintComponent(Graphics graphics){
