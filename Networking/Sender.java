@@ -3,20 +3,143 @@ import java.net.*;
 import java.util.*;
 import java.lang.*;
 
-public class Sender implements Runnable{
+public class Sender{
 
 	int Port = 20000;
 	public String IP;
 	public String msge;
+	DatagramSocket senderSocket;
 	
 	public Sender(String IP)
 	{
 		this.IP = IP;
+		
+		senderSocket = null;
+		try{
+			senderSocket = new DatagramSocket();
+		}
+		catch(SocketException e){
+			System.out.println(e.toString());
+			return;	
+		}
 	}	
-	// public Sender(String ip)
-	// {	
-	// 	this.IP = ip;
-	// }
+	public void normalSend(String message)
+	{
+		if(senderSocket == null)
+		{
+			try{
+				senderSocket = new DatagramSocket();
+			}
+			catch(SocketException e){
+				System.out.println(e.toString());
+				return ;	
+			}
+		}
+		
+		InetAddress IPAddress = null;
+		try{
+			IPAddress = InetAddress.getByName(IP);
+		}
+		catch(UnknownHostException e){
+			System.out.println("Unnable to find host");
+			return;
+		}
+		
+		byte[] sendData = new byte[2048];
+		sendData = message.getBytes();
+		DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
+		try{
+			senderSocket.send(sendPacket);
+		}
+		catch(IOException e){
+			System.out.println(e.toString()+"\nUnnable to send");
+		}
+	}
+
+	public String[] highPrioritySend(String message,int timeout)
+	{
+		if(senderSocket == null)
+		{
+			try{
+				senderSocket = new DatagramSocket();
+			}
+			catch(SocketException e){
+				System.out.println(e.toString());
+				return null;	
+			}
+		}
+		System.out.println("this.IP "+this.IP);
+		
+		InetAddress IPAddress = null;
+		try{
+			IPAddress = InetAddress.getByName(IP);
+		}
+		catch(UnknownHostException e){
+			System.out.println("Unnable to find host");
+			return null;
+		}
+
+		byte[] sendData = new byte[2048];
+		sendData = message.getBytes();
+		DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
+		try{
+			senderSocket.send(sendPacket);
+		}
+		catch(IOException e){
+			System.out.println(e.toString()+"\nUnnable to send");
+		}
+
+		long starttime = System.currentTimeMillis();
+		while(true && (System.currentTimeMillis()-starttime)<=timeout)
+		{
+			System.out.println(System.currentTimeMillis()-starttime);
+			byte[] receiveData = new byte[2048];
+			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
+			try{
+				senderSocket.receive(receivePacket);
+				String received = new String(receivePacket.getData());
+				System.out.println(System.currentTimeMillis()-starttime);
+				
+				System.out.println("receiveData "+received);
+				String[] processed = received.split("_"); 
+				if(processed[0].equals("success"))
+				{
+					return processed;
+				}
+				
+			}
+			catch(IOException e){
+				System.out.println(e.toString()+"\nUnnable to receive");
+				
+				
+			}
+		}
+		
+		senderSocket = null;
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void sendMessage(String msg,boolean isForAddition,MyObj m,int port)
 	{
 		if(!isForAddition)
@@ -144,59 +267,6 @@ public class Sender implements Runnable{
 
     	return requiredIp;
     }
-
-
-    private volatile boolean isRunning;
-	@Override
-	public void run(){
-
-			DatagramSocket senderSocket = null;
-			try{
-				senderSocket = new DatagramSocket();
-			}
-			catch(SocketException e){
-				System.out.println(e.toString());
-				return;	
-			}
-
-			// String ip = getMachineAddress();
-			// if(ip.equals("localhost"))
-			// 	System.out.println("Connecting to localhost");
-
-			// InetAddress IPAddress = null;
-			// try{
-			// 	IPAddress = InetAddress.getByName(getMachineAddress());
-			// }
-			// catch(UnknownHostException e){
-			// 	System.out.println("Unnable to find host");
-			// 	return;
-			// }
-
-			InetAddress IPAddress = null;
-			try{
-				IPAddress = InetAddress.getByName(IP);
-			}
-			catch(UnknownHostException e){
-				System.out.println("Unnable to find host");
-				return;
-			}
-
-			byte[] sendData = new byte[2048];
-			sendData = this.msge.getBytes();
-			DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
-			try{
-				senderSocket.send(sendPacket);
-			}
-			catch(IOException e){
-				System.out.println(e.toString()+"\nUnnable to send");
-			}
-		
-	}
-
-	public void terminate()
-	{
-		isRunning = false;
-	}
 
 
 

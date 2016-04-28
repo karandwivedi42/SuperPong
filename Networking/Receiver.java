@@ -9,17 +9,16 @@ public class Receiver implements Runnable{
 	boolean isRunning;
 	HashMap<String,String>  currString;
 	NetworkManager nm;
+	ArrayList<String> update;
+	DatagramSocket serverSocket;
+	PlayerNetworkManager pm ;
+
 	public Receiver(NetworkManager nm)
 	{
 		currString = new HashMap<String,String>();
+		update = new ArrayList<String>();
 		this.nm = nm;
-	}
-	@Override
-	public void run() {
-		//System.out.println("Receiver thread is running...");
-		isRunning = true;
-		//Port no has been chosen as 20000
-		DatagramSocket serverSocket = null;
+		serverSocket = null;
 		try{
 			serverSocket = new DatagramSocket(Port);
 		}
@@ -27,6 +26,41 @@ public class Receiver implements Runnable{
 			System.out.println(e.toString());
 			return;
 		}
+	}
+
+	public Receiver(PlayerNetworkManager pm)
+	{
+		currString = new HashMap<String,String>();
+		update = new ArrayList<String>();
+		this.pm = pm;
+		serverSocket = null;
+		try{
+			serverSocket = new DatagramSocket(Port);
+		}
+		catch(SocketException e){
+			System.out.println(e.toString());
+			return;
+		}	
+	}
+	public Receiver()
+	{
+		currString = new HashMap<String,String>();
+		update = new ArrayList<String>();
+		serverSocket = null;
+		try{
+			serverSocket = new DatagramSocket(Port);
+		}
+		catch(SocketException e){
+			System.out.println(e.toString());
+			return;
+		}
+	}
+	@Override
+	public void run() {
+		//System.out.println("Receiver thread is running...");
+		isRunning = true;
+		//Port no has been chosen as 20000
+		
 
 		while(isRunning)
 		{
@@ -34,14 +68,46 @@ public class Receiver implements Runnable{
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
 			try{
 				serverSocket.receive(receivePacket);
-				String receivedString = new String(receivePacket.getData());
-				String[] arr = receivedString.split("_");
-				if(arr[0].equals("playerno"))
+				String str = new String(receivePacket.getData());
+				String[] splitted = str.split("_");
+				if(splitted[0].equals("playerNo") && nm.isServer)
 				{
-					playerAdded(arr,receivePacket.getAddress(),receivedString);
+					String sender = "";
+					for(int i=0;i<nm.listOfSenders.size();i++)
+					{
+						sender = sender+nm.listOfIps+"_";
+						if(!nm.listOfSenders.get(i).highPrioritySend(str,500))
+							break;
+					}
+					if(i==nm.listOfSenders.size())
+					{
+						byte[] toSend = new bytes[2048];
+						toSend = sender.getBytes();
+						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
+						try{
+							serverSocket.send(sendPacket);
+						}
+						catch(IOException e){
+							System.out.println(e.toString()+"\nUnnable to send");
+						}		
+					}
 				}
-				else
-					{handlePacket(receivePacket);}
+				else if(splitted[0].equals("playerNo") && !nm.isServer)
+				{
+					String ip = receivePacket.getAddress().toString();
+					pm.listOfIps.add(ip);
+					pm.listOfSenders.add(new Sender(ip));
+					byte[] toSend = new bytes[2048];
+					String sender2="success";
+					toSend = sender2.getBytes();
+					DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
+						try{
+							serverSocket.send(sendPacket);
+						}
+						catch(IOException e){
+							System.out.println(e.toString()+"\nUnnable to send");
+						}
+				}
 			}
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to receive");
@@ -52,7 +118,7 @@ public class Receiver implements Runnable{
     }
 	
 	public void playerAdded(String[] arr,InetAddress ip,String ms)
-	{	
+	{	System.out.println("adding player");
 		String playerno = arr[1];
 		String playerPos = arr[3];
 		nm.ips.add(ip.toString());
@@ -67,13 +133,13 @@ public class Receiver implements Runnable{
 				curr.sendMessage(ms,true, m,20001);
 				if(!m.myParam)
 				{
-					System.out.println("refused from "+getMachineAddress());
+					System.out.println("refused from " + getMachineAddress());
 					break;
 				}
 			}
 			
 			Sender s = new Sender(ip.toString());
-			s.sendMessage("success",false,null,0);
+			s.sendMessage("success",false,null,20001);
 		}
 		else
 		{
