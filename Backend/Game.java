@@ -55,7 +55,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 		game.addBoard(b);
 		
 		me = new Player("KARAN","my ip" ,"TOP",new Paddle(150,"HORIZONTAL",300,4,Color.decode("#FFA000")),w1);	
-		
 		p2 = new Player("AKSHIT","" ,"LEFT",new Paddle(150,"VERTICAL",4,300,Color.decode("#FFA000")),w2);
 		p3 = new Player("RISHABH","" ,"RIGHT",new Paddle(150,"VERTICAL",596,300,Color.decode("#FFA000")),w4);
 		p1 = new Player("BOT","" ,"BOTTOM",new Paddle(150,"HORIZONTAL",300,596,Color.decode("#FFA000")),w3);

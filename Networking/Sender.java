@@ -1,3 +1,8 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import java.lang.*;
+
 public class Sender implements Runnable{
 
 	int Port = 20000;
@@ -12,9 +17,11 @@ public class Sender implements Runnable{
 	// {	
 	// 	this.IP = ip;
 	// }
-	public void sendMessage(String msg)
+	public void sendMessage(String msg,boolean isForAddition,MyObj m)
 	{
-		DatagramSocket senderSocket = null;
+		if(!isForAddition)
+		{
+			DatagramSocket senderSocket = null;
 			try{
 				senderSocket = new DatagramSocket();
 			}
@@ -40,7 +47,67 @@ public class Sender implements Runnable{
 			}
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to send");
-			}		
+			}
+		}
+		else
+		{
+			
+			DatagramSocket senderSocket = null;
+			try{
+				senderSocket = new DatagramSocket();
+			}
+			catch(SocketException e){
+				System.out.println(e.toString());
+				return;	
+			}
+
+			InetAddress IPAddress = null;
+			try{
+				IPAddress = InetAddress.getByName(IP);
+			}
+			catch(UnknownHostException e){
+				System.out.println("Unnable to find host");
+				return;
+			}
+
+			byte[] sendData = new byte[2048];
+			sendData = message.getBytes();
+			DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
+			try{
+				senderSocket.send(sendPacket);
+			}
+			catch(IOException e){
+				System.out.println(e.toString()+"\nUnnable to send");
+			}
+
+			DatagramSocket serverSocket = null;
+			try {
+				serverSocket = new DatagramSocket(20000);
+			} catch (SocketException e1) {
+				// TODO Auto-generated catch block
+				System.out.println(e1.toString());
+			}
+			
+			long starttime = System.currentTimeMillis();
+			while(true && (System.currentTimeMillis()-starttime)<=1000)
+			{
+			byte[] receiveData = new byte[2048];
+			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
+			try{
+				serverSocket.receive(receivePacket);
+				if(receivePacket.getData().equals("success"))
+				{
+					m.myParam = true;
+					return;
+				}
+			}
+			catch(IOException e){
+				System.out.println(e.toString()+"\nUnnable to receive");
+			}
+		m.myParam = false;
+		return;
+			}	
+		}
 	}
 
 

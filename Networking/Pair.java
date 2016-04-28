@@ -1,4 +1,4 @@
 public class Pair{
-	String param1;
-	String param2;
+	public String param1;
+	public String param2;
 }
