@@ -17,7 +17,7 @@ public class Sender implements Runnable{
 	// {	
 	// 	this.IP = ip;
 	// }
-	public void sendMessage(String msg,boolean isForAddition,MyObj m)
+	public void sendMessage(String msg,boolean isForAddition,MyObj m,int port)
 	{
 		if(!isForAddition)
 		{
@@ -82,7 +82,7 @@ public class Sender implements Runnable{
 
 			DatagramSocket serverSocket = null;
 			try {
-				serverSocket = new DatagramSocket(20000);
+				serverSocket = new DatagramSocket(port);
 			
 			
 			long starttime = System.currentTimeMillis();
@@ -109,7 +109,7 @@ public class Sender implements Runnable{
 			}
 			catch(SocketException e)
 			{
-				System.out.println("BOOB\n"+e.toString());
+				System.out.println("BOOB\n"+e.toString()+"/nMaakichu");
 			}
 		}
 	}
