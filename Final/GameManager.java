@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.applet.AudioClip;
 import java.lang.*;
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.*;
+import javax.swing.JApplet;
 
 
-public class GameManager {
+public class GameManager extends JApplet{
 	
 	NetworkManager nm ;
     AudioClip bounce;
@@ -30,13 +32,18 @@ public class GameManager {
 	public GameManager(NetworkManager n){
 		players = new ArrayList<>();
 		nm = n;
-        bounce = JApplet.newAudioClip(getClass().getResource("0614.aiff"));
-        crash = JApplet.newAudioClip(getClass().getResource("0342.aiff"));
+        bounce = JApplet.newAudioClip(getClass().getResource("res/0614.aiff"));
+        crash = JApplet.newAudioClip(getClass().getResource("res/0342.aiff"));
 	}
 
 	public void addPlayer(Player p) { // FUTURE: Ensure name uniqueness
 		players.add(p);
 	}
+    
+    public void init()
+    {
+        
+    }
 
 	public void addBoard(Board b) {
 		board = b;

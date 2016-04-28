@@ -91,6 +91,8 @@ public class ImageButton extends JPanel implements ActionListener{
         try{
             BufferedImage img1 = ImageIO.read(new File("nebula_brown.png"));
             BufferedImage img = scale(img1, 600, 600);
+            BufferedImage img2 = ImageIO.read(new File("paddle.png"));
+            BufferedImage img_paddle = scale(img2, 100, 30);
             g2.drawImage(img, 0, 0, this);
             g2.finalize();
         }catch(IOException e){
