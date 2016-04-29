@@ -102,7 +102,7 @@ class Test{
 //		}
 		
 		PlayerNetworkManager pm = new PlayerNetworkManager();
-		Receiver r = new Receiver();
+		Receiver r = new Receiver(pm);
 		Thread th = new Thread(r);
 		th.start();
 		System.out.println("Enter y if wannabe server");

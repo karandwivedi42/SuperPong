@@ -4,7 +4,7 @@ import java.util.*;
 import java.lang.*;
 
 public class Receiver implements Runnable{
-	
+
 	int Port = 20000;
 	boolean isRunning;
 	HashMap<String,String>  currString;
@@ -40,7 +40,7 @@ public class Receiver implements Runnable{
 		catch(SocketException e){
 			System.out.println(e.toString());
 			return;
-		}	
+		}
 	}
 	public Receiver()
 	{
@@ -60,7 +60,7 @@ public class Receiver implements Runnable{
 		//System.out.println("Receiver thread is running...");
 		isRunning = true;
 		//Port no has been chosen as 20000
-		
+
 
 		while(isRunning)
 		{
@@ -72,7 +72,7 @@ public class Receiver implements Runnable{
 				String[] splitted = str.split("_");
 				if(splitted.length!=0)
 				{
-					
+
 					if(splitted[0].equals("playerNo") && pm.isServer)
 					{
 						String sender = "success_";
@@ -94,10 +94,10 @@ public class Receiver implements Runnable{
 							}
 							catch(IOException e){
 								System.out.println(e.toString()+"\nUnnable to send");
-							}		
+							}
 						}
 					}
-					
+
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
 					{
 						String ip = receivePacket.getAddress().toString();
@@ -123,7 +123,7 @@ public class Receiver implements Runnable{
 			System.out.println("Received: " + receivedString + " From: " + receivePacket.getAddress());
 		}
     }
-	
+
 	public void playerAdded(String[] arr,InetAddress ip,String ms)
 	{	System.out.println("adding player");
 		String playerno = arr[1];
@@ -144,7 +144,7 @@ public class Receiver implements Runnable{
 					break;
 				}
 			}
-			
+
 			Sender s = new Sender(ip.toString());
 			s.sendMessage("success",false,null,20001);
 		}
@@ -153,13 +153,13 @@ public class Receiver implements Runnable{
 			Sender s = new Sender(ip.toString());
 			s.sendMessage("success", false, null,0);
 		}
-		
-		
+
+
 	}
-	
+
 	public static String getMachineAddress() throws RuntimeException
 	{
-		
+
 		String requiredIp = "localhost";
 		String ip;
     	try {
@@ -186,13 +186,13 @@ public class Receiver implements Runnable{
     	return requiredIp;
     }
 
-	
+
     public void terminate()
     {
     	isRunning = false;
     }
 
-	
+
 	public void handlePacket(DatagramPacket receivePacket)
 	{
 		if(receivePacket==null)
@@ -200,12 +200,12 @@ public class Receiver implements Runnable{
 
 		String receivedString = new String(receivePacket.getData());
 		String[] splitted = receivedString.split("_");
-		
+
 		if(splitted[0]=="playerno" && splitted.length == 4)
 		{
 			String playerNo = splitted[1];
 			String playerPos = splitted[3];
-			
+
 		}
 
 		if(splitted.length==2)
@@ -214,6 +214,6 @@ public class Receiver implements Runnable{
 
 	public String getValue(String str)
 	{
-		return currString.get(str);		
-	}	
+		return currString.get(str);
+	}
 }
