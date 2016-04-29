@@ -11,8 +11,8 @@ import javax.swing.JApplet;
 public class GameManager extends JApplet{
 	
 	NetworkManager nm ;
-        AudioClip bounce;
-        AudioClip crash;
+    AudioClip bounce;
+    AudioClip crash;
 
 	private static final double v_factor = 0.2;
 	private static final double v_offset = 0.4;
@@ -298,4 +298,3 @@ public class GameManager extends JApplet{
 
 	}
 
-}
