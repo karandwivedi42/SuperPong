@@ -8,12 +8,11 @@ import java.applet.AudioClip;
 import javax.imageio.ImageIO;
 import java.lang.*;
 
-public class ImageButton extends JPanel{
+public class Welcome extends JPanel{
 
     static PlayerNetworkManager nm; // nm stores a GameManager inside it.
-
     
-    
+    GameState gamestate;
     
     JRadioButton button;
     JRadioButton button1;
@@ -25,11 +24,9 @@ public class ImageButton extends JPanel{
     JButton b1;
     JTextField textArea;
     JTextField textArea1;
-    ImageButton(){
+    Welcome(){
         
     nm = new PlayerNetworkManager();
-    
-    
     
     button = new JRadioButton("Red");
     button1 = new JRadioButton("Blue");
@@ -53,11 +50,9 @@ public class ImageButton extends JPanel{
     b.addActionListener(new ActionListener() {
         
             public void actionPerformed(ActionEvent e) {
-                System.out.print("sadfsa");
 
-                nm.createGame();
-                System.out.println("Create game called from gui");
-/*
+
+                
                 String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -78,14 +73,17 @@ public class ImageButton extends JPanel{
                 }
 
                 if (side == "NONE"){
-                    //JOptionPane.showMessageDialog(this, "Please choose a side.");
+                    System.out.println("Please choose a side.");
                 }
                 else{
-                    //Player name is his IP
-                //    Player me = new Player("DUMMY NAME","dummy ip",side,p,w3);
 
-                    
-                }*/
+                Player me = new Player("DUMMY NAME","dummy ip",side,p,w3);
+                nm.createGame();
+                System.out.println("Create game called from gui");
+                gamestate = new GameState();
+                gamestate.addPlayer(me);
+                loadGame();
+                }
 
          }   
     });
@@ -93,10 +91,6 @@ public class ImageButton extends JPanel{
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-                 boolean status = nm.joinGame("10.208.20.239","3","TOP");
-                System.out.println("Join game called from gui");
-                if(status) loadGame();
-                /*
                  String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -121,11 +115,20 @@ public class ImageButton extends JPanel{
                 }
                 else{
                 //Player name is his IP
-         //       Player me = new Player("ASDFASD ","SDFASDF",side,p,w3);
-               
+                Player me = new Player("ASDFASD ","SDFASDF",side,p,w3);
+                boolean status = nm.joinGame("10.208.20.239","3","TOP");
+                if(status){
+                        System.out.println("Join game called from gui");
+                        gamestate = new GameState(me);
+                        getStateFromNM(gamestate);
+                        loadGame();
+               }
+               else{
+                        System.out.println("Error in joining game");
+               }
 
                
-            }*/
+            }
 
         }   
     });
@@ -164,9 +167,9 @@ public class ImageButton extends JPanel{
     
     
     public void loadGame(){
-      //  new Game(nm).setVisible(true);
+     
+    //  new Game(gamestate).setVisible(true);
       System.out.println("Game Loaded!!");
-      System.out.println("Tyagi this is where game loads and nm is passed as parameter expecting that nm stores an object that has all the data of the game.. yahaan check kar ki jo nm object hai usme jo gamestate hai us gamestate mein kitna players hain aur kitne pucks. Ideally nm ke gamestate me 1 player hona chahiye when server loads game and 2 players when client loads game. Cool?");
     }
     
     public void paintComponent(Graphics graphics){
@@ -206,7 +209,7 @@ public class ImageButton extends JPanel{
     }
     
     public static void main(String[] args){
-        SplashScreen splash = new SplashScreen(5000);
+        SplashScreen splash = new SplashScreen(1000);
         splash.showSplash();
         JFrame frame = new JFrame("Star Pong");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -224,6 +227,11 @@ public class ImageButton extends JPanel{
         
         Thread th = new Thread(r);
         th.start();        
+        
+    }
+    
+    public void getStateFromNM(GameState gamestate){
+        String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
         
     }
 }
