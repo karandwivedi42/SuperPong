@@ -70,51 +70,50 @@ public class Receiver implements Runnable{
 				serverSocket.receive(receivePacket);
 				String str = new String(receivePacket.getData());
 				String[] splitted = str.split("_");
-				if(splitted.length==0)
+				if(splitted.length!=0)
 				{
-					continue;
-				}
-				
-				if(splitted[0].equals("playerNo") && nm.isServer)
-				{
-					String sender = "success_";
-					int i;
-					for(i=0;i<pm.listOfSenders.size();i++)
+					
+					if(splitted[0].equals("playerNo") && nm.isServer)
 					{
-						sender = sender+pm.listOfIps+"_";
-						Sender curr = pm.listOfSenders.get(i);
-						if(!curr.highPrioritySend(str,500)[0].equals("success"))
-							break;
+						String sender = "success_";
+						int i;
+						for(i=0;i<pm.listOfSenders.size();i++)
+						{
+							sender = sender+pm.listOfIps+"_";
+							Sender curr = pm.listOfSenders.get(i);
+							if(!curr.highPrioritySend(str,500)[0].equals("success"))
+								break;
+						}
+						if(i==pm.listOfSenders.size())
+						{
+							byte[] toSend = new byte[2048];
+							toSend = sender.getBytes();
+							DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
+							try{
+								serverSocket.send(sendPacket);
+							}
+							catch(IOException e){
+								System.out.println(e.toString()+"\nUnnable to send");
+							}		
+						}
 					}
-					if(i==pm.listOfSenders.size())
+					
+					else if(splitted[0].equals("playerNo") && !nm.isServer)
 					{
+						String ip = receivePacket.getAddress().toString();
+						pm.listOfIps.add(ip);
+						pm.listOfSenders.add(new Sender(ip));
 						byte[] toSend = new byte[2048];
-						toSend = sender.getBytes();
+						String sender2="success_";
+						toSend = sender2.getBytes();
 						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
-						try{
-							serverSocket.send(sendPacket);
-						}
-						catch(IOException e){
-							System.out.println(e.toString()+"\nUnnable to send");
-						}		
+							try{
+								serverSocket.send(sendPacket);
+							}
+							catch(IOException e){
+								System.out.println(e.toString()+"\nUnnable to send");
+							}
 					}
-				}
-				
-				else if(splitted[0].equals("playerNo") && !nm.isServer)
-				{
-					String ip = receivePacket.getAddress().toString();
-					pm.listOfIps.add(ip);
-					pm.listOfSenders.add(new Sender(ip));
-					byte[] toSend = new byte[2048];
-					String sender2="success_";
-					toSend = sender2.getBytes();
-					DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
-						try{
-							serverSocket.send(sendPacket);
-						}
-						catch(IOException e){
-							System.out.println(e.toString()+"\nUnnable to send");
-						}
 				}
 			}
 			catch(IOException e){
