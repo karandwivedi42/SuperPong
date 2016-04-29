@@ -30,6 +30,7 @@ public class Welcome extends JPanel{
     JButton b1;
     JTextField textArea;
     JTextField textArea1;
+    JTextField textArea2;
 
     private static int height;
     private static int width;
@@ -51,6 +52,8 @@ public class Welcome extends JPanel{
     intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
     textArea = new JTextField("Your IP3: ");
     textArea1 = new JTextField("Enter Host IP");
+        textArea2 = new JTextField("Enter No. of Pucks");
+
 
     button.setBounds(30, height/2 - 15, 150, 30);
     button1.setBounds(width/2 - 15, 30, 150, 30);
@@ -60,6 +63,8 @@ public class Welcome extends JPanel{
     b1.setBounds(width/2 - 75, 300, 150, 30);
     textArea.setBounds(width/2 - 75, 200, 150, 20);
     textArea1.setBounds(width/2 - 75, 350, 150, 20);
+        textArea2.setBounds(width/2 - 75, 450, 150, 20);
+
         
     b.addActionListener(new ActionListener() {
         
@@ -100,9 +105,9 @@ public class Welcome extends JPanel{
                 gamestate.addPlayer(me);
                 loadGame();
                 }
-
+            */
          }   
-    });*/
+    });
         
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -162,6 +167,7 @@ public class Welcome extends JPanel{
         BG.add(button3);
         add(textArea);
         add(textArea1);
+        add(textArea2);
         add(b);
         add(b1);
         add(button);
@@ -242,7 +248,7 @@ public class Welcome extends JPanel{
         frame.setUndecorated(true);
         frame.setLayout(new BorderLayout());
         
-        ImageButton game = new ImageButton(700, 700);
+        Welcome game = new Welcome(700, 700);
         frame.add(game, BorderLayout.CENTER);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(width, height);
@@ -258,7 +264,7 @@ public class Welcome extends JPanel{
     }
     
     public void getStateFromNM(GameState gamestate){
-        String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
+      //  String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
         
     }
 }

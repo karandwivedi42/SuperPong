@@ -13,7 +13,7 @@ public class GameState{
         board = new Board(boardDim);
         
         for(int i = 1;i<=numPucks;i++){
-            board.addPuck(new Puck("puck"+i,puckRadius));
+            addPuck(new Puck("puck"+i,puckRadius));
         }
         
         this.players = new ArrayList<>();
@@ -28,10 +28,11 @@ public class GameState{
         this.me = me;        
     }
     
-    public void getWall(String side){
+    public Wall getWall(String side){
         for (Wall w : board.walls){
             if(w.side == side) return w;
         }
+        return null;
     }
     
     public void addPuck(Puck p){
