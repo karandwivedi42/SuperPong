@@ -25,9 +25,9 @@ import java.applet.AudioClip;
 import javax.imageio.ImageIO;
 import java.lang.*;
 
-public class ImageButton extends JPanel implements ActionListener{
+public class ImageButton extends JPanel{
 
-    NetworkManager nm; // nm stores a GameManager inside it.
+    PlayerNetworkManager nm; // nm stores a GameManager inside it.
     
     JRadioButton button;
     JRadioButton button1;
@@ -41,7 +41,7 @@ public class ImageButton extends JPanel implements ActionListener{
     JTextField textArea1;
     ImageButton(){
         
-    nm = new NetworkManager();
+    nm = new PlayerNetworkManager();
     
     button = new JRadioButton("Red");
     button1 = new JRadioButton("Blue");
@@ -50,7 +50,7 @@ public class ImageButton extends JPanel implements ActionListener{
     b = new JButton("Create Game");
     b1 = new JButton("Join Game");
     intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
-    textArea = new JTextField("Your IP: "+ nm.getMachineAddress);
+    textArea = new JTextField("Your IP: ");
     textArea1 = new JTextField("Enter Host IP");
 
     button.setBounds(30, 285, 150, 30);
@@ -66,7 +66,7 @@ public class ImageButton extends JPanel implements ActionListener{
         
             public void actionPerformed(ActionEvent e) {
             
-                String side = "NONE"
+                String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
                     side = "LEFT";
@@ -86,12 +86,12 @@ public class ImageButton extends JPanel implements ActionListener{
                 }
 
                 if (side == "NONE"){
-                    JOptionPane.showMessageDialog(this, "Please choose a side.");
+                    //JOptionPane.showMessageDialog(this, "Please choose a side.");
                 }
                 else{
                     //Player name is his IP
-                    Player me = new Player(nm.getMachineAddress(),nm.getMachineAddress(),side,p,w3);
-                    nm.createGame(me);
+                //    Player me = new Player("DUMMY NAME","dummy ip",side,p,w3);
+                    nm.createGame();
                 }
          }   
     });
@@ -99,7 +99,7 @@ public class ImageButton extends JPanel implements ActionListener{
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-                 String side = "NONE"
+                 String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
                     side = "LEFT";
@@ -119,16 +119,17 @@ public class ImageButton extends JPanel implements ActionListener{
                 }
 
                 if (side == "NONE"){
-                    JOptionPane.showMessageDialog(this, "Please choose a side.");
+                    //JOptionPane.showMessageDialog(this, "Please choose a side.");
                 }
                 else{
                 //Player name is his IP
-                Player me = new Player(nm.getMachineAddress(),nm.getMachineAddress(),side,p,w3);
+         //       Player me = new Player("ASDFASD ","SDFASDF",side,p,w3);
                
-                String status = nm.requestGameJoin(me);
+                boolean status = nm.joinGame("23","3","TOP");
                 if(status) loadGame();
             }
-        });
+        }   
+    });
         
         ButtonGroup BG = new ButtonGroup();
         BG.add(button);
@@ -166,7 +167,7 @@ public class ImageButton extends JPanel implements ActionListener{
     public void loadGame(){
       //  new Game(nm).setVisible(true);
       System.out.println("Game Loaded!!");
-      System.out.println("Tyagi this is where game loads and nm is passed as parameter expecting that nm stores an object that has all the data of the game.. yahaan check kar ki jo nm object hai usme jo gamestate hai us gamestate mein kitna players hain aur kitne pucks. Ideally nm ke gamestate me 1 player hona chahiye when server loads game and 2 players when client loads game. Cool?")
+      System.out.println("Tyagi this is where game loads and nm is passed as parameter expecting that nm stores an object that has all the data of the game.. yahaan check kar ki jo nm object hai usme jo gamestate hai us gamestate mein kitna players hain aur kitne pucks. Ideally nm ke gamestate me 1 player hona chahiye when server loads game and 2 players when client loads game. Cool?");
     }
     
     public void paintComponent(Graphics graphics){
