@@ -93,6 +93,7 @@ public class Receiver implements Runnable{
 					if(splitted[0].equals("playerNo") && pm.isServer)
 					{
 						String IP = receivePacket.getAddress().toString().replace("/","");
+						System.out.println(IP);
 						String sender = "success_";
 						int i;
 						for(i=0;i<pm.listOfSenders.size();i++)
@@ -107,10 +108,10 @@ public class Receiver implements Runnable{
 							this.pm.listOfIps.add(IP);
 							Sender s = new Sender(IP);
 							this.pm.listOfSenders.add(s);
-							
+
 							pm.receivedData.put("playerNo", splitted[1]);
 							pm.receivedData.put("playerPos",splitted[3]);
-							
+
 							byte[] toSend = new byte[2048];
 							toSend = sender.getBytes();
 							DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
@@ -121,14 +122,14 @@ public class Receiver implements Runnable{
 								System.out.println(e.toString()+"\nUnnable to send");
 							}
 						}
-						
+
 					}
 
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
 					{
+						System.out.println(splitted.toString());
 						
 						String ip = splitted[4];
-						System.out.println("splitted[4] "+splitted[4]);
 						pm.listOfIps.add(ip);
 						pm.listOfSenders.add(new Sender(ip));
 						byte[] toSend = new byte[2048];
@@ -143,12 +144,12 @@ public class Receiver implements Runnable{
 							}
 
 					}
-					
+
 					else if(splitted.length==2)
 					{
 						pm.receivedData.put(splitted[0],splitted[1]);
 					}
-					
+
 					else
 					{
 						handleThePacket(receivePacket,splitted);
@@ -162,10 +163,10 @@ public class Receiver implements Runnable{
 			System.out.println("Received: " + receivedString + " From: " + receivePacket.getAddress());
 		}
     }
-	
+
 	public void handleThePacket(DatagramPacket packet,String[] splitted)
 	{
-		
+
 	}
 //	public void timeout(String ip)
 //	{
@@ -176,7 +177,7 @@ public class Receiver implements Runnable{
 //			if(ip.equals(pm.listOfSenders.get(i).IP))
 //				pm.listOfSenders.remove(i);
 //		}
-//		
+//
 //		serverSocket.send
 //	}
 	public void playerAdded(String[] arr,InetAddress ip,String ms)
