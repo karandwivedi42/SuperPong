@@ -92,20 +92,25 @@ public class Receiver implements Runnable{
 
 					if(splitted[0].equals("playerNo") && pm.isServer)
 					{
+						String IP = receivePacket.getAddress().toString().replace("/","");
 						String sender = "success_";
 						int i;
 						for(i=0;i<pm.listOfSenders.size();i++)
 						{
-							sender = sender+pm.listOfIps+"_";
+							sender = sender+pm.listOfIps.get(i)+"_";
 							Sender curr = pm.listOfSenders.get(i);
-							if(!curr.highPrioritySend(str,500)[0].equals("success"))
+							if(!curr.highPrioritySend(str+"_"+IP,500)[0].equals("success"))
 								break;
 						}
 						if(i==pm.listOfSenders.size())
 						{
+							this.pm.listOfIps.add(IP);
+							Sender s = new Sender(IP);
+							this.pm.listOfSenders.add(s);
+							
 							pm.receivedData.put("playerNo", splitted[1]);
 							pm.receivedData.put("playerPos",splitted[3]);
-
+							
 							byte[] toSend = new byte[2048];
 							toSend = sender.getBytes();
 							DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
@@ -122,16 +127,13 @@ public class Receiver implements Runnable{
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
 					{
 						
-						String ip = receivePacket.getAddress().toString();
+						String ip = splitted[4];
+						System.out.println("splitted[4] "+splitted[4]);
 						pm.listOfIps.add(ip);
 						pm.listOfSenders.add(new Sender(ip));
 						byte[] toSend = new byte[2048];
 						String sender2="success_";
 						toSend = sender2.getBytes();
-						pm.receivedData.put("playerNo", splitted[1]);
-						pm.receivedData.put("playerPos",splitted[3]);
-						System.out.println("Added user "+ip);
-
 						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
 							try{
 								serverSocket.send(sendPacket);

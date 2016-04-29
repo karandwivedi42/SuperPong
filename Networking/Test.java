@@ -140,7 +140,7 @@ class Test{
 		}
 		
 		System.out.println("Waiting");
-		String str = s.nextLine();
+		
 	}
 }
 
