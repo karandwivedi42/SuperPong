@@ -70,6 +70,23 @@ public class Receiver implements Runnable{
 				serverSocket.receive(receivePacket);
 				String str = new String(receivePacket.getData());
 				String[] splitted = str.split("_");
+				//////////////////////////////////////////////
+//				String ip = receivePacket.getAddress().toString();
+//				int time = pm.timeouts.get(ip);
+//				if(time == 0)
+//				{
+//					time = (int)System.currentTimeMillis();
+//					pm.timeouts.put(ip,time);
+//				}
+//				else
+//				{
+//					if(System.currentTimeMillis() - time>1000)
+//					{
+//						//timeout has occured
+//						timeout(ip);
+//					}
+//				}
+				//////////////////////////////////////////////
 				if(splitted.length!=0)
 				{
 
@@ -121,9 +138,14 @@ public class Receiver implements Runnable{
 							pm.receivedData.put("playerPos",splitted[3]);	
 					}
 					
-					else
+					else if(splitted.length==2)
 					{
 						pm.receivedData.put(splitted[0],splitted[1]);
+					}
+					
+					else
+					{
+						handleThePacket(receivePacket,splitted);
 					}
 				}
 			}
@@ -134,7 +156,23 @@ public class Receiver implements Runnable{
 			System.out.println("Received: " + receivedString + " From: " + receivePacket.getAddress());
 		}
     }
-
+	
+	public void handleThePacket(DatagramPacket packet,String[] splitted)
+	{
+		
+	}
+//	public void timeout(String ip)
+//	{
+//		for(int i=0;i<pm.listOfIps.size();i++)
+//		{
+//			if(ip.equals(pm.listOfIps.get(i)))
+//				pm.listOfIps.remove(i);
+//			if(ip.equals(pm.listOfSenders.get(i).IP))
+//				pm.listOfSenders.remove(i);
+//		}
+//		
+//		serverSocket.send
+//	}
 	public void playerAdded(String[] arr,InetAddress ip,String ms)
 	{	System.out.println("adding player");
 		String playerno = arr[1];

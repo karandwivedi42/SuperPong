@@ -4,9 +4,10 @@ import java.util.HashMap;
 public class PlayerNetworkManager {
 		
 	public ArrayList<String> listOfIps;
-	ArrayList<Sender> listOfSenders;
+	public ArrayList<Sender> listOfSenders;
 	boolean isServer;
 	public HashMap<String,String> receivedData;
+	public HashMap<String,Integer> timeouts;
 	
 	public PlayerNetworkManager()
 	{
@@ -14,6 +15,7 @@ public class PlayerNetworkManager {
 		listOfSenders = new ArrayList<Sender>();
 		receivedData  = new HashMap<String,String>();
 		this.isServer = false;
+		timeouts = new HashMap<String,Integer>();
 	}
 	
 	
@@ -22,11 +24,12 @@ public class PlayerNetworkManager {
 		this.isServer = true;
 	}
 		
-	public boolean joinGame(String ipToJoinTo,String playerNo,String playerPos)
+	public String joinGame(String ipToJoinTo,String playerNo,String playerPos)
 	{
 		Sender s = new Sender(ipToJoinTo);
 		this.listOfIps.add(ipToJoinTo);
 		this.listOfSenders.add(s);
+		this.timeouts.put(ipToJoinTo,0);
 		
 		String message = "playerNo_"+playerNo+"_playerPos_"+playerPos;
 		String[] list = s.highPrioritySend(message,1000);
@@ -36,12 +39,13 @@ public class PlayerNetworkManager {
 			listOfIps.add(list[i]);
 			Sender adding = new Sender(list[i]);
 			listOfSenders.add(adding);
+			timeouts.put(list[i],0);
 		}
 		
 		if(list[0].equals("success"))
-			return true;
+			return "1";
 		
-		return false;
+		return "0";
 	}
 	
 	public String getValue(String key)

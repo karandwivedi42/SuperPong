@@ -101,13 +101,24 @@ class Test{
 //			System.out.println(arr[i]);
 //		}
 		
+//		PlayerNetworkManager pm = new PlayerNetworkManager();
+//		Receiver r = new Receiver(pm);
+//		Thread th = new Thread(r);
+		
+//		String ip = "10.10.78.22";
+//		InetAddress in = InetAddress.getByName(ip);
+//		
+//		HashMap<String,Integer> hm = new HashMap<String,Integer>();
+//		hm.put(ip,1);
+//		System.out.println(hm.get(in.toString().replace("/","")));
+		
 		PlayerNetworkManager pm = new PlayerNetworkManager();
 		Receiver r = new Receiver(pm);
 		Thread th = new Thread(r);
 		th.start();
-		System.out.println("Enter y if wannabe server");
 		
 		Scanner s = new Scanner(System.in);
+		
 		String y = s.nextLine();
 		if(y.equals("y"))
 		{
@@ -115,19 +126,19 @@ class Test{
 		}
 		else
 		{
-				System.out.println("Enter Server ip");
-				String s1 = s.nextLine();
-				System.out.println(s1);
-				System.out.println("Enter playerno and side");
-				String s2 = s.nextLine();
-				System.out.println(s2);
-				String s3 = s.nextLine();
-				System.out.println(s3);
+			System.out.println("Enter Server ip");
+			String s1 = s.nextLine();
+			System.out.println(s1);
+			System.out.println("Enter side and player no");
+			String s2 = s.nextLine();
+			System.out.println(s2);
+			String s3 = s.nextLine();
+			System.out.println(s3);
 			
 			
 			System.out.println(pm.joinGame(s1,s2,s3));
-			System.out.println(pm.listOfIps.toString());
 		}
 		
 	}
 }
+

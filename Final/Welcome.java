@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.applet.AudioClip;
 import javax.imageio.ImageIO;
 import java.lang.*;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 public class Welcome extends JPanel{
 
@@ -100,9 +104,9 @@ public class Welcome extends JPanel{
                 gamestate.addPlayer(me);
                 loadGame();
                 }
-
+*/
          }   
-    });*/
+    });
         
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -242,7 +246,7 @@ public class Welcome extends JPanel{
         frame.setUndecorated(true);
         frame.setLayout(new BorderLayout());
         
-        ImageButton game = new ImageButton(700, 700);
+        Welcome game = new Welcome(700, 700);
         frame.add(game, BorderLayout.CENTER);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(width, height);
@@ -258,7 +262,37 @@ public class Welcome extends JPanel{
     }
     
     public void getStateFromNM(GameState gamestate){
-        String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
+   //     String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
         
     }
+    
+    public static String getMachineAddress() throws RuntimeException
+	{
+		
+		String requiredIp = "localhost";
+		String ip;
+    	try {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface iface = interfaces.nextElement();
+            // filters out 127.0.0.1 and inactive interfaces
+            if (iface.isLoopback() || !iface.isUp())
+                continue;
+
+            Enumeration<InetAddress> addresses = iface.getInetAddresses();
+            while(addresses.hasMoreElements()) {
+                InetAddress addr = addresses.nextElement();
+                ip = addr.getHostAddress();
+                if(ip.contains("."))
+                	requiredIp = ip;
+                System.out.println(iface.getDisplayName() + " " + ip);
+            }
+           }
+        } catch (SocketException e) {
+        throw new RuntimeException(e);
+    	}
+
+    	return requiredIp;
+    }
+
 }
