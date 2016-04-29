@@ -103,6 +103,9 @@ public class Receiver implements Runnable{
 						}
 						if(i==pm.listOfSenders.size())
 						{
+							pm.receivedData.put("playerNo", splitted[1]);
+							pm.receivedData.put("playerPos",splitted[3]);
+
 							byte[] toSend = new byte[2048];
 							toSend = sender.getBytes();
 							DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
@@ -114,8 +117,6 @@ public class Receiver implements Runnable{
 							}
 						}
 						
-						pm.receivedData.put("playerNo", splitted[1]);
-						pm.receivedData.put("playerPos",splitted[3]);
 					}
 
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
@@ -127,6 +128,10 @@ public class Receiver implements Runnable{
 						byte[] toSend = new byte[2048];
 						String sender2="success_";
 						toSend = sender2.getBytes();
+						pm.receivedData.put("playerNo", splitted[1]);
+						pm.receivedData.put("playerPos",splitted[3]);
+						System.out.println("Added user "+ip);
+
 						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
 							try{
 								serverSocket.send(sendPacket);
@@ -135,9 +140,6 @@ public class Receiver implements Runnable{
 								System.out.println(e.toString()+"\nUnnable to send");
 							}
 
-							pm.receivedData.put("playerNo", splitted[1]);
-							pm.receivedData.put("playerPos",splitted[3]);
-							System.out.println("Added user "+ip);
 					}
 					
 					else if(splitted.length==2)
