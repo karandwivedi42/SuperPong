@@ -115,17 +115,18 @@ class Test{
 		}
 		else
 		{
-			System.out.println("Enter Server ip");
-			String s1 = s.nextLine();
-			System.out.println(s1);
-			System.out.println("Enter playerno and side");
-			String s2 = s.nextLine();
-			System.out.println(s2);
-			String s3 = s.nextLine();
-			System.out.println(s3);
+				System.out.println("Enter Server ip");
+				String s1 = s.nextLine();
+				System.out.println(s1);
+				System.out.println("Enter playerno and side");
+				String s2 = s.nextLine();
+				System.out.println(s2);
+				String s3 = s.nextLine();
+				System.out.println(s3);
 			
 			
 			System.out.println(pm.joinGame(s1,s2,s3));
+			System.out.println(pm.listOfIps.toString());
 		}
 		
 	}
