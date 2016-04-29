@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class PlayerNetworkManager {
 		
-	ArrayList<String> listOfIps;
+	public ArrayList<String> listOfIps;
 	ArrayList<Sender> listOfSenders;
 	boolean isServer;
 	
@@ -28,13 +28,16 @@ public class PlayerNetworkManager {
 		String message = "playerNo_"+playerNo+"_playerPos_"+playerPos;
 		String[] list = s.highPrioritySend(message,1000);
 		
-		for(int i=0;i<list.length;i++)
+		for(int i=1;i<list.length;i++)
 		{
-			System.out.println(list[i]);
+			listOfIps.add(list[i]);
+			Sender adding = new Sender(list[i]);
+			listOfSenders.add(adding);
 		}
 		
-		if(list.length>0)
+		if(list[0].equals("success"))
 			return true;
+		
 		return false;
 	}
 }
