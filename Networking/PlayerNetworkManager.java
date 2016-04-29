@@ -43,4 +43,25 @@ public class PlayerNetworkManager {
 		
 		return false;
 	}
+	
+	public String getValue(String key)
+	{
+		try{
+			return receivedData.get(key);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Unable to fetch key: "+key);
+		}
+		
+		return "0";
+	}
+	
+	public void broadcast(String message)
+	{
+		for(int i=0;i<listOfSenders.size();i++)
+		{
+			listOfSenders.get(i).normalSend(message);
+		}
+	}
 }

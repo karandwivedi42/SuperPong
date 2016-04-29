@@ -96,6 +96,9 @@ public class Receiver implements Runnable{
 								System.out.println(e.toString()+"\nUnnable to send");
 							}
 						}
+						
+						pm.receivedData.put("playerNo", splitted[1]);
+						pm.receivedData.put("playerPos",splitted[3]);
 					}
 
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
@@ -113,6 +116,9 @@ public class Receiver implements Runnable{
 							catch(IOException e){
 								System.out.println(e.toString()+"\nUnnable to send");
 							}
+
+							pm.receivedData.put("playerNo", splitted[1]);
+							pm.receivedData.put("playerPos",splitted[3]);	
 					}
 					
 					else
