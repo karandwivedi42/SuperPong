@@ -120,6 +120,7 @@ public class Receiver implements Runnable{
 
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
 					{
+						
 						String ip = receivePacket.getAddress().toString();
 						pm.listOfIps.add(ip);
 						pm.listOfSenders.add(new Sender(ip));
@@ -135,7 +136,8 @@ public class Receiver implements Runnable{
 							}
 
 							pm.receivedData.put("playerNo", splitted[1]);
-							pm.receivedData.put("playerPos",splitted[3]);	
+							pm.receivedData.put("playerPos",splitted[3]);
+							System.out.println("Added user "+ip);
 					}
 					
 					else if(splitted.length==2)
