@@ -100,8 +100,8 @@ public class Receiver implements Runnable{
 						{
 							sender = sender+pm.listOfIps.get(i)+"_";
 							Sender curr = pm.listOfSenders.get(i);
-							if(!curr.highPrioritySend(str+"_"+IP,500)[0].equals("success"))
-								break;
+							String msg = str+"_"+IP;
+							curr.normalSend(msg);
 						}
 						if(i==pm.listOfSenders.size())
 						{
@@ -128,7 +128,7 @@ public class Receiver implements Runnable{
 					else if(splitted[0].equals("playerNo") && !pm.isServer)
 					{
 						System.out.println(splitted.toString());
-						
+						System.out.println(splitted.length);
 						String ip = splitted[4];
 						pm.listOfIps.add(ip);
 						pm.listOfSenders.add(new Sender(ip));
