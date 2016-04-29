@@ -10,7 +10,13 @@ import java.lang.*;
 
 public class Welcome extends JPanel{
 
+
+
+
+    
+
     static PlayerNetworkManager nm; // nm stores a GameManager inside it.
+
     
     GameState gamestate;
     
@@ -24,35 +30,45 @@ public class Welcome extends JPanel{
     JButton b1;
     JTextField textArea;
     JTextField textArea1;
-    Welcome(){
+
+    private static int height;
+    private static int width;
+
+    Welcome(int frameWidth, int frameHeight){
         
-    nm = new PlayerNetworkManager();
+    //nm = new PlayerNetworkManager();
     
-    button = new JRadioButton("Red");
-    button1 = new JRadioButton("Blue");
-    button2 = new JRadioButton("Green");
-    button3 = new JRadioButton("Pink");
+
+    
+        width = frameWidth;
+        height = frameHeight;
+    button = new JRadioButton("");
+    button1 = new JRadioButton("");
+    button2 = new JRadioButton("");
+    button3 = new JRadioButton("");
     b = new JButton("Create Game");
     b1 = new JButton("Join Game");
     intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
     textArea = new JTextField("Your IP3: ");
     textArea1 = new JTextField("Enter Host IP");
 
-    button.setBounds(30, 285, 150, 30);
-    button1.setBounds(285, 30, 150, 30);
-    button2.setBounds(420, 285, 150, 30);
-    button3.setBounds(285, 540, 150, 30);
-    b.setBounds(50, 140, 150, 30);
-    b1.setBounds(400, 140, 150, 30);
-    textArea.setBounds(50, 100, 150, 20);
-    textArea1.setBounds(400, 100, 150, 20);
+    button.setBounds(30, height/2 - 15, 150, 30);
+    button1.setBounds(width/2 - 15, 30, 150, 30);
+    button2.setBounds(width - 60, height/2 - 15, 30, 30);
+    button3.setBounds(width/2 - 15, height - 60, 150, 30);
+    b.setBounds(width/2 - 75, 140, 150, 30);
+    b1.setBounds(width/2 - 75, 300, 150, 30);
+    textArea.setBounds(width/2 - 75, 200, 150, 20);
+    textArea1.setBounds(width/2 - 75, 350, 150, 20);
         
     b.addActionListener(new ActionListener() {
         
             public void actionPerformed(ActionEvent e) {
 
+                //nm.createGame();
+                System.out.println("Create game called from gui");
+/*
 
-                
                 String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -86,11 +102,17 @@ public class Welcome extends JPanel{
                 }
 
          }   
-    });
+    });*/
         
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
+
+                 //boolean status = nm.joinGame("10.208.20.239","3","TOP");
+                System.out.println("Join game called from gui");
+                //if(status) loadGame();
+                /*
+
                  String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -128,7 +150,7 @@ public class Welcome extends JPanel{
                }
 
                
-            }
+            }*/
 
         }   
     });
@@ -138,7 +160,7 @@ public class Welcome extends JPanel{
         BG.add(button1);
         BG.add(button2);
         BG.add(button3);
-        //add(textArea);
+        add(textArea);
         add(textArea1);
         add(b);
         add(b1);
@@ -166,26 +188,30 @@ public class Welcome extends JPanel{
     }
     
     
+
+    
+
     public void loadGame(){
      
     //  new Game(gamestate).setVisible(true);
       System.out.println("Game Loaded!!");
     }
+
     
     public void paintComponent(Graphics graphics){
         Graphics2D g2 = (Graphics2D) graphics;
         try{
             BufferedImage img1 = ImageIO.read(new File("res/nebula_brown.png"));
-            BufferedImage img = scale(img1, 600, 600);
-            BufferedImage img2 = ImageIO.read(new File("res/paddle_horizontal.png"));
+            BufferedImage img = scale(img1, width, height);
+            BufferedImage img2 = ImageIO.read(new File("res/blue_saber_hor.png"));
             BufferedImage img_paddle_hor = scale(img2, 100, 30);
-            BufferedImage img3 = ImageIO.read(new File("res/paddle_horizontal.png"));
+            BufferedImage img3 = ImageIO.read(new File("res/red_saber_ver.png"));
             BufferedImage img_paddle_ver = scale(img3, 30, 100);
             g2.drawImage(img, 0, 0, this);
-            g2.drawImage(img_paddle_hor, 250, 0, this);
-            g2.drawImage(img_paddle_ver, 0, 250, this);
-            g2.drawImage(img_paddle_hor, 250, 570, this);
-            g2.drawImage(img_paddle_ver, 570, 250, this);
+            g2.drawImage(img_paddle_hor, width/2 - 50, 0, this);
+            g2.drawImage(img_paddle_ver, 0, height/2 - 50, this);
+            g2.drawImage(img_paddle_hor, width/2 - 50, height - 30, this);
+            g2.drawImage(img_paddle_ver, width - 30, height/2 - 50, this);
             g2.finalize();
         }catch(IOException e){
             System.out.println(e.getMessage());
@@ -213,20 +239,21 @@ public class Welcome extends JPanel{
         splash.showSplash();
         JFrame frame = new JFrame("Star Pong");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setUndecorated(true);
         frame.setLayout(new BorderLayout());
         
-        ImageButton game = new ImageButton();
+        ImageButton game = new ImageButton(700, 700);
         frame.add(game, BorderLayout.CENTER);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(600, 624);
+        frame.setSize(width, height);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
         game.intro.play();
         
-        Receiver r = new Receiver(nm);
+        /*Receiver r = new Receiver(nm);
         
         Thread th = new Thread(r);
-        th.start();        
+        th.start();*/
         
     }
     
