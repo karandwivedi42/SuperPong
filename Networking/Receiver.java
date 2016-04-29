@@ -70,6 +70,11 @@ public class Receiver implements Runnable{
 				serverSocket.receive(receivePacket);
 				String str = new String(receivePacket.getData());
 				String[] splitted = str.split("_");
+				if(splitted.length==0)
+				{
+					continue;
+				}
+				
 				if(splitted[0].equals("playerNo") && nm.isServer)
 				{
 					String sender = "success_";
@@ -94,6 +99,7 @@ public class Receiver implements Runnable{
 						}		
 					}
 				}
+				
 				else if(splitted[0].equals("playerNo") && !nm.isServer)
 				{
 					String ip = receivePacket.getAddress().toString();
