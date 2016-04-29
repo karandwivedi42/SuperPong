@@ -73,7 +73,7 @@ public class Receiver implements Runnable{
 				if(splitted.length!=0)
 				{
 					
-					if(splitted[0].equals("playerNo") && nm.isServer)
+					if(splitted[0].equals("playerNo") && pm.isServer)
 					{
 						String sender = "success_";
 						int i;
@@ -98,7 +98,7 @@ public class Receiver implements Runnable{
 						}
 					}
 					
-					else if(splitted[0].equals("playerNo") && !nm.isServer)
+					else if(splitted[0].equals("playerNo") && !pm.isServer)
 					{
 						String ip = receivePacket.getAddress().toString();
 						pm.listOfIps.add(ip);
