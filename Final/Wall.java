@@ -5,6 +5,8 @@ public class Wall {
 
     double length;
 
+    //Constructor
+    //Input : coordinates of the endpoints of the wall, side on which the wall is located
     public Wall(double xa,double ya,double xb,double yb,String side) {
         this.xa = xa;
         this.xb = xb;

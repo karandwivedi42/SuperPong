@@ -14,6 +14,8 @@ public class Player {
     Paddle paddle;
     Wall wall2protect;
     
+    //Constructor
+    //Input : User id, User's IP address, side, paddle and wall corresponding to the side
     public Player(String uid,String IP, String side, Paddle paddle, Wall wall) {
         this.UID = uid;
         this.IP = IP;
@@ -25,15 +27,18 @@ public class Player {
         this.alive = true;
     }
 
+    //Method to make an AI bot given a difficulty level
     public void makeAI(String level) {
         this.AI = true;
         this.AIlevel = level;
     }
     
+    //Method to make the player human instead of AI bot
     public void makeHuman() {
         this.AI = false;
     }
 
+    //Method handling the movements of paddles
     public void movePaddle(String direction){
 
         if(paddle.orientation == "HORIZONTAL"){
@@ -60,6 +65,7 @@ public class Player {
         }
     }
 
+    //Method handling the movements of paddles in case the player is an AI bot
     public void movePaddleAI(String direction,String level){
         double deltaAI;
         deltaAI = maindeltaAI;

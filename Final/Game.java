@@ -24,6 +24,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	
     public static int padWidth = 5;
 
+    //Constructor
+    //Input : Network manager, state of current game, receiver
     public Game(PlayerNetworkManager nm,GameState gamestate,Receiver r) {
     	
     	this.r = r;
@@ -36,6 +38,8 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         timer.start();
     }
     
+    //Function to resize image
+    //Input : image to be scaled, scaling dimensions
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
         BufferedImage scaledImage = null;
         if (imageToScale != null) {
@@ -47,11 +51,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         return scaledImage;
     }
     
+    //Default method for updating timer's events
     public void actionPerformed(ActionEvent e){
     	game.update(1);
     	repaint();
     }
     
+    //Method to draw the components on the JPanel
     public void paintComponent(Graphics graphics){
     	
     	super.paintComponent(graphics);
@@ -142,6 +148,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     
     public void keyTyped(KeyEvent e) {} //DON'T DO ANYTHING HERE
     
+    //Default method to handle events when a keyboard key is pressed
     public void keyPressed(KeyEvent e){
     	//System.out.println("FUCK");
     	if (e.getKeyCode() == KeyEvent.VK_RIGHT)
@@ -154,9 +161,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     		gamestate.me.movePaddle("DOWN");
     }
     
-    public void keyReleased(KeyEvent e){
-        //TODO : Update on key released events
-    }
+    public void keyReleased(KeyEvent e){}
     
     public static void main(String[] args){
         

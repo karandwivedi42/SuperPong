@@ -9,6 +9,8 @@ public class Board {
     
     double height,width;
 
+    //Constructor
+    //Input : dimensions of the board
     public Board(double dim) {
         
         this.height = dim;

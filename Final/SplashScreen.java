@@ -12,10 +12,16 @@ public class SplashScreen extends JWindow {
 
     private int duration;
     JLabel label;
+    
+    //Constructor
+    //Input : Duration of splash screen
     public SplashScreen(int d) {
         duration = d;
     }
     
+    
+    //Function to resize image
+    //Input : image to be scaled, scaling dimensions
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
         BufferedImage scaledImage = null;
         if (imageToScale != null) {
@@ -40,6 +46,7 @@ public class SplashScreen extends JWindow {
         int x = (screen.width-width)/2;
         int y = (screen.height-height)/2;
         setBounds(x,y,width,height);
+        // Build the splash screen
         try{
             BufferedImage image = ImageIO.read(new File("res/Pong.jpg"));
             BufferedImage image1 = scale(image, 400, 400);
@@ -48,8 +55,6 @@ public class SplashScreen extends JWindow {
         }catch(IOException e){
             System.out.println(e.getMessage());
         }
-        
-        // Build the splash screen
         
         JLabel copyrt = new JLabel
         ("Made By : Akshit Tyagi, Rishabh Kumar, Karan Dwivedi", JLabel.CENTER);

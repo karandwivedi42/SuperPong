@@ -32,6 +32,8 @@ public class Welcome extends JPanel{
     private static int height;
     private static int width;
 
+    //Constructor
+    //Input : frame width and height
     Welcome(int frameWidth, int frameHeight){
         
         nm = new PlayerNetworkManager();
@@ -177,6 +179,8 @@ public class Welcome extends JPanel{
 
     }
 
+    //Function to resize image
+    //Input : image to be scaled, scaling dimensions
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
         BufferedImage scaledImage = null;
         if (imageToScale != null) {
@@ -188,17 +192,18 @@ public class Welcome extends JPanel{
         return scaledImage;
     }
     
-    
+    //Function to get machine address
     public String getMachineAddress(){
         return "Tyagi"
     }
 
+    //function to load a new game
     public void loadGame(){
       System.out.println("GameLoading game!!");
       new Game(nm,gamestate,r).setVisible(true);
     }
 
-    
+    //Method to draw the components on the JPanel
     public void paintComponent(Graphics graphics){
         Graphics2D g2 = (Graphics2D) graphics;
         try{
@@ -231,6 +236,7 @@ public class Welcome extends JPanel{
         graphics.fillRoundRect(250, 570, 100, 30, 5, 5);*/
     }
     
+    //Method to IP addresses of player
     public String getIP(){
         return textArea.getText();
     }
@@ -257,6 +263,7 @@ public class Welcome extends JPanel{
         
     }
     
+    //Method to get the current game state from the network manager
     public void getStateFromNM(GameState gamestate){
 
        // String numPucks = Double.parseDouble(nm.getValue("NumPucks"));

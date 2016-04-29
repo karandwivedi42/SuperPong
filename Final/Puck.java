@@ -7,6 +7,8 @@ public class Puck {
     double x,y,vx,vy;
     double radius;
     
+    //Constructor method
+    //Input : puck's name, puck's radius
     public Puck(String name,double radius) {
         this.name = name;
         this.radius = radius;
