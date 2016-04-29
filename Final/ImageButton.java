@@ -65,7 +65,11 @@ public class ImageButton extends JPanel{
     b.addActionListener(new ActionListener() {
         
             public void actionPerformed(ActionEvent e) {
-            
+                System.out.print("sadfsa");
+
+                nm.createGame();
+                System.out.println("Create game called from gui");
+/*
                 String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -91,14 +95,18 @@ public class ImageButton extends JPanel{
                 else{
                     //Player name is his IP
                 //    Player me = new Player("DUMMY NAME","dummy ip",side,p,w3);
-                    nm.createGame();
-                }
+                    
+                }*/
          }   
     });
         
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
+                 boolean status = nm.joinGame("10.208.20.239","3","TOP");
+                System.out.println("Join game called from gui");
+                if(status) loadGame();
+                /*
                  String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -125,9 +133,8 @@ public class ImageButton extends JPanel{
                 //Player name is his IP
          //       Player me = new Player("ASDFASD ","SDFASDF",side,p,w3);
                
-                boolean status = nm.joinGame("23","3","TOP");
-                if(status) loadGame();
-            }
+               
+            }*/
         }   
     });
         
@@ -220,6 +227,5 @@ public class ImageButton extends JPanel{
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
         game.intro.play();
-        System.out.println(game.getIP());
     }
 }
