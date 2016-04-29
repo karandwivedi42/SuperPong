@@ -1,18 +1,21 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerNetworkManager {
 		
 	public ArrayList<String> listOfIps;
 	ArrayList<Sender> listOfSenders;
 	boolean isServer;
+	public HashMap<String,String> receivedData;
 	
 	public PlayerNetworkManager()
 	{
 		listOfIps = new ArrayList<String>();
 		listOfSenders = new ArrayList<Sender>();
-		
+		receivedData  = new HashMap<String,String>();
 		this.isServer = false;
 	}
+	
 	
 	public void createGame()
 	{

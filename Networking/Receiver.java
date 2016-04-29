@@ -114,6 +114,11 @@ public class Receiver implements Runnable{
 								System.out.println(e.toString()+"\nUnnable to send");
 							}
 					}
+					
+					else
+					{
+						pm.receivedData.put(splitted[0],splitted[1]);
+					}
 				}
 			}
 			catch(IOException e){
