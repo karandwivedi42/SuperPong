@@ -13,7 +13,7 @@ public class Pinger{
 	public PlayerNetworkManager pm;
 	ArrayList<String> update;
 	DatagramSocket serverSocket;
-	
+	String IP;
 	
 	public Pinger(PlayerNetworkManager playerNetworkManager){
 		this.pm = playerNetworkManager;
@@ -29,7 +29,6 @@ public class Pinger{
 		}
 	}
 	
-	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		
@@ -58,7 +57,7 @@ public class Pinger{
 		sendData = "ping_".getBytes();
 		DatagramPacket sendPacket = new DatagramPacket(sendData,sendData.length,IPAddress,Port);
 		try{
-			senderSocket.send(sendPacket);
+			serverSocket.send(sendPacket);
 		}
 		catch(IOException e){
 			System.out.println(e.toString()+"\nUnnable to send");

@@ -90,7 +90,8 @@ public class Sender{
 		}
 
 		long starttime = System.currentTimeMillis();
-		while(true && (System.currentTimeMillis()-starttime)<=timeout)
+		boolean isRunnable = true;
+		while(isRunnable && (System.currentTimeMillis()-starttime)<=timeout)
 		{
 			System.out.println(System.currentTimeMillis()-starttime);
 			byte[] receiveData = new byte[2048];
@@ -104,6 +105,7 @@ public class Sender{
 				String[] processed = received.split("_"); 
 				if(processed[0].equals("success"))
 				{
+					isRunnable = false;
 					return processed;
 				}
 				
