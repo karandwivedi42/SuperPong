@@ -38,7 +38,7 @@ public class Welcome extends JPanel{
 
         width = frameWidth;
         height = frameHeight;
-<<<<<<< HEAD
+
         button = new JRadioButton("");
         button1 = new JRadioButton("");
         button2 = new JRadioButton("");
@@ -117,77 +117,7 @@ public class Welcome extends JPanel{
                         side = "BOTTOM";
                         p = new Paddle(padLength,"HORIZONTAL",width/2,height-margin);
                     }
-=======
-    button = new JRadioButton("");
-    button1 = new JRadioButton("");
-    button2 = new JRadioButton("");
-    button3 = new JRadioButton("");
-    b = new JButton("Create Game");
-    b1 = new JButton("Join Game");
-    intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
-    textArea = new JTextField("Your IP3: ");
-    textArea1 = new JTextField("Enter Host IP");
-        textArea2 = new JTextField("Enter No. of Pucks");
 
-
-    button.setBounds(30, height/2 - 15, 150, 30);
-    button1.setBounds(width/2 - 15, 30, 150, 30);
-    button2.setBounds(width - 60, height/2 - 15, 30, 30);
-    button3.setBounds(width/2 - 15, height - 60, 150, 30);
-    b.setBounds(width/2 - 75, 140, 150, 30);
-    b1.setBounds(width/2 - 75, 300, 150, 30);
-    textArea.setBounds(width/2 - 75, 200, 150, 20);
-    textArea1.setBounds(width/2 - 75, 350, 150, 20);
-        textArea2.setBounds(width/2 - 75, 450, 150, 20);
-
-        
-    b.addActionListener(new ActionListener() {
-        
-            public void actionPerformed(ActionEvent e) {
-
-                //nm.createGame();
-                System.out.println("Create game called from gui");
-/*
-
-                String side = "NONE";
-                Paddle p;
-                if(button.isSelected()){
-                    side = "LEFT";
-                    p = new Paddle(150,"VERTICAL",4,300,Color.decode("#FFA000"));
-                }
-            	else if(button1.isSelected()){
-                    side = "TOP";
-                    p = new Paddle(150,"HORIZONTAL",300,596,Color.decode("#FFA000"));
-                }
-                else if(button2.isSelected()){
-                    side = "RIGHT";
-                    p = new Paddle(150,"VERTICAL",596,300,Color.decode("#FFA000"));
-                }
-                else if(button3.isSelected()){
-                    side = "BOTTOM";
-                    p = new Paddle(150,"HORIZONTAL",300,596,Color.decode("#FFA000"));
-                }
-
-                if (side == "NONE"){
-                    System.out.println("Please choose a side.");
-                }
-                else{
-
-                Player me = new Player("DUMMY NAME","dummy ip",side,p,w3);
-                nm.createGame();
-                System.out.println("Create game called from gui");
-                gamestate = new GameState();
-                gamestate.addPlayer(me);
-                loadGame();
-                }
-            */
-         }   
-    });
-        
-        b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                
->>>>>>> 5b07e5208880a33021311e2689360ef8d5dc175c
 
                     if (side == "NONE"){
                         System.out.println("Please choose a side.");
@@ -222,7 +152,7 @@ public class Welcome extends JPanel{
                    
                 }
 
-<<<<<<< HEAD
+
             }   
         });
             
@@ -244,51 +174,7 @@ public class Welcome extends JPanel{
             setVisible(true);
             JLabel choose = new JLabel("CHOOSE YOUR SIDE", JLabel.CENTER);
             add(choose, BorderLayout.NORTH);
-=======
-                if (side == "NONE"){
-                    //JOptionPane.showMessageDialog(this, "Please choose a side.");
-                }
-                else{
-                //Player name is his IP
-                Player me = new Player("ASDFASD ","SDFASDF",side,p,w3);
-                boolean status = nm.joinGame("10.208.20.239","3","TOP");
-                if(status){
-                        System.out.println("Join game called from gui");
-                        gamestate = new GameState(me);
-                        getStateFromNM(gamestate);
-                        loadGame();
-               }
-               else{
-                        System.out.println("Error in joining game");
-               }
 
-               
-            }*/
-
-        }   
-    });
-        
-        ButtonGroup BG = new ButtonGroup();
-        BG.add(button);
-        BG.add(button1);
-        BG.add(button2);
-        BG.add(button3);
-        add(textArea);
-        add(textArea1);
-        add(textArea2);
-        add(b);
-        add(b1);
-        add(button);
-        add(button1);
-        add(button2);
-        add(button3);
-        setSize(300,300);
-        setLayout(null);
-        setVisible(true);
-        JLabel choose = new JLabel
-        ("CHOOSE YOUR SIDE", JLabel.CENTER);
-        add(choose, BorderLayout.NORTH);
->>>>>>> 5b07e5208880a33021311e2689360ef8d5dc175c
     }
 
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
@@ -372,11 +258,9 @@ public class Welcome extends JPanel{
     }
     
     public void getStateFromNM(GameState gamestate){
-<<<<<<< HEAD
+
        // String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
-=======
-      //  String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
->>>>>>> 5b07e5208880a33021311e2689360ef8d5dc175c
+
         
     }
 }

@@ -27,6 +27,7 @@ public class Welcome extends JPanel{
     JButton b1;
     JLabel textArea;
     JTextField textArea1;
+    JTextField textArea2;
 
     private static int height;
     private static int width;
@@ -37,6 +38,7 @@ public class Welcome extends JPanel{
 
         width = frameWidth;
         height = frameHeight;
+
         button = new JRadioButton("");
         button1 = new JRadioButton("");
         button2 = new JRadioButton("");
@@ -116,6 +118,7 @@ public class Welcome extends JPanel{
                         p = new Paddle(padLength,"HORIZONTAL",width/2,height-margin);
                     }
 
+
                     if (side == "NONE"){
                         System.out.println("Please choose a side.");
                     }
@@ -149,6 +152,7 @@ public class Welcome extends JPanel{
                    
                 }
 
+
             }   
         });
             
@@ -170,6 +174,7 @@ public class Welcome extends JPanel{
             setVisible(true);
             JLabel choose = new JLabel("CHOOSE YOUR SIDE", JLabel.CENTER);
             add(choose, BorderLayout.NORTH);
+
     }
 
     public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
@@ -253,7 +258,9 @@ public class Welcome extends JPanel{
     }
     
     public void getStateFromNM(GameState gamestate){
+
        // String numPucks = Double.parseDouble(nm.getValue("NumPucks"));
+
         
     }
 }
