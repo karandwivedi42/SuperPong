@@ -14,31 +14,22 @@ import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
 	
-	NetworkManager nm;	
-	GameManager game;
-	Player me;
+	PlayerNetworkManager nm;
+	GameState gamestate;
+	GameUpdater gameupdater;
 	
 	Timer timer;
-	
+
 	public boolean playing;
 	
-	Player p1,p2,p3;
-	Wall w1,w2,w3,w4;
-	
-
-    //Paddle Constants
     public static int padWidth = 5;
-    //Ball Variables
 
-    
-
-    public Game(NetworkManager nm) {
+    public Game(PlayerNetworkManager nm) {
     	
-    	game = nm.getGame();
-        game.beginGame();
-	
-	setFocusable(true);
-
+    	this.nm = nm;
+    	this.gamestate = gamestate;
+        gameupdater.beginGame();
+    	setFocusable(true);
         addKeyListener(this);
         javax.swing.Timer timer = new javax.swing.Timer(1, this);
         timer.start();
@@ -153,13 +144,13 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     public void keyPressed(KeyEvent e){
     	//System.out.println("FUCK");
     	if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-    		p1.movePaddle("RIGHT");
+    		gamestate.me.movePaddle("RIGHT");
     	else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-    		p1.movePaddle("LEFT");
+    		gamestate.me.movePaddle("LEFT");
     	else if (e.getKeyCode() == KeyEvent.VK_UP)
-    		p2.movePaddle("UP");
+    		gamestate.me.movePaddle("UP");
     	else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-    		p2.movePaddle("DOWN");
+    		gamestate.me.movePaddle("DOWN");
     }
     
     public void keyReleased(KeyEvent e){
@@ -175,7 +166,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
         Game game = new Game();
         frame.add(game, BorderLayout.CENTER);
         
-        frame.setSize(600, 600);
+        frame.setSize(700, 700);
         frame.setVisible(true);
         
     }

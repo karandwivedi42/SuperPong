@@ -4,31 +4,26 @@ import java.util.ArrayList;
 
 public class Board {
 
-	ArrayList<Puck> pucks;
-	ArrayList<Wall> walls;
-	
-	double height,width;
-	
-	Color bg,lines;
+    ArrayList<Puck> pucks;
+    ArrayList<Wall> walls;
+    
+    double height,width;
 
-	public Board(double height,double width, Color bgColor,Color lineColor) {
-		
-		this.height = height;
-		this.width = width;
-		this.bg = bgColor;
-		this.lines = lineColor;
-		
-		pucks = new ArrayList<>();
-		walls = new ArrayList<>();
-	}
-	
-	public void addWall(Wall w){
-		walls.add(w);
-	}
-	
-	public void addPuck(Puck p){
-		pucks.add(p);
-	}
+    public Board(double dim) {
+        
+        this.height = dim;
+        this.width = dim;
+        
+        pucks = new ArrayList<>();
+        walls = new ArrayList<>();
+        
+        walls.add(new Wall(0,0,dim,0,"TOP"));
+        walls.add(new Wall(0,0,0,dim,"LEFT"));
+        walls.add(new Wall(0,dim,dim,dim,"BOTTOM"));
+        walls.add(new Wall(dim,0,dim,dim,"RIGHT"));
+    
+    }
+    
 
 
 }
