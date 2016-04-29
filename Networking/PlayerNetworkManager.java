@@ -1,18 +1,21 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerNetworkManager {
 		
 	public ArrayList<String> listOfIps;
 	ArrayList<Sender> listOfSenders;
 	boolean isServer;
+	public HashMap<String,String> receivedData;
 	
 	public PlayerNetworkManager()
 	{
 		listOfIps = new ArrayList<String>();
 		listOfSenders = new ArrayList<Sender>();
-		
+		receivedData  = new HashMap<String,String>();
 		this.isServer = false;
 	}
+	
 	
 	public void createGame()
 	{
@@ -39,5 +42,26 @@ public class PlayerNetworkManager {
 			return true;
 		
 		return false;
+	}
+	
+	public String getValue(String key)
+	{
+		try{
+			return receivedData.get(key);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Unable to fetch key: "+key);
+		}
+		
+		return "0";
+	}
+	
+	public void broadcast(String message)
+	{
+		for(int i=0;i<listOfSenders.size();i++)
+		{
+			listOfSenders.get(i).normalSend(message);
+		}
 	}
 }
