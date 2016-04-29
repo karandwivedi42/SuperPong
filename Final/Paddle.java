@@ -8,6 +8,8 @@ public class Paddle {
 	double xc,yc;
 
 		
+    //Constructor
+    //Input : length of paddle, orientation of paddle, coordinates of top-left corner
 	public Paddle(int len, String orient,int xc,int yc) {
 		length = len;
 		orientation = orient;
