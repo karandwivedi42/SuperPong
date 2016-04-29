@@ -1,20 +1,3 @@
-/*
-
-TYAGI:
-
-Usage 1:
-
-nm.createGame(me);
-
-
-Usage 2:
-
-Player me = new Player(nm.getMachineAddress(),nm.getMachineAddress(),side,p,w3);
-String status = nm.requestGameJoin(me);
-if(status) loadGame();
-
-*/
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -27,7 +10,10 @@ import java.lang.*;
 
 public class ImageButton extends JPanel{
 
-    PlayerNetworkManager nm; // nm stores a GameManager inside it.
+    static PlayerNetworkManager nm; // nm stores a GameManager inside it.
+
+    
+    
     
     JRadioButton button;
     JRadioButton button1;
@@ -42,6 +28,8 @@ public class ImageButton extends JPanel{
     ImageButton(){
         
     nm = new PlayerNetworkManager();
+    
+    
     
     button = new JRadioButton("Red");
     button1 = new JRadioButton("Blue");
@@ -65,7 +53,11 @@ public class ImageButton extends JPanel{
     b.addActionListener(new ActionListener() {
         
             public void actionPerformed(ActionEvent e) {
-            
+                System.out.print("sadfsa");
+
+                nm.createGame();
+                System.out.println("Create game called from gui");
+/*
                 String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -91,15 +83,20 @@ public class ImageButton extends JPanel{
                 else{
                     //Player name is his IP
                 //    Player me = new Player("DUMMY NAME","dummy ip",side,p,w3);
-                    nm.createGame();
-                    System.out.println("Create game called from gui");
-                }
+
+                    
+                }*/
+
          }   
     });
         
         b1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
+                 boolean status = nm.joinGame("10.208.20.239","3","TOP");
+                System.out.println("Join game called from gui");
+                if(status) loadGame();
+                /*
                  String side = "NONE";
                 Paddle p;
                 if(button.isSelected()){
@@ -126,10 +123,10 @@ public class ImageButton extends JPanel{
                 //Player name is his IP
          //       Player me = new Player("ASDFASD ","SDFASDF",side,p,w3);
                
-                boolean status = nm.joinGame("23","3","TOP");
-                System.out.println("Join game called from gui");
-                if(status) loadGame();
-            }
+
+               
+            }*/
+
         }   
     });
         
@@ -222,5 +219,11 @@ public class ImageButton extends JPanel{
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
         game.intro.play();
+        
+        Receiver r = new Receiver(nm);
+        
+        Thread th = new Thread(r);
+        th.start();        
+        
     }
 }
