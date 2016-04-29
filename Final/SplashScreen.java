@@ -1,20 +1,30 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.applet.AudioClip;
+import javax.imageio.ImageIO;
+import java.lang.*;
+
 
 public class SplashScreen extends JWindow {
 
     private int duration;
+    JLabel label;
     public SplashScreen(int d) {
         duration = d;
     }
     
-    static void renderSplashFrame(Graphics2D g, int frame) {
-        final String[] comps = {"foo", "bar", "baz"};
-        g.setComposite(AlphaComposite.Clear);
-        g.fillRect(120,140,200,40);
-        g.setPaintMode();
-        g.setColor(Color.BLACK);
-        g.drawString("Loading "+comps[(frame/5)%3]+"...", 120, 150);
+    public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
+        BufferedImage scaledImage = null;
+        if (imageToScale != null) {
+            scaledImage = new BufferedImage(dWidth, dHeight, imageToScale.getType());
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.drawImage(imageToScale, 0, 0, dWidth, dHeight, null);
+            graphics2D.dispose();
+        }
+        return scaledImage;
     }
 
     // A simple little method to show a title screen in the center
@@ -30,16 +40,24 @@ public class SplashScreen extends JWindow {
         int x = (screen.width-width)/2;
         int y = (screen.height-height)/2;
         setBounds(x,y,width,height);
-
+        try{
+            BufferedImage image = ImageIO.read(new File("res/Pong.jpg"));
+            BufferedImage image1 = scale(image, 400, 400);
+            ImageIcon icon = new ImageIcon(image1);
+            label = new JLabel(icon);
+        }catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        
         // Build the splash screen
-        JLabel label = new JLabel(new ImageIcon("res/Pong.jpg"));
+        
         JLabel copyrt = new JLabel
-        ("Made By, Akshit Tyagi, Rishabh Kumar, Karan Dwivedi", JLabel.CENTER);
+        ("Made By : Akshit Tyagi, Rishabh Kumar, Karan Dwivedi", JLabel.CENTER);
         copyrt.setFont(new Font("Sans-Serif", Font.BOLD, 12));
         content.add(label, BorderLayout.CENTER);
         content.add(copyrt, BorderLayout.SOUTH);
-        Color oraRed = new Color(156, 20, 20,  255);
-        content.setBorder(BorderFactory.createLineBorder(oraRed, 10));
+        Color grey = new Color(128, 128, 128,  255);
+        content.setBorder(BorderFactory.createLineBorder(grey, 10));
 
         setVisible(true);
 
@@ -48,4 +66,8 @@ public class SplashScreen extends JWindow {
         setVisible(false);
     }
 
+    public static void main(String[] args){
+        SplashScreen splash = new SplashScreen(5000);
+        splash.showSplash();
+    }
 }
