@@ -64,11 +64,13 @@ public class Receiver implements Runnable{
 
 		while(isRunning)
 		{
-			byte[] receiveData = new byte[2048];
+			byte[] receiveData = new byte[64000];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
 			try{
 				serverSocket.receive(receivePacket);
 				String str = new String(receivePacket.getData());
+				System.out.println("str "+str);
+				//String[] splitted = str.split("_");
 				String[] splitted = str.split("_");
 				//////////////////////////////////////////////
 //				String ip = receivePacket.getAddress().toString();
@@ -92,19 +94,19 @@ public class Receiver implements Runnable{
 
 					if(splitted[0].equals("playerNo") && pm.isServer)
 					{
-						String IP = receivePacket.getAddress().toString().replace("/","");
-						System.out.println(IP);
-						String sender = "success_";
+						String IP = receivePacket.getAddress().toString().replace("/1","1");
+						System.out.println("IP "+IP );
+						String sender = "success";
 						int i;
 						for(i=0;i<pm.listOfSenders.size();i++)
 						{
-							sender = sender+pm.listOfIps.get(i)+"_";
+							sender = sender+"_"+pm.listOfIps.get(i);
 							Sender curr = pm.listOfSenders.get(i);
-							String msg = str+"_"+IP;
+							String msg = str+"_new!_"+IP;
+							System.out.println("BOOB " + msg);
 							curr.normalSend(msg);
 						}
-						if(i==pm.listOfSenders.size())
-						{
+							
 							this.pm.listOfIps.add(IP);
 							Sender s = new Sender(IP);
 							this.pm.listOfSenders.add(s);
@@ -112,7 +114,7 @@ public class Receiver implements Runnable{
 							pm.receivedData.put("playerNo", splitted[1]);
 							pm.receivedData.put("playerPos",splitted[3]);
 
-							byte[] toSend = new byte[2048];
+							byte[] toSend = new byte[64000];
 							toSend = sender.getBytes();
 							DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
 							try{
@@ -121,7 +123,7 @@ public class Receiver implements Runnable{
 							catch(IOException e){
 								System.out.println(e.toString()+"\nUnnable to send");
 							}
-						}
+						
 
 					}
 
@@ -130,18 +132,19 @@ public class Receiver implements Runnable{
 						System.out.println(splitted.toString());
 						System.out.println(splitted.length);
 						String ip = splitted[4];
+						System.out.println(ip);
 						pm.listOfIps.add(ip);
 						pm.listOfSenders.add(new Sender(ip));
-						byte[] toSend = new byte[2048];
-						String sender2="success_";
-						toSend = sender2.getBytes();
-						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
-							try{
-								serverSocket.send(sendPacket);
-							}
-							catch(IOException e){
-								System.out.println(e.toString()+"\nUnnable to send");
-							}
+//						byte[] toSend = new byte[64000];
+//						String sender2="success_";
+//						toSend = sender2.getBytes();
+//						DatagramPacket sendPacket = new DatagramPacket(toSend,toSend.length,receivePacket.getAddress(),receivePacket.getPort());
+//							try{
+//								serverSocket.send(sendPacket);
+//							}
+//							catch(IOException e){
+//								System.out.println(e.toString()+"\nUnnable to send");
+//							}
 
 					}
 
