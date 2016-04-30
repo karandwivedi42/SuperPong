@@ -105,9 +105,19 @@ public class Receiver implements Runnable{
 				}
 				if(splitt[0].equals("Ack"))
 				{
+					String[] splitter = splitt[1].split("#");
+					for(int i=0;i<=splitt.length;i++)
+					{
+						System.out.println(splitt[i]);
+					}
 					String one = splitt[1];
-					String ips = splitt[3];
-					String[] ipss = ips.split("^");
+					String ips ="";
+					if(splitt.length>=4)
+						ips = splitt[3];
+					String[] ipss = new String[4];
+					if(ips.length()>0)
+						ipss = ips.split("^");
+					
 					for(int i=0;i<ipss.length;i++)
 					{
 						if(ipss[i].length()!=0)
@@ -162,14 +172,15 @@ public class Receiver implements Runnable{
 						    yc = 350;
 						}
 					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),h.gamestate.getWall(splitter[1]));
-					    h.gamestate.addPlayer(pl);
-					
+					    
+					    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					Sender s = new Sender(20000,IP);
 					h.listOfSenders.add(s);
 					h.listOfIps.add(IP);
 					//list ofIps also has to be added
-					
 					s.normalSend("Ack~" + h.sendGameStateOnJoin(splitter[0])+"~IPS~"+ips+"~PlayerNo~"+i);
+					
+					h.gamestate.addPlayer(pl);
 					}
 				}
 				else if(!h.isServer)

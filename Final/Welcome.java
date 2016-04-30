@@ -271,7 +271,11 @@ public class Welcome extends JPanel{
     }
     
     public static void main(String[] args){
-        SplashScreen splash = new SplashScreen(1000);
+    	r = new Receiver(h);
+        Thread th = new Thread(r);
+        th.start();
+        
+    	SplashScreen splash = new SplashScreen(1000);
         splash.showSplash();
         
 
@@ -286,9 +290,6 @@ public class Welcome extends JPanel{
         frame.setSize(width, height);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
-        r = new Receiver(h);
-        Thread th = new Thread(r);
-       th.start();
         game.intro.play();
         
 

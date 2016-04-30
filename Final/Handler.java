@@ -55,7 +55,7 @@ public class Handler {
 		    yc = 350;
 		}
 	    
-		Player p = new Player(2+"","10.208.20.239",side,new Paddle(150,orient,xc,yc),gamestate.getWall(side));
+		Player p = new Player(2+"","10.192.59.240",side,new Paddle(150,orient,xc,yc),gamestate.getWall(side));
 		gamestate.addMe(p);
 		
 		
@@ -167,6 +167,7 @@ public class Handler {
 			    p.vx = Double.parseDouble(splitter[4]);
 			    p.vy = Double.parseDouble(splitter[5]);
 			    gamestate.addPuck(p);
+			    System.out.println("Addig puck: "+p.x+" "+p.y);
 			}
 			else if(splitter[0].equals("PLAYER"))
 			{
@@ -181,7 +182,7 @@ public class Handler {
 			    p.alive = splitter[7] == "true";
 			    p.paddle.xc=Double.parseDouble(splitter[8]);
 			    p.paddle.yc=Double.parseDouble(splitter[9]);
-
+			    System.out.println("Addig player: "+p.UID);
 			    gamestate.addPlayer(p);
 			}
 		}
