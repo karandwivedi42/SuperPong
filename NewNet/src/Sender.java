@@ -16,6 +16,7 @@ public class Sender{
 		senderSocket = null;
 		try{
 			senderSocket = new DatagramSocket();
+			//senderSocket.setSoTimeout(2000);
 		}
 		catch(SocketException e){
 			System.out.println(e.toString());
