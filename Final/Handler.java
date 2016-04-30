@@ -27,9 +27,37 @@ public class Handler {
 	
 	public void joinGame(String serverIP,String side)
 	{
+	    gamestate = new GameState(1,700);
 		Sender s = new Sender(20000,serverIP);
 		this.listOfIps.add(serverIP);
 		this.listOfSenders.add(s);
+		
+		int xc=0,yc=0;
+		String orient="HORIZONTAL";
+		if(side == "TOP"){
+		    orient = "HORIZONTAL";
+		    xc = 350;
+		    yc = 16;
+		}
+		else if(side == "BOTTOM"){
+		    orient = "HORIZONTAL";
+		    xc = 350;
+		    yc = 684;
+		}
+		else if(side == "LEFT"){
+		    orient = "VERTICAL";
+		    xc = 16;
+		    yc = 350;
+		}
+		else if(side == "RIGHT"){
+		    orient = "VERTICAL";
+		    xc = 684;
+		    yc = 350;
+		}
+	    
+		Player p = new Player(2+"","10.208.20.239",side,new Paddle(150,orient,xc,yc),gamestate.getWall(side));
+		gamestate.addMe(p);
+		
 		
 		String message = "Hello~"+side;
 		s.normalSend(message);

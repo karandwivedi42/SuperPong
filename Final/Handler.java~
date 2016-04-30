@@ -15,7 +15,6 @@ public class Handler {
 		listOfSenders = new ArrayList<Sender>();
 		this.isServer = false;
 		acknowldge = "ok";
-		data = new HashMap<String,String>();
 	}
 	
 	
@@ -28,9 +27,37 @@ public class Handler {
 	
 	public void joinGame(String serverIP,String side)
 	{
-		Sender s = new Sender(serverIP);
+	    gamestate = new GameState(1,700);
+		Sender s = new Sender(20000,serverIP);
 		this.listOfIps.add(serverIP);
 		this.listOfSenders.add(s);
+		
+		int xc=0,yc=0;
+		String orient="HORIZONTAL";
+		if(side == "TOP"){
+		    orient = "HORIZONTAL";
+		    xc = 350;
+		    yc = 16;
+		}
+		else if(side == "BOTTOM"){
+		    orient = "HORIZONTAL";
+		    xc = 350;
+		    yc = 684;
+		}
+		else if(side == "LEFT"){
+		    orient = "VERTICAL";
+		    xc = 16;
+		    yc = 350;
+		}
+		else if(side == "RIGHT"){
+		    orient = "VERTICAL";
+		    xc = 684;
+		    yc = 350;
+		}
+	    
+		Player p = new Player(2+"","10.208.20.239",side,new Paddle(150,orient,xc,yc),gamestate.getWall(side));
+		gamestate.addMe(p);
+		
 		
 		String message = "Hello~"+side;
 		s.normalSend(message);
@@ -38,20 +65,40 @@ public class Handler {
 	
 	
 	
-	public void handleFWDData(String input)
+	public void handleFWDData(String side,String ip,String playerNo)
 	{
-		String[] newData = input.split("#");
-		for (String s : newData){
-		    String[] spl = s.split("_");
-		    data.put(spl[0],spl[1]);
+		int xc=0,yc=0;
+		String orient="HORIZONTAL";
+		if(side == "TOP"){
+		    orient = "HORIZONTAL";
+		    xc = 350;
+		    yc = 16;
 		}
+		else if(side == "BOTTOM"){
+		    orient = "HORIZONTAL";
+		    xc = 350;
+		    yc = 684;
+		}
+		else if(side == "LEFT"){
+		    orient = "VERTICAL";
+		    xc = 16;
+		    yc = 350;
+		}
+		else if(side == "RIGHT"){
+		    orient = "VERTICAL";
+		    xc = 684;
+		    yc = 350;
+		}
+	    
+		Player p = new Player(playerNo+"",ip,side,new Paddle(150,orient,xc,yc),gamestate.getWall(side));
+		gamestate.addPlayer(p);
 	}
 	
 		
-	public String getValue(String key)
-	{
-		return data.get(key);
-	}
+//	public String getValue(String key)
+//	{
+//		return data.get(key);
+//	}
 
 	/*
 	 *Ack~
@@ -79,7 +126,7 @@ public class Handler {
 		for(Player py:this.gamestate.players)
 		{
 			if(!py.side.equals(side)){
-			    String thisplayer = "PLAYER_"+p.UID+"_"+p.IP+"_"+p.score+"_"+p.side+"_"+p.AI+"_"+p.AIlevel+"_"+p.alive+"_"+p.paddle.xc+"_"+p.paddle.yc+"#";
+			    String thisplayer = "PLAYER_"+py.UID+"_"+py.IP+"_"+py.score+"_"+py.side+"_"+py.AI+"_"+py.AIlevel+"_"+py.alive+"_"+py.paddle.xc+"_"+py.paddle.yc+"#";
 			    str+=thisplayer;
 			}
 		}
@@ -87,41 +134,47 @@ public class Handler {
 
 	}
 	
-	public void populate(GameState gamestate)
-	{
-		String boo = (gamestate.me.AI?"true":"false");
-		data.put(gamestate.me.UID+"-AI",boo);
-		String uid = gamestate.me.UID;
-		data.put(uid+"-AILevel",gamestate.me.AIlevel);
-		boo = (gamestate.me.alive?"true":"false");
-
-		data.put(uid+"-isAlive",boo);
-		data.put(uid+"-ip",gamestate.me.IP);
-		data.put(uid+"-maindeltai", gamestate.me.maindeltaAI+"");
-		data.put(uid+"-side", gamestate.me.side);
-		data.put(uid+"-score",gamestate.me.score+"");
-		
-		
-	}
+//	public void populate(GameState gamestate)
+//	{
+//		String boo = (gamestate.me.AI?"true":"false");
+//		data.put(gamestate.me.UID+"-AI",boo);
+//		String uid = gamestate.me.UID;
+//		data.put(uid+"-AILevel",gamestate.me.AIlevel);
+//		boo = (gamestate.me.alive?"true":"false");
+//
+//		data.put(uid+"-isAlive",boo);
+//		data.put(uid+"-ip",gamestate.me.IP);
+//		data.put(uid+"-maindeltai", gamestate.me.maindeltaAI+"");
+//		data.put(uid+"-side", gamestate.me.side);
+//		data.put(uid+"-score",gamestate.me.score+"");
+//		
+//		
+//	}
 	
 
 	public void getGameStateOnJoin(String sendGameState,String ips,String playerNo)
 	{
-		String[] splitt = str.split("#");
+		String[] splitt = sendGameState.split("#");
 
 		for(int i=0;i<splitt.length;i++)
 		{
 			String[] splitter = splitt[i].split("_");
 			if(splitter[0].equals("PUCK"))
 			{
-			    Puck p = new Puck(splitter[1],splitter[2],splitter[3],splitter[4],splitter[5]);
-
+			    Puck p = new Puck(splitter[1],10);
+			    p.x = Double.parseDouble(splitter[2]);
+			    p.y = Double.parseDouble(splitter[3]);
+			    p.vx = Double.parseDouble(splitter[4]);
+			    p.vy = Double.parseDouble(splitter[5]);
 			    gamestate.addPuck(p);
 			}
 			else if(splitter[0].equals("PLAYER"))
 			{
 			    String orient = (splitter[4] == "TOP" || splitter[4] == "BOTTOM")?"HORIZONTAL":"VERTICAL";
-			    Player p = new Player(splitter[1],splitter[2],splitter[4],new Paddle(new Paddle(150,orient,0,0),gamestate.getWall(splitter[4]));
+			    
+			    Player p = new Player(splitter[1],splitter[2],splitter[4],new Paddle(150,orient,0,0),gamestate.getWall(splitter[4]));
+			    
+			    
 			    p.score = Integer.parseInt(splitter[3]);
 			    p.AI = (splitter[5]=="true");
 			    p.AIlevel = splitter[6];

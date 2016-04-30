@@ -15,7 +15,7 @@ import java.util.Enumeration;
 public class Welcome extends JPanel{  
 
     static Handler h;
-    Receiver r;
+    static Receiver r;
     double boardDim = 700;
     int padLength = 150;
     
@@ -51,7 +51,7 @@ public class Welcome extends JPanel{
         b = new JButton("Create Game");
         b1 = new JButton("Join Game");
         intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
-        textArea = new JLabel("Your IP:");
+        textArea = new JLabel("");
         textArea1 = new JTextField("Enter Host IP");
         textArea2 = new JTextField("Number of pucks");
         button.setBounds(30, height/2 - 15, 150, 30);
@@ -66,7 +66,7 @@ public class Welcome extends JPanel{
         Font font = new Font("Courier", Font.BOLD,20);
         textArea.setFont(font);
         textArea.setForeground(Color.WHITE);
-        textArea.setText("Your IP : " + getMachineAddress());
+        textArea.setText(getMachineAddress());
             
         b.addActionListener(new ActionListener() {
             
@@ -97,8 +97,8 @@ public class Welcome extends JPanel{
                     else{
                         gamestate = new GameState(getNumBalls(),height);
                         Player me = new Player("1",getMachineAddress(),side,p,gamestate.getWall(side));
-//                        h.createGame();
-                        gamestate.addMe(me);
+                        h.createGame(gamestate);
+                        h.gamestate.addMe(me);
                         if(me.side != "TOP"){
                             gamestate.addPlayer(new Player("AI1","AI","TOP",new Paddle(padLength,"HORIZONTAL",width/2,16),gamestate.getWall("TOP")));
                         }
@@ -156,9 +156,10 @@ public class Welcome extends JPanel{
                         System.out.println("Please choose a side.");
                     }
                     else{
-                        h.joinGame(getIP(),"TOP"); //get from gui components
+                    System.out.println(getIP());
+                        h.joinGame(getIP(),side); //get from gui components
 
-                            gamestate = h.gamestate;
+                        gamestate = h.gamestate;
                             loadGame();
                         
                        
@@ -266,7 +267,7 @@ public class Welcome extends JPanel{
     
     //Method to IP addresses of player
     public String getIP(){
-        return textArea.getText();
+        return textArea1.getText();
     }
     
     public static void main(String[] args){
@@ -285,9 +286,9 @@ public class Welcome extends JPanel{
         frame.setSize(width, height);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
-//        r = new Receiver(h);
-//        Thread th = new Thread(r);
-//        th.start();
+        r = new Receiver(h);
+        Thread th = new Thread(r);
+       th.start();
         game.intro.play();
         
 
