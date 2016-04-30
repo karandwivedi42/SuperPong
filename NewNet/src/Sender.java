@@ -1,16 +1,15 @@
 import java.io.*;
 import java.net.*;
-import java.util.*;
-import java.lang.*;
 
 public class Sender{
 
-	int Port = 20000;
+	int Port;
 	public String IP;
 	DatagramSocket senderSocket;
 	
-	public Sender(String IP)
+	public Sender(int port,String IP)
 	{
+		this.Port = port;
 		this.IP = IP;
 		
 		senderSocket = null;
@@ -23,9 +22,10 @@ public class Sender{
 			return;	
 		}
 	}	
+	
 	public void normalSend(String message)
 	{
-		System.out.println("function message " + message);
+		System.out.println("Sending message: " + message);
 		if(senderSocket == null)
 		{
 			try{
@@ -42,7 +42,7 @@ public class Sender{
 			IPAddress = InetAddress.getByName(IP);
 		}
 		catch(UnknownHostException e){
-			System.out.println("Unnable to find host");
+			System.out.println("Unable to find host");
 			return;
 		}
 		
@@ -56,5 +56,7 @@ public class Sender{
 			System.out.println(e.toString()+"\nUnnable to send");
 		}
 	}
+	
+	
 
 }

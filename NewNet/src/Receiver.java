@@ -5,12 +5,14 @@ import java.lang.*;
 
 public class Receiver implements Runnable{
 
-	int Port = 20000;
+	int Port;
 	boolean isRunning;
 	DatagramSocket serverSocket;
 	Handler h;
-		public Receiver(Handler h)
+	Pinger p;
+		public Receiver(Handler h,int port)
 		{
+			this.Port = port;
 			this.h = h;
 			serverSocket = null;
 			try{
@@ -23,6 +25,20 @@ public class Receiver implements Runnable{
 			}
 		}
 		
+		public Receiver(Pinger p,int port)
+		{
+			this.Port = port;
+			this.p = p;
+			serverSocket = null;
+			try{
+				serverSocket = new DatagramSocket(Port);
+				//serverSocket.setSoTimeout(2000);
+			}
+			catch(SocketException e){
+				System.out.println(e.toString());
+				return;
+			}
+		}
 	@Override
 	public void run() {
 		//System.out.println("Receiver thread is running...");
@@ -38,80 +54,75 @@ public class Receiver implements Runnable{
 				serverSocket.receive(receivePacket);
 				String str = "DUMMYSTR";
 				str = new String(receivePacket.getData());
+				if(str.equals("ping"))
+				{
+					String con = "confirm";
+					byte[] sendD = con.getBytes();
+					DatagramPacket senderPacket = new DatagramPacket(sendD, sendD.length,receivePacket.getAddress(),receivePacket.getPort());
+					try{
+						serverSocket.send(senderPacket);
+					}
+					catch(IOException e){
+						System.out.println(e.toString()+"\nUnnable to send");
+					}
+				}
+				
+				
+				else{
+				
+				
 				System.out.println("str "+str);
 				String IP = "DUMMYIP";
 				IP = receivePacket.getAddress().toString().replace("/1","1");
 				System.out.println("IPofSender "+IP );
-				
-				String[] splitt = str.split("~");
-				if(splitt[0].equals("Update"))
-				{
-					String[] keyValue = splitt[1].split("_");
-					String key = keyValue[0];
-					String value = keyValue[1];
-					h.data.put(key,value);
-				}
-				if(splitt[0].equals("Ack"))
-				{
-					String one = splitt[1];
-					String ips = splitt[3];
-					String[] ipss = ips.split("^");
-					for(int i=0;i<ipss.length;i++)
-					{
-						if(ipss[i].length()!=0)
-						{
-							h.listOfIps.add(ipss[i]);
-							Sender s = new Sender(ipss[i]);
-							h.listOfSenders.add(s);
-						}
-					}
-				}
+				//////////////////////////////////////////////////////////////////////////////////
 				if(h.isServer)
-				{
-					String[] splitter = str.split("~");
-					if(splitter[0].equals("Hello"))
-					{	
-						String ips ="";
-						
-						for(Sender send: h.listOfSenders)
-						{
-							send.normalSend("FWD~"+IP+"~"+splitter[1]);
+					{
+						String[] splitter = str.split("~");
+						if(splitter[0].equals("Hello"))
+						{	
+							String ips ="";
 							
-						}
+							for(Sender send: h.listOfSenders)
+							{
+								send.normalSend("FWD~"+IP+"~"+splitter[1]);
+								
+							}
+							
+							
+							for(Sender ss:h.listOfSenders)
+							{
+								ips = ips+ss.IP+"^";
+							}
 						
-						for(String ipss:h.listOfIps)
-						{
-							ips = ips+ipss+"^";
-						}
-					
-					
-					Sender s = new Sender(IP);
-					h.listOfSenders.add(s);
-					h.listOfIps.add(IP);
-					//list ofIps also has to be added
-					
-					s.normalSend("Ack~" + h.sendGameStateOnJoin()+"~IPS~"+ips);
-					}
-				}
-				else if(!h.isServer)
-				{
-					String[] splitted = str.split("~");
-					if(splitted[0].equals("FWD"))
-					{
-						String ip = splitted[1];
-						String data = splitted[2];
-						Sender s = new Sender(ip);
+						
+						Sender s = new Sender(this.Port,IP);
 						h.listOfSenders.add(s);
-						h.listOfIps.add(ip);
-						h.handleFWDData(data);
+						
+						//list ofIps also has to be added
+						
+						s.normalSend("Ack~"+"IPS~"+ips);
+						}
 					}
-					if(splitted[0].equals("Ack"))
+					else if(!h.isServer)
 					{
-						h.getGameStateOnJoin(splitted[1]);
+						String[] splitted = str.split("~");
+						if(splitted[0].equals("FWD"))
+						{
+							String ip = splitted[1];
+							String data = splitted[2];
+							Sender s = new Sender(this.Port,ip);
+							h.listOfSenders.add(s);
+							
+							//h.handleFWDData(data);
+						}
+
 					}
-				}
+
+
 					
 				
+			}
 			}
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to receive");
