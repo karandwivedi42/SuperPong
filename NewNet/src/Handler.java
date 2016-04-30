@@ -8,12 +8,15 @@ public class Handler {
 	public ArrayList<Sender> listOfSenders;
 	boolean isServer;
 	String acknowldge;
+	HashMap<String,String> data;
+	
 	public Handler()
 	{
 		listOfIps = new HashSet<String>();
 		listOfSenders = new ArrayList<Sender>();
 		this.isServer = false;
 		acknowldge = "ok";
+		data = new HashMap<String,String>();
 	}
 	
 	
@@ -29,8 +32,21 @@ public class Handler {
 		this.listOfIps.add(serverIP);
 		this.listOfSenders.add(s);
 		
-		String message = hello;
+		String message = "hello~FUCK";
 		s.normalSend(message);
 	}	
 	
+	public void handleFWDData(String input)
+	{
+		System.out.println("DATA RECEIVED IN CONNECTED PORTS TO SERVER: " + input);
+		for(String str: listOfIps)
+		{
+			System.out.println("IP:  " + str);
+		}
+	}
+	
+	public String sendGameState()
+	{
+		return "THE CURRENt GAME STATE";
+	}
 }

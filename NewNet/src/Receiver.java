@@ -35,29 +35,43 @@ public class Receiver implements Runnable{
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
 			try{
 				serverSocket.receive(receivePacket);
-				String str = new String(receivePacket.getData());
+				String str = "DUMMYSTR";
+				str = new String(receivePacket.getData());
 				System.out.println("str "+str);
-				String IP = receivePacket.getAddress().toString().replace("/1","1");
+				String IP = "DUMMYIP";
+				IP = receivePacket.getAddress().toString().replace("/1","1");
 				System.out.println("IPofSender "+IP );
 				
 				if(h.isServer)
 				{
-					
-					for(Sender send: h.listOfSenders)
+					String[] splitter = str.split("~");
+					if(splitter[0].equals("hello"))
 					{
-						send.normalSend("FORWARDING "+str);
+						for(Sender send: h.listOfSenders)
+						{
+							send.normalSend("FWD~"+IP+"~"+splitter[1]);
+						}
 					}
 					
 					Sender s = new Sender(IP);
 					h.listOfSenders.add(s);
 					h.listOfIps.add(IP);
-					s.normalSend("ack");
+					s.normalSend("ack" + h.sendGameState());
 					
 					
 				}
 				else if(!h.isServer)
 				{
-					
+					String[] splitted = str.split("~");
+					if(splitted[0].equals("FWD"))
+					{
+						String ip = splitted[1];
+						String data = splitted[2];
+						Sender s = new Sender(ip);
+						h.listOfSenders.add(s);
+						h.listOfIps.add(ip);
+						h.handleFWDData(data);
+					}
 				}
 					
 				
