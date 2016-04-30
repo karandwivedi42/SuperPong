@@ -10,7 +10,7 @@ public class Collaborate {
 		th.start();
 		Scanner s = new Scanner(System.in);
 		String str = s.nextLine();
-		if(str=="y")
+		if(str.equals("y") || str.equals("Y"))
 		{
 			h.createGame();
 		}
