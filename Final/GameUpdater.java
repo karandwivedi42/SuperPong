@@ -65,7 +65,7 @@ public class GameUpdater extends JApplet{
 				p.y = gamestate.board.height/2;
 				p.vx = (v_offset + Math.random() * v_factor )*(Math.random()*2-1);
 				p.vy = (v_offset + Math.random() * v_factor)* (Math.random()*2-1);
-				h.broadcast("Update~puckmove~"+p.UID+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
+				h.broadcast("Update~puckmove~"+p.name+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
 			}
 		}
 	//	else{
@@ -144,7 +144,7 @@ public class GameUpdater extends JApplet{
 					}
 				}
 				
-				h.braodcast("Update~movepaddle~"+p.UID+"~"+p.paddle.xc+"~"+p.paddle.yc);
+				h.broadcast("Update~movepaddle~"+p.UID+"~"+p.paddle.xc+"~"+p.paddle.yc);
 			}
 	//		else if (! p.equals(gamestate.me)){
 //				p.paddle.xc = Double.parseDouble(nm.get(p.name+"-xc"));
@@ -159,7 +159,7 @@ public class GameUpdater extends JApplet{
 		p.x+=p.vx;
 		p.y+=p.vy;	
 		
-		h.broadcast("Update~puckmove~"+p.UID+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
+		h.broadcast("Update~puckmove~"+p.name+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
 		
 //		nm.put(p.name+"-x", p.x+"");
 //		nm.put(p.name+"-y", p.y+"");
@@ -190,7 +190,7 @@ public class GameUpdater extends JApplet{
 						upScore(pl.side);
 						if(pl.score > maxScore ){
 							pl.alive = false;
-							h.braodcast("Update~alive~"+pl.name+"~false");
+							h.broadcast("Update~alive~"+pl.UID+"~false");
 							playersLeft --;
 							if (playersLeft ==1 ){
 								System.out.println("Game OVER!");
@@ -198,7 +198,7 @@ public class GameUpdater extends JApplet{
 								for(Player plw : gamestate.players){
 								    if(plw.alive){
 								        gamestate.winner = plw.side;
-							            h.braodcast("Update~winner~"+pl.side);
+							            h.broadcast("Update~winner~"+pl.side);
 							        }
 								}
 								h.broadcast("Update~gameStatus~2");
