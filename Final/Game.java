@@ -145,6 +145,9 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             	if(pl.paddle.orientation == "VERTICAL")
             		graphics.drawString(Integer.toString(pl.score),  (int) (pl.wall2protect.xa/2 + gamestate.board.width/4), (int) (pl.wall2protect.ya/2 + pl.wall2protect.yb/2));
             	else
+            		System.out.println(Integer.toString(pl.score));
+            		System.out.println((int) (pl.wall2protect.xa/2 + pl.wall2protect.xb/2));
+            		System.out.println((int)(pl.wall2protect.ya/2+gamestate.board.height/4));
             		graphics.drawString(Integer.toString(pl.score), (int) (pl.wall2protect.xa/2 + pl.wall2protect.xb/2), (int)(pl.wall2protect.ya/2+gamestate.board.height/4));
             		
             		

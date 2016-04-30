@@ -107,7 +107,7 @@ public class Receiver implements Runnable{
 				if(splitt[0].equals("Ack"))
 				{
 					String[] splitter = splitt[1].split("#");
-					for(int i=0;i<=splitt.length;i++)
+					for(int i=0;i<splitt.length;i++)
 					{
 						System.out.println(splitt[i]);
 					}
@@ -174,6 +174,7 @@ public class Receiver implements Runnable{
 						    yc = 350;
 						}
 					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),h.gamestate.getWall(splitter[1]));
+					    pl.score = 0;
 					    h.gamestate.removePlayer(pl.side);
 					    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					Sender s = new Sender(20000,IP);
