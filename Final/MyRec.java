@@ -50,6 +50,12 @@ public class Receiver implements Runnable{
 					{
 					    String playerNo = splitt[2];
 					    String move = splitt[3];
+					    for(Player p : gamestate.players){
+					        if(p.name == splitt[2]){
+					            p.paddle.xc = Double.parseDouble(splitt[3]);
+					            p.paddle.yc = Double.parseDouble(splitt[4]);
+					        }
+					    }
 					    
 					}
 					else if(splitt[1].equals("puckmove"))
@@ -70,12 +76,30 @@ public class Receiver implements Runnable{
 					    }
 					    
                     }
-                    else if(splitt[1].equals("aiplayer"))
+                    else if(splitt[1].equals("gameStatus"))
                     {
-                        String side = splitt[2];
-                        String move = splitt[3];
+                        gamestate.gameStatus = Integer.parseInt(splitt[2]);
                     }
                     
+                    else if(splitt[1].equals("alive"))
+                    {
+                        for(Player p : gamestate.players){
+                            if(p.name == splitt[2])
+                            p.alive = false;
+                        }
+                    }
+                    else if(splitt[1].equals("score"))
+                    {
+                        for(Player p : gamestate.players){
+                            if(p.name == splitt[2])
+                            p.score = Integer.parseInt(splitt[3]);
+                        }
+                    }
+                    else if(splitt[1].equals("winner"))
+                    {
+                        gamestate.winner = splitt[2];
+                    }
+                                        
                     
                     
 				}
