@@ -139,8 +139,8 @@ public class Receiver implements Runnable{
 							ips = ips+ipss+"^";
 						}
 						
-						double xc,yc;
-						String orient;
+						int xc=0,yc=0;
+						String orient="HORIZONTAL";
 						if(splitter[1] == "TOP"){
 						    orient = "HORIZONTAL";
 						    xc = 350;
@@ -182,7 +182,7 @@ public class Receiver implements Runnable{
 						Sender s = new Sender(20000,ip);
 						h.listOfSenders.add(s);
 						h.listOfIps.add(ip);
-						h.handleFWDData(data);
+						h.handleFWDData(data,ip,splitted[3]);
 					}
 					
 				}
