@@ -53,7 +53,6 @@ public class Welcome extends JPanel{
         intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
         textArea = new JLabel("Your IP:");
         textArea1 = new JTextField("Enter Host IP");
-        textArea2 = new JTextField("Number of pucks");
         button.setBounds(30, height/2 - 15, 150, 30);
         button1.setBounds(width/2 - 15, 30, 150, 30);
         button2.setBounds(width - 60, height/2 - 15, 30, 30);
@@ -62,7 +61,6 @@ public class Welcome extends JPanel{
         b1.setBounds(width/2 - 75, 300, 150, 30);
         textArea.setBounds(width/2 - 75, 200, 150, 20);
         textArea1.setBounds(width/2 - 75, 350, 150, 20);
-        textArea2.setBounds(width/2 - 75, 450, 150, 20);
             
         b.addActionListener(new ActionListener() {
             
@@ -187,7 +185,6 @@ public class Welcome extends JPanel{
             BG.add(button3);
             add(textArea);
             add(textArea1);
-            add(textArea2);
             add(b);
             add(b1);
             add(button);

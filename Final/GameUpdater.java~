@@ -8,18 +8,18 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.JApplet;
 
-public class GameManager extends JApplet{
+public class GameUpdater extends JApplet{
 	
-	PlayerNetworkManager nm;
-	Receiver r;
-	
+//	PlayerNetworkManager nm;
+//	Receiver r;
+	GameState gamestate;
     AudioClip bounce;
     AudioClip crash;
 
-	private static final double v_factor = 0.2;
-	private static final double v_offset = 0.4;
+	private static final double v_factor = 4.2;
+	private static final double v_offset = 4.7;
 	
-	int padWidth = 5;
+	int padWidth = 8;
 	int playersLeft;
 
 	private double y_factor = 0.0;
@@ -27,11 +27,19 @@ public class GameManager extends JApplet{
 	
 	private int maxScore = 5;
 	
-	public GameUpdater(PlayerNetworkManager nm, Receiver r, GameState g){
-	    this.r = r;
-        this.nm = nm;
+//	public GameUpdater(PlayerNetworkManager nm, Receiver r, GameState g){
+    public GameUpdater(GameState g){
+//	    this.r = r;
+	    gamestate = g;
+//        this.nm = nm;
         bounce = JApplet.newAudioClip(getClass().getResource("res/0614.aiff"));
         crash = JApplet.newAudioClip(getClass().getResource("res/0342.aiff"));
+        
+        System.out.print(gamestate.me.side);
+        System.out.print(gamestate.me.UID);
+        for (Player p : gamestate.players){
+            System.out.println(p.side);
+        }
 
 	}
    
@@ -41,50 +49,52 @@ public class GameManager extends JApplet{
     }
 
 	public void upScore(String side) {
-		for (Player p : players) {
-			if (p.side == side){
+		for (Player p : gamestate.players) {
+			if (p.side.equals(side)){
 				p.score++;
-				nm.put(p.name+"-score", p.score+"");
+//				nm.put(p.name+"-score", p.score+"");
 			}
 		}
 	}
 
 	public void startRound() {
-		if(nm.isServer){
-			for (Puck p : board.pucks) {
-				p.x = board.width/2;
-				p.y = board.height/2;
+//		if(nm.isServer){
+        if(true){
+			for (Puck p : gamestate.board.pucks) {
+				p.x = gamestate.board.width/2;
+				p.y = gamestate.board.height/2;
 				p.vx = (v_offset + Math.random() * v_factor )*(Math.random()*2-1);
 				p.vy = (v_offset + Math.random() * v_factor)* (Math.random()*2-1);
-				nm.put(p.name+"-x",""+p.x);
-				nm.put(p.name+"-y",""+p.y);
-				nm.put(p.name+"-vx",""+p.vx);
-				nm.put(p.name+"-vy",""+p.vy);
+//				nm.put(p.name+"-x",""+p.x);
+//				nm.put(p.name+"-y",""+p.y);
+//				nm.put(p.name+"-vx",""+p.vx);
+//				nm.put(p.name+"-vy",""+p.vy);
 			}
 		}
 		else{
-			for (Puck p : board.pucks) {
-				p.x = Double.parseDouble(nm.get(p.name+"-x"));
-				p.y = Double.parseDouble(nm.get(p.name+"-y"));
-				p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
-				p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
+			for (Puck p : gamestate.board.pucks) {
+//				p.x = Double.parseDouble(nm.get(p.name+"-x"));
+//				p.y = Double.parseDouble(nm.get(p.name+"-y"));
+//				p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
+//				p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
 			}
 		}
-		playersLeft = players.size();
+		playersLeft = gamestate.players.size();
 	}
 
 	public void beginGame() {
-	    nm.put("game-status", "GameOn");
+//	    nm.put("game-status", "GameOn");
+        gamestate.gameStatus = 1;
 		startRound();
 	}
 
 	public void movePaddles(){
 	
-		for(Player p : players){
+		for(Player p : gamestate.players){
 			if(p.AI){
-				Puck p0 = board.pucks.get(0);
+				Puck p0 = gamestate.board.pucks.get(0);
 				double minD = (p0.x - p.paddle.xc)*(p0.x - p.paddle.xc)+ (p0.y - p.paddle.yc)*(p0.y - p.paddle.yc);
-				for(Puck pu : board.pucks){
+				for(Puck pu : gamestate.board.pucks){
 					if((pu.x - p.paddle.xc)*(pu.x - p.paddle.xc)+ (pu.y - p.paddle.yc)*(pu.y - p.paddle.yc)<minD){
 						p0 = pu;
 						minD = (pu.x - p.paddle.xc)*(pu.x - p.paddle.xc)+ (pu.y - p.paddle.yc)*(pu.y - p.paddle.yc);
@@ -137,12 +147,12 @@ public class GameManager extends JApplet{
 					}
 				}
 				
-				nm.put(p.name+"-xc", p.paddle.xc+"");
-				nm.put(p.name+"-yc", p.paddle.yc+"");
+//				nm.put(p.name+"-xc", p.paddle.xc+"");
+//				nm.put(p.name+"-yc", p.paddle.yc+"");
 			}
-			else if (! p.equals(me)){
-				p.paddle.xc = Double.parseDouble(nm.get(p.name+"-xc"));
-				p.paddle.yc = Double.parseDouble(nm.get(p.name+"-yc"));
+			else if (! p.equals(gamestate.me)){
+//				p.paddle.xc = Double.parseDouble(nm.get(p.name+"-xc"));
+//				p.paddle.yc = Double.parseDouble(nm.get(p.name+"-yc"));
 			}
 
 		}
@@ -152,8 +162,8 @@ public class GameManager extends JApplet{
 		
 		p.x+=p.vx;
 		p.y+=p.vy;	
-		nm.put(p.name+"-x", p.x+"");
-		nm.put(p.name+"-y", p.y+"");
+//		nm.put(p.name+"-x", p.x+"");
+//		nm.put(p.name+"-y", p.y+"");
 	/*	if(p.x < 0)
 			p.x = p.radius + 1;
 		if(p.x > board.width)
@@ -166,8 +176,8 @@ public class GameManager extends JApplet{
 	
 	public void update(int i) {
 		
-		if(nm.isServer){
-			
+//		if(nm.isServer){
+		if(true){	
 			movePaddles();
 			
 			for (Puck p : gamestate.board.pucks) {
@@ -180,11 +190,15 @@ public class GameManager extends JApplet{
 						upScore(pl.side);
 						if(pl.score > maxScore ){
 							pl.alive = false;
-							nm.put(p.name+"-alive", p.alive+"");
+//							nm.put(p.name+"-alive", p.alive+"");
 							playersLeft --;
 							if (playersLeft ==1 ){
 								System.out.println("Game OVER!");
-								nm.put("game-status", "GameOver");
+								gamestate.gameStatus = 2;
+								for(Player pl : gamestate.players){
+								    if(pl.alive) gamestate.winner = pl.side;
+								}
+//								nm.put("game-status", "GameOver");
 							}
 						}
 					}
@@ -196,28 +210,28 @@ public class GameManager extends JApplet{
 		}
 		else{
 		    
-		    String state = nm.get("game-status");
-		    if (state == "GameOn"){
-		    
+//		    String state = nm.get("game-status");
+//		    if (state == "GameOn"){
+		    if(true){
 		        
 		        for(Player pl : gamestate.players){
-		            pl.score = Integer.parseInt(nm.get(p.name+"-score"));
-		            pl.alive = (nm.get(p.name+"-alive")=="false")?false:true;
+//		            pl.score = Integer.parseInt(nm.get(p.name+"-score"));
+//		            pl.alive = (nm.get(p.name+"-alive")=="false")?false:true;
 		            if(!pl.alive) playersLeft--;
 	            		if (playersLeft ==1 ){
 								System.out.println("Only on player left! "+pl.UID);
 						}
 		            if(pl.alive && !(pl.UID == gamestate.me.UID)){
-		                pl.paddle.xc = Double.parseDouble(nm.get(p.UID+"-xc"));
-		                pl.paddle.yc = Double.parseDouble(nm.get(p.UID+"-yc"));
+//		                pl.paddle.xc = Double.parseDouble(nm.get(p.UID+"-xc"));
+//		                pl.paddle.yc = Double.parseDouble(nm.get(p.UID+"-yc"));
 		            }
 		        }
 		        
-			    for(Puck p : board.pucks){
-				    p.x = Double.parseDouble(nm.get(p.name+"-x"));
-				    p.y = Double.parseDouble(nm.get(p.name+"-y"));
-				    p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
-				    p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
+			    for(Puck p : gamestate.board.pucks){
+//				    p.x = Double.parseDouble(nm.get(p.name+"-x"));
+//				    p.y = Double.parseDouble(nm.get(p.name+"-y"));
+//				    p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
+//				    p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
 			    }
 			
 			}
@@ -270,7 +284,7 @@ public class GameManager extends JApplet{
 		if(player.side == "LEFT"){
 			if(( p.x - player.paddle.xc - padWidth/2  <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2) && (p.vx < 0)){
 				System.out.println(p.vx);
-				p.vx = -p.vx*(1-y_factor);
+				p.vx = -p.vx;
 
                 bounce.play();
 
@@ -278,8 +292,8 @@ public class GameManager extends JApplet{
 			}
 		}
 		else if(player.side == "RIGHT"){
-			if((player.paddle.xc - padWidth/2 - p.x <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2)&& (p.vx > 0)){
-				p.vx = -p.vx*(1-y_factor);
+			if((player.paddle.xc - padWidth/2- p.x <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2)&& (p.vx > 0)){
+				p.vx = -p.vx;
 
                 bounce.play();
 
@@ -288,7 +302,7 @@ public class GameManager extends JApplet{
 		}
 		else if(player.side == "BOTTOM"){
 			if((player.paddle.yc - padWidth/2 - p.y <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)&& (p.vy > 0)){
-				p.vy = -p.vy*(1-y_factor);
+				p.vy = -p.vy;
 
                 bounce.play();
 
@@ -297,7 +311,7 @@ public class GameManager extends JApplet{
 		}
 		else if(player.side == "TOP"){
 			if((p.y - player.paddle.yc - padWidth/2 <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)&& (p.vy < 0)){
-				p.vy = -p.vy*(1-y_factor);
+				p.vy = -p.vy;
 
                 bounce.play();
 
@@ -308,4 +322,4 @@ public class GameManager extends JApplet{
 
 
 	}
-
+}
