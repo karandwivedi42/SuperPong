@@ -60,9 +60,13 @@ public class Welcome extends JPanel{
         button3.setBounds(width/2 - 15, height - 60, 150, 30);
         b.setBounds(width/2 - 75, 140, 150, 30);
         b1.setBounds(width/2 - 75, 300, 150, 30);
-        textArea.setBounds(width/2 - 75, 200, 150, 20);
+        textArea.setBounds(200, 200, 450, 20);
         textArea1.setBounds(width/2 - 75, 350, 150, 20);
         textArea2.setBounds(width/2 - 75, 450, 150, 20);
+        Font font = new Font("Courier", Font.BOLD,20);
+        textArea.setFont(font);
+        textArea.setForeground(Color.WHITE);
+        textArea.setText("Your IP : " + getMachineAddress());
             
         b.addActionListener(new ActionListener() {
             
@@ -217,7 +221,7 @@ public class Welcome extends JPanel{
     
     
     public int getNumBalls(){
-        return 1;//Integer.parseInt(textArea2.getText()); //Integer.parseInt(ballsTextField.getText())
+        return Integer.parseInt(textArea2.getText()); //Integer.parseInt(ballsTextField.getText())
     }
     
 
@@ -237,6 +241,7 @@ public class Welcome extends JPanel{
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         this.setVisible(false);
         frame.setVisible(true);
+        intro.stop();
 
     }
 

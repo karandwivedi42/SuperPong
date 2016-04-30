@@ -151,8 +151,20 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             }
         }
         else if(gamestate.gameStatus == 2){
+            Graphics2D g2 = (Graphics2D) graphics;
+            try{
+                
+                BufferedImage img1 = ImageIO.read(new File("res/nebula_blue.png"));
+                
+                BufferedImage img = scale(img1, 700, 700);
+                g2.drawImage(img, 0, 0, this);
+                g2.finalize();
+            }catch(IOException e){
+                System.out.println(e.getMessage());
+            }
+            graphics.setColor(Color.WHITE);
             graphics.setFont(new Font(Font.DIALOG, Font.BOLD, 36));
-            graphics.drawString(gamestate.winner + " PLAYER WINS!", 165, 200);
+            graphics.drawString(gamestate.winner + " PLAYER WINS!", 65, 200);
             //g.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
             //g.drawString("Press space to restart.", 150, 400);
         }
