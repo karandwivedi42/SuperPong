@@ -113,12 +113,12 @@ public class Receiver implements Runnable{
 						if(ipss[i].length()!=0)
 						{
 							h.listOfIps.add(ipss[i]);
-							Sender s = new Sender(ipss[i]);
+							Sender s = new Sender(Port,ipss[i]);
 							h.listOfSenders.add(s);
 						}
 					}
 					
-						h.getGameStateOnJoin(splitted[1],splitted[3],splitted[5]);
+						h.getGameStateOnJoin(splitt[1],splitt[3],splitt[5]);
 					
 				}
 				if(h.isServer)
@@ -161,7 +161,7 @@ public class Receiver implements Runnable{
 						    xc = 684;
 						    yc = 350;
 						}
-					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),gamestate.getWall(side));
+					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),h.gamestate.getWall(splitter[1]));
 					    h.gamestate.addPlayer(pl);
 					
 					Sender s = new Sender(20000,IP);

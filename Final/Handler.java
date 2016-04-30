@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class Handler {
@@ -8,10 +9,14 @@ public class Handler {
 	String acknowldge = "OK";
 	int sendPort = 20000;
 	GameState gamestate;
+	public HashSet<String> listOfIps;
+	
 	public Handler()
 	{
+		listOfIps = new HashSet<String>();
 		listOfSenders = new ArrayList<Sender>();
 		this.isServer = false;
+		acknowldge = "ok";
 	}
 	
 	
@@ -26,6 +31,7 @@ public class Handler {
 	{
 		//Game joining for current machine on serverIP
 		Sender s = new Sender(sendPort,serverIP);
+		this.listOfIps.add(serverIP);
 		this.listOfSenders.add(s);
 		
 		String message = "Hello~"+hello;
@@ -41,5 +47,7 @@ public class Handler {
 			}
 		
 	}
+	
+	
 	
 }

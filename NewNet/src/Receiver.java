@@ -60,7 +60,7 @@ public class Receiver implements Runnable{
 					    String velx = splitt[5];
 					    String vely = splitt[6];
 					    
-					    for(Puck p : gamestate.board.pucks){
+					    for(Puck p : h.gamestate.board.pucks){
 					        if(p.name == puckname){
 					            p.x = Double.parseDouble(x);
 					            p.y = Double.parseDouble(y);
