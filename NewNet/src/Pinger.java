@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Pinger implements Runnable{
 	
+	//Pinger object to detect pings and player going offline
 	Handler h;
 	ArrayList<String> listofIPs;
 
