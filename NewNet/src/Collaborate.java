@@ -10,9 +10,12 @@ public class Collaborate {
 		th.start();
 		
 		Pinger p = new Pinger(h);
-		PingListener r2 = new PingListener(p,20001,p.listofIPs);
+		PingListener r2 = new PingListener(p,20001);
 		Thread th2 = new Thread(r2);
 		th2.start();
+		
+		Thread th3 = new Thread(p);
+		th3.start();
 		
 //		Scanner s = new Scanner(System.in);
 //		String str = s.nextLine();

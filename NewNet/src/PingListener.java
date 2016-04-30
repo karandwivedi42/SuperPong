@@ -13,14 +13,15 @@ public class PingListener implements Runnable{
 	Pinger p;
 	
 		
-		public PingListener(Pinger p,int port,ArrayList<String> list)
+		public PingListener(Pinger p,int port)
 		{
 			this.Port = port;
 			this.p = p;
 			serverSocket = null;
-			for(String str : list){
-				this.listento.put(str, (double) System.currentTimeMillis());
-			}
+			
+			
+				listento = new HashMap<String,Double>();
+				
 			try{
 				serverSocket = new DatagramSocket(Port);
 				//serverSocket.setSoTimeout(2000);
