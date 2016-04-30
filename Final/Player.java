@@ -5,7 +5,7 @@ public class Player {
     String UID;
     String IP;
     int score;
-    String side; // Top Bottom Left Right
+    public String side; // Top Bottom Left Right
     boolean AI;
     String AIlevel;
     boolean alive;

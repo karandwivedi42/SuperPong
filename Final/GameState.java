@@ -34,6 +34,14 @@ public class GameState{
         this.me = me;        
     }
     
+    public void removePlayer(String side){
+    	for(Player pl : players){
+    		if(pl.side.equals(side)){
+    			players.remove(pl);
+    			return;
+    		}
+    	}
+    }
     //Method to return the wall corresponding to a given side
     public Wall getWall(String side){
         for (Wall w : board.walls){

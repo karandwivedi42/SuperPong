@@ -177,8 +177,8 @@ public class Handler {
 			if(splitter[0].equals("PUCK"))
 			{
 			    Puck p = new Puck(splitter[1],10);
-			    p.x = Double.parseDouble(splitter[2]);
-			    p.y = Double.parseDouble(splitter[3]);
+			    p.x = Integer.parseInt(splitter[2]);
+			    p.y = Integer.parseInt(splitter[3]);
 			    p.vx = Double.parseDouble(splitter[4]);
 			    p.vy = Double.parseDouble(splitter[5]);
 			    gamestate.addPuck(p);

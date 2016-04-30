@@ -272,9 +272,7 @@ public class Welcome extends JPanel{
     }
     
     public static void main(String[] args){
-    	Thread th = new Thread(r);
-        th.start();
-        
+    	
     	SplashScreen splash = new SplashScreen(1000);
         splash.showSplash();
         
@@ -285,6 +283,10 @@ public class Welcome extends JPanel{
         frame.setLayout(new BorderLayout());
         
         Welcome game = new Welcome(700, 700);
+        Thread th = new Thread(game.r);
+        th.start();
+        
+        
         frame.add(game, BorderLayout.CENTER);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(width, height);

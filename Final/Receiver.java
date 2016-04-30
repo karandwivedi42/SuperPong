@@ -174,7 +174,7 @@ public class Receiver implements Runnable{
 						    yc = 350;
 						}
 					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),h.gamestate.getWall(splitter[1]));
-					    
+					    h.gamestate.removePlayer(pl.side);
 					    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					Sender s = new Sender(20000,IP);
 					h.listOfSenders.add(s);
