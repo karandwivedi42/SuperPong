@@ -84,6 +84,7 @@ public class GameUpdater extends JApplet{
 
 	public void beginGame() {
 //	    nm.put("game-status", "GameOn");
+        gamestate.gameStatus = 1;
 		startRound();
 	}
 
@@ -193,6 +194,10 @@ public class GameUpdater extends JApplet{
 							playersLeft --;
 							if (playersLeft ==1 ){
 								System.out.println("Game OVER!");
+								gamestate.gameStatus = 2;
+								for(Player plw : gamestate.players){
+								    if(plw.alive) gamestate.winner = plw.side;
+								}
 //								nm.put("game-status", "GameOver");
 							}
 						}

@@ -19,9 +19,6 @@ public class Game extends JPanel implements ActionListener, KeyListener{
 	GameUpdater gameupdater;
 //	Receiver r;
 	Timer timer;
-
-	public boolean playing;
-	
     public static int padWidth = 16;
 
     //Constructor
@@ -66,90 +63,98 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     	
     	super.paintComponent(graphics);
     	
-
-        Graphics2D g2 = (Graphics2D) graphics;
-        try{
-
-            BufferedImage img1 = ImageIO.read(new File("res/nebula_blue.png"));
-
-            BufferedImage img = scale(img1, 700, 700);
-            g2.drawImage(img, 0, 0, this);
-            g2.finalize();
-        }catch(IOException e){
-            System.out.println(e.getMessage());
-        }
-        setBackground(Color.BLACK);
-
+        if(gamestate.gameStatus < 2){
         
-        graphics.setColor(Color.decode("#F44336"));
-        
-        //Drawing Lines on board
-       // graphics.drawLine((int) gamestate.board.width / 2, 0, (int)gamestate.board.width / 2, (int) gamestate.board.height);
-       // graphics.drawLine(0, (int) gamestate.board.height / 2, (int) gamestate.board.width, (int) gamestate.board.height/2);
-        graphics.fillRect(0, 0, 700, padWidth);
-        graphics.fillRect(0, 0, padWidth,700);
-        graphics.fillRect(0,700-padWidth,700,padWidth);
-        graphics.fillRect(700 - padWidth,0,padWidth,700);
-        
-        //Drawing Balls
-        for (Puck p : gamestate.board.pucks){
-
-        //	graphics.setColor(Color.WHITE);
-        //	graphics.fillOval( (int) (p.x - p.radius), (int) (p.y - p.radius), (int) (2 * p.radius), (int) (2 * p.radius));
+            Graphics2D g2 = (Graphics2D) graphics;
             try{
-                BufferedImage img2 = ImageIO.read(new File("res/asteroid_blue.png"));
-                BufferedImage img_ball = scale(img2, (int) (2 * p.radius), (int) (2 * p.radius));
-                g2.drawImage(img_ball, (int) (p.x - p.radius), (int) (p.y - p.radius), this);
+
+                BufferedImage img1 = ImageIO.read(new File("res/nebula_blue.png"));
+
+                BufferedImage img = scale(img1, 700, 700);
+                g2.drawImage(img, 0, 0, this);
                 g2.finalize();
             }catch(IOException e){
                 System.out.println(e.getMessage());
             }
+            setBackground(Color.BLACK);
 
-        }
-        //Drawing Paddles
-        
-        //Vertical Paddles
-        
-        for (Player pl : gamestate.players){
-        	if(pl.alive){
-	        //	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
+            
+            graphics.setColor(Color.decode("#F44336"));
+            
+            //Drawing Lines on board
+           // graphics.drawLine((int) gamestate.board.width / 2, 0, (int)gamestate.board.width / 2, (int) gamestate.board.height);
+           // graphics.drawLine(0, (int) gamestate.board.height / 2, (int) gamestate.board.width, (int) gamestate.board.height/2);
+            graphics.fillRect(0, 0, 700, padWidth);
+            graphics.fillRect(0, 0, padWidth,700);
+            graphics.fillRect(0,700-padWidth,700,padWidth);
+            graphics.fillRect(700 - padWidth,0,padWidth,700);
+            
+            //Drawing Balls
+            for (Puck p : gamestate.board.pucks){
 
-                if(pl.paddle.orientation == "VERTICAL"){
-	        		//graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
-                    try{
-                        BufferedImage img3 = ImageIO.read(new File("res/paddle_vertical.png"));
-                        BufferedImage img_paddle = scale(img3, (int) padWidth, (int) pl.paddle.length);
-                        g2.drawImage(img_paddle, (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), this);
-                        g2.finalize();
-                    }catch(IOException e){
-                        System.out.println(e.getMessage());
-                    }
-                }
-                else{
-	        		//graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
-                    try{
-                        BufferedImage img3 = ImageIO.read(new File("res/paddle_horizontal.png"));
-                        BufferedImage img_paddle = scale(img3,  (int) pl.paddle.length, (int) padWidth);
-                        g2.drawImage(img_paddle, (int) (pl.paddle.xc - pl.paddle.length/2), (int) (pl.paddle.yc-padWidth/2), this);
-                        g2.finalize();
-                    }catch(IOException e){
-                        System.out.println(e.getMessage());
-                    }
+            //	graphics.setColor(Color.WHITE);
+            //	graphics.fillOval( (int) (p.x - p.radius), (int) (p.y - p.radius), (int) (2 * p.radius), (int) (2 * p.radius));
+                try{
+                    BufferedImage img2 = ImageIO.read(new File("res/asteroid_blue.png"));
+                    BufferedImage img_ball = scale(img2, (int) (2 * p.radius), (int) (2 * p.radius));
+                    g2.drawImage(img_ball, (int) (p.x - p.radius), (int) (p.y - p.radius), this);
+                    g2.finalize();
+                }catch(IOException e){
+                    System.out.println(e.getMessage());
                 }
 
-           	}
+            }
+            //Drawing Paddles
+            
+            //Vertical Paddles
+            
+            for (Player pl : gamestate.players){
+            	if(pl.alive){
+	            //	System.out.print("~"+pl.name + pl.paddle.xc + pl.paddle.yc + "~");
+
+                    if(pl.paddle.orientation == "VERTICAL"){
+	            		//graphics.fillRect( (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), (int) padWidth, (int) pl.paddle.length);
+                        try{
+                            BufferedImage img3 = ImageIO.read(new File("res/paddle_vertical.png"));
+                            BufferedImage img_paddle = scale(img3, (int) padWidth, (int) pl.paddle.length);
+                            g2.drawImage(img_paddle, (int) (pl.paddle.xc - padWidth / 2), (int) (pl.paddle.yc - pl.paddle.length/2), this);
+                            g2.finalize();
+                        }catch(IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                    else{
+	            		//graphics.fillRect((int) (pl.paddle.xc - pl.paddle.length/2),(int) (pl.paddle.yc-padWidth/2), (int) (pl.paddle.length), (int) padWidth);
+                        try{
+                            BufferedImage img3 = ImageIO.read(new File("res/paddle_horizontal.png"));
+                            BufferedImage img_paddle = scale(img3,  (int) pl.paddle.length, (int) padWidth);
+                            g2.drawImage(img_paddle, (int) (pl.paddle.xc - pl.paddle.length/2), (int) (pl.paddle.yc-padWidth/2), this);
+                            g2.finalize();
+                        }catch(IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+
+               	}
+            }
+            
+            graphics.setColor(Color.WHITE);
+            graphics.setFont(new Font("TimesRoman", Font.BOLD, 20));
+            //Writing Scores on board
+            for (Player pl : gamestate.players){
+            	if(pl.paddle.orientation == "VERTICAL")
+            		graphics.drawString(Integer.toString(pl.score),  (int) (pl.wall2protect.xa/2 + gamestate.board.width/4), (int) (pl.wall2protect.ya/2 + pl.wall2protect.yb/2));
+            	else
+            		graphics.drawString(Integer.toString(pl.score), (int) (pl.wall2protect.xa/2 + pl.wall2protect.xb/2), (int)(pl.wall2protect.ya/2+gamestate.board.height/4));
+            		
+            		
+            }
         }
-        
-        graphics.setColor(Color.WHITE);
-        
-        //Writing Scores on board
-        for (Player pl : gamestate.players){
-        	if(pl.paddle.orientation == "VERTICAL")
-        		graphics.drawString(Integer.toString(pl.score),  (int) (pl.wall2protect.xa/2 + gamestate.board.width/4), (int) (pl.wall2protect.ya/2 + pl.wall2protect.yb/2));
-        	else
-        		graphics.drawString(Integer.toString(pl.score), (int) (pl.wall2protect.xa/2 + pl.wall2protect.xb/2), (int)(pl.wall2protect.ya/2+gamestate.board.height/4));
-        		
-        		
+        else if(gamestate.gameStatus == 2){
+            graphics.setFont(new Font(Font.DIALOG, Font.BOLD, 36));
+            graphics.drawString(gamestate.winner + " PLAYER WINS!", 165, 200);
+            //g.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
+            //g.drawString("Press space to restart.", 150, 400);
         }
     }
     

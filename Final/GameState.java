@@ -7,11 +7,13 @@ public class GameState{
     ArrayList<Player> players;
     Player me;
     Board board;
+    int gameStatus;
+    String winner;
     
     //Constructor
     //Input : number of pucks, dimensions of the board
     public GameState(int numPucks, double boardDim){
-    
+        gameStatus =0;
         board = new Board(boardDim,16);
         
         for(int i = 1;i<=numPucks;i++){

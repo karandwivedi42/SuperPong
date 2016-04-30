@@ -1,6 +1,6 @@
 public class Player {
 
-    double maindeltaAI = 5;
+    double maindeltaAI = 3;
     
     String UID;
     String IP;
