@@ -116,10 +116,15 @@ public class Receiver implements Runnable{
 					if(splitt.length>=4)
 						ips = splitt[3];
 					String[] ipss = new String[4];
+					int count = 0;
 					if(ips.length()>0)
-						ipss = ips.split("^");
+						{
+							ipss = ips.split("^");
+							count++;
+						}
 					
-					for(int i=0;i<ipss.length;i++)
+					
+					for(int i=0;i<count;i++)
 					{
 						if(ipss[i].length()!=0)
 						{
