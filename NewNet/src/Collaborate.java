@@ -5,7 +5,7 @@ public class Collaborate {
 	public static void main(String args[])
 	{
 		Handler h = new Handler();
-		Receiver r = new Receiver();
+		Receiver r = new Receiver(h);
 		Thread th = new Thread(r);
 		th.start();
 		Scanner s = new Scanner(System.in);

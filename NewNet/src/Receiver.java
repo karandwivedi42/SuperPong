@@ -8,10 +8,11 @@ public class Receiver implements Runnable{
 	int Port = 20000;
 	boolean isRunning;
 	DatagramSocket serverSocket;
-	
-		public Receiver()
+	Handler h;
+		public Receiver(Handler h)
 		{
-		serverSocket = null;
+			this.h = h;
+			serverSocket = null;
 			try{
 				serverSocket = new DatagramSocket(Port);
 			}
@@ -38,6 +39,28 @@ public class Receiver implements Runnable{
 				System.out.println("str "+str);
 				String IP = receivePacket.getAddress().toString().replace("/1","1");
 				System.out.println("IPofSender "+IP );
+				
+				if(h.isServer)
+				{
+					
+					for(Sender send: h.listOfSenders)
+					{
+						send.normalSend("FORWARDING "+str);
+					}
+					
+					Sender s = new Sender(IP);
+					h.listOfSenders.add(s);
+					h.listOfIps.add(IP);
+					s.normalSend("ack");
+					
+					
+				}
+				else if(!h.isServer)
+				{
+					
+				}
+					
+				
 			}
 			catch(IOException e){
 				System.out.println(e.toString()+"\nUnnable to receive");

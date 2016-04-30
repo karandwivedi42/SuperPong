@@ -7,12 +7,13 @@ public class Handler {
 	public HashSet<String> listOfIps;
 	public ArrayList<Sender> listOfSenders;
 	boolean isServer;
-	
+	String acknowldge;
 	public Handler()
 	{
 		listOfIps = new HashSet<String>();
 		listOfSenders = new ArrayList<Sender>();
 		this.isServer = false;
+		acknowldge = "ok";
 	}
 	
 	
@@ -29,9 +30,7 @@ public class Handler {
 		this.listOfSenders.add(s);
 		
 		String message = hello;
-		
 		s.normalSend(message);
-		
 	}	
 	
 }
