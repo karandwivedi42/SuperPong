@@ -132,6 +132,7 @@ public class Receiver implements Runnable{
 						h.getGameStateOnJoin(splitt[1],splitt[3],splitt[5]);
 					
 				}
+				
 				if(h.isServer)
 				{
 					String[] splitter = str.split("~");

@@ -54,7 +54,7 @@ public class Game extends JPanel implements ActionListener, KeyListener{
     int i = 0;
     public void actionPerformed(ActionEvent e){
     	gameupdater.update(1);
-    	System.out.println(i++);
+    	//System.out.println(i++);
     	repaint();
     }
     

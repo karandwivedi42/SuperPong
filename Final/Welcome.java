@@ -40,7 +40,8 @@ public class Welcome extends JPanel{
     Welcome(int frameWidth, int frameHeight){
         
         h = new Handler();
-
+        r = new Receiver(h);
+        
         width = frameWidth;
         height = frameHeight;
 
@@ -271,8 +272,7 @@ public class Welcome extends JPanel{
     }
     
     public static void main(String[] args){
-    	r = new Receiver(h);
-        Thread th = new Thread(r);
+    	Thread th = new Thread(r);
         th.start();
         
     	SplashScreen splash = new SplashScreen(1000);
