@@ -15,6 +15,7 @@ public class Receiver implements Runnable{
 			serverSocket = null;
 			try{
 				serverSocket = new DatagramSocket(Port);
+				//serverSocket.setSoTimeout(2000);
 			}
 			catch(SocketException e){
 				System.out.println(e.toString());
@@ -42,23 +43,55 @@ public class Receiver implements Runnable{
 				IP = receivePacket.getAddress().toString().replace("/1","1");
 				System.out.println("IPofSender "+IP );
 				
+				String[] splitt = str.split("~");
+				if(splitt[0].equals("Update"))
+				{
+					String[] keyValue = splitt[1].split("_");
+					String key = keyValue[0];
+					String value = keyValue[1];
+					h.data.put(key,value);
+				}
+				if(splitt[0].equals("Ack"))
+				{
+					String one = splitt[1];
+					String ips = splitt[3];
+					String[] ipss = ips.split("^");
+					for(int i=0;i<ipss.length;i++)
+					{
+						if(ipss[i].length()!=0)
+						{
+							h.listOfIps.add(ipss[i]);
+							Sender s = new Sender(ipss[i]);
+							h.listOfSenders.add(s);
+						}
+					}
+				}
 				if(h.isServer)
 				{
 					String[] splitter = str.split("~");
 					if(splitter[0].equals("Hello"))
-					{
+					{	
+						String ips ="";
+						
 						for(Sender send: h.listOfSenders)
 						{
 							send.normalSend("FWD~"+IP+"~"+splitter[1]);
+							
 						}
-					}
+						
+						for(String ipss:h.listOfIps)
+						{
+							ips = ips+ipss+"^";
+						}
+					
 					
 					Sender s = new Sender(IP);
 					h.listOfSenders.add(s);
 					h.listOfIps.add(IP);
-					s.normalSend("ack" + h.sendGameStateOnJoin());
+					//list ofIps also has to be added
 					
-					
+					s.normalSend("Ack~" + h.sendGameStateOnJoin()+"~IPS~"+ips);
+					}
 				}
 				else if(!h.isServer)
 				{
@@ -71,6 +104,10 @@ public class Receiver implements Runnable{
 						h.listOfSenders.add(s);
 						h.listOfIps.add(ip);
 						h.handleFWDData(data);
+					}
+					if(splitted[0].equals("Ack"))
+					{
+						h.getGameStateOnJoin(splitted[1]);
 					}
 				}
 					
