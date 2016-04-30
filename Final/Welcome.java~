@@ -14,8 +14,8 @@ import java.util.Enumeration;
 
 public class Welcome extends JPanel{  
 
-//    static Handler h;
-//    Receiver r;
+    static Handler h;
+    Receiver r;
     double boardDim = 700;
     int padLength = 150;
     
@@ -39,7 +39,7 @@ public class Welcome extends JPanel{
     //Input : frame width and height
     Welcome(int frameWidth, int frameHeight){
         
-//        nm = new PlayerNetworkManager();
+        h = new Handler();
 
         width = frameWidth;
         height = frameHeight;
@@ -60,9 +60,13 @@ public class Welcome extends JPanel{
         button3.setBounds(width/2 - 15, height - 60, 150, 30);
         b.setBounds(width/2 - 75, 140, 150, 30);
         b1.setBounds(width/2 - 75, 300, 150, 30);
-        textArea.setBounds(width/2 - 75, 200, 150, 20);
+        textArea.setBounds(200, 200, 450, 20);
         textArea1.setBounds(width/2 - 75, 350, 150, 20);
         textArea2.setBounds(width/2 - 75, 450, 150, 20);
+        Font font = new Font("Courier", Font.BOLD,20);
+        textArea.setFont(font);
+        textArea.setForeground(Color.WHITE);
+        textArea.setText("Your IP : " + getMachineAddress());
             
         b.addActionListener(new ActionListener() {
             
@@ -120,7 +124,7 @@ public class Welcome extends JPanel{
                     }
              }   
         });
-/*
+
             b1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     
@@ -131,19 +135,19 @@ public class Welcome extends JPanel{
                     
                     if(button.isSelected()){
                         side = "LEFT";
-                        p = new Paddle(padLength,"VERTICAL",margin,height/2);
+                        p = new Paddle(padLength,"VERTICAL",16,height/2);
                     }
                 	else if(button1.isSelected()){
                         side = "TOP";
-                        p = new Paddle(padLength,"HORIZONTAL",width/2,margin);
+                        p = new Paddle(padLength,"HORIZONTAL",width/2,16);
                     }
                     else if(button2.isSelected()){
                         side = "RIGHT";
-                        p = new Paddle(padLength,"VERTICAL",width-margin,height/2);
+                        p = new Paddle(padLength,"VERTICAL",width-16,height/2);
                     }
                     else if(button3.isSelected()){
                         side = "BOTTOM";
-                        p = new Paddle(padLength,"HORIZONTAL",width/2,height-margin);
+                        p = new Paddle(padLength,"HORIZONTAL",width/2,height-16);
                     }
 
 
@@ -152,26 +156,12 @@ public class Welcome extends JPanel{
                         System.out.println("Please choose a side.");
                     }
                     else{
-                        String status = nm.joinGame("10.208.20.239","TOP"); //get from gui components
-                        if(status.equals("0") || status.equals("")){
-                            System.out.println("Error in joining game");                            
-                        }
-                        else{
-                            int numPucks = 2; //Get num pucks from network
-                            ArrayList<Player> others =  getOthersFromNetwork();  // fill this with values from network 
+                        h.joinGame(getIP(),"TOP"); //get from gui components
 
-                            gamestate = new GameState(numPucks,boardDim);
-                            Player me = new Player(status,getMachineAddress(),side,p,gamestate.getWall(side));
-                            
-                            gamestate.addMe(me);
-                            
-                            for(Player p : others){
-                                gamestate.addPlayer(p);
-                            }
-                            
+                            gamestate = h.gamestate;
                             loadGame();
                         
-                       }
+                       
 
                    
                 }
@@ -179,7 +169,7 @@ public class Welcome extends JPanel{
 
             }   
         });
-       */     
+          
             ButtonGroup BG = new ButtonGroup();
             BG.add(button);
             BG.add(button1);
@@ -217,7 +207,7 @@ public class Welcome extends JPanel{
     
     
     public int getNumBalls(){
-        return 1;//Integer.parseInt(textArea2.getText()); //Integer.parseInt(ballsTextField.getText())
+        return Integer.parseInt(textArea2.getText()); //Integer.parseInt(ballsTextField.getText())
     }
     
 
@@ -230,13 +220,14 @@ public class Welcome extends JPanel{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setUndecorated(true);
-        Game game = new Game(gamestate); 
+        Game game = new Game(h,gamestate,r); 
         frame.add(game, BorderLayout.CENTER);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(width, height);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         this.setVisible(false);
         frame.setVisible(true);
+        intro.stop();
 
     }
 

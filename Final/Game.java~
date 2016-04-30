@@ -14,21 +14,21 @@ import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
 	
-//	Handler h;
+	Handler h;
 	GameState gamestate;
 	GameUpdater gameupdater;
-//	Receiver r;
+	Receiver r;
 	Timer timer;
     public static int padWidth = 16;
 
     //Constructor
     //Input : Network manager, state of current game, receiver
- //   public Game(Handler nm,GameState gamestate,Receiver r) {
-    public Game(GameState gamestate){	
-//    	this.r = r;
-//    	this.h = nm;
+    public Game(Handler h,GameState gamestate,Receiver r) {
+
+    	this.r = r;
+    	this.h = h;
     	this.gamestate = gamestate;
-    	this.gameupdater = new GameUpdater(gamestate);
+    	this.gameupdater = new GameUpdater(h,r,gamestate);
     	
         gameupdater.beginGame();
     	setFocusable(true);
@@ -151,8 +151,20 @@ public class Game extends JPanel implements ActionListener, KeyListener{
             }
         }
         else if(gamestate.gameStatus == 2){
+            Graphics2D g2 = (Graphics2D) graphics;
+            try{
+                
+                BufferedImage img1 = ImageIO.read(new File("res/nebula_blue.png"));
+                
+                BufferedImage img = scale(img1, 700, 700);
+                g2.drawImage(img, 0, 0, this);
+                g2.finalize();
+            }catch(IOException e){
+                System.out.println(e.getMessage());
+            }
+            graphics.setColor(Color.WHITE);
             graphics.setFont(new Font(Font.DIALOG, Font.BOLD, 36));
-            graphics.drawString(gamestate.winner + " PLAYER WINS!", 165, 200);
+            graphics.drawString(gamestate.winner + " PLAYER WINS!", 65, 200);
             //g.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
             //g.drawString("Press space to restart.", 150, 400);
         }

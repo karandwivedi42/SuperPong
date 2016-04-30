@@ -14,21 +14,21 @@ import java.awt.event.KeyListener;
 
 public class Game extends JPanel implements ActionListener, KeyListener{
 	
-//	Handler h;
+	Handler h;
 	GameState gamestate;
 	GameUpdater gameupdater;
-//	Receiver r;
+	Receiver r;
 	Timer timer;
     public static int padWidth = 16;
 
     //Constructor
     //Input : Network manager, state of current game, receiver
- //   public Game(Handler nm,GameState gamestate,Receiver r) {
-    public Game(GameState gamestate){	
-//    	this.r = r;
-//    	this.h = nm;
+    public Game(Handler h,GameState gamestate,Receiver r) {
+
+    	this.r = r;
+    	this.h = h;
     	this.gamestate = gamestate;
-    	this.gameupdater = new GameUpdater(gamestate);
+    	this.gameupdater = new GameUpdater(h,r,gamestate);
     	
         gameupdater.beginGame();
     	setFocusable(true);

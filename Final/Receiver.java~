@@ -50,10 +50,10 @@ public class Receiver implements Runnable{
 					{
 					    String playerNo = splitt[2];
 					    String move = splitt[3];
-					    for(Player p : gamestate.players){
-					        if(p.name == splitt[2]){
-					            p.paddle.xc = Double.parseDouble(splitt[3]);
-					            p.paddle.yc = Double.parseDouble(splitt[4]);
+					    for(Player plr : h.gamestate.players){
+					        if(plr.UID == splitt[2]){
+					            plr.paddle.xc = Double.parseDouble(splitt[3]);
+					            plr.paddle.yc = Double.parseDouble(splitt[4]);
 					        }
 					    }
 					    
@@ -66,38 +66,38 @@ public class Receiver implements Runnable{
 					    String velx = splitt[5];
 					    String vely = splitt[6];
 					    
-					    for(Puck p : gamestate.board.pucks){
+					    for(Puck p : h.gamestate.board.pucks){
 					        if(p.name == puckname){
 					            p.x = Double.parseDouble(x);
 					            p.y = Double.parseDouble(y);
-					            p.vx = Double.parseDouble(vx);
-					            p.vy = Double.parseDouble(vy);
+					            p.vx = Double.parseDouble(velx);
+					            p.vy = Double.parseDouble(vely);
 					        }
 					    }
 					    
                     }
                     else if(splitt[1].equals("gameStatus"))
                     {
-                        gamestate.gameStatus = Integer.parseInt(splitt[2]);
+                        h.gamestate.gameStatus = Integer.parseInt(splitt[2]);
                     }
                     
                     else if(splitt[1].equals("alive"))
                     {
-                        for(Player p : gamestate.players){
-                            if(p.name == splitt[2])
+                        for(Player p : h.gamestate.players){
+                            if(p.UID == splitt[2])
                             p.alive = false;
                         }
                     }
                     else if(splitt[1].equals("score"))
                     {
-                        for(Player p : gamestate.players){
-                            if(p.name == splitt[2])
+                        for(Player p : h.gamestate.players){
+                            if(p.UID == splitt[2])
                             p.score = Integer.parseInt(splitt[3]);
                         }
                     }
                     else if(splitt[1].equals("winner"))
                     {
-                        gamestate.winner = splitt[2];
+                        h.gamestate.winner = splitt[2];
                     }
                                         
                     
@@ -164,7 +164,7 @@ public class Receiver implements Runnable{
 					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),gamestate.getWall(side));
 					    h.gamestate.addPlayer(pl);
 					
-					Sender s = new Sender(IP);
+					Sender s = new Sender(20000,IP);
 					h.listOfSenders.add(s);
 					h.listOfIps.add(IP);
 					//list ofIps also has to be added
@@ -179,7 +179,7 @@ public class Receiver implements Runnable{
 					{
 						String ip = splitted[1];
 						String data = splitted[2];
-						Sender s = new Sender(ip);
+						Sender s = new Sender(20000,ip);
 						h.listOfSenders.add(s);
 						h.listOfIps.add(ip);
 						h.handleFWDData(data);

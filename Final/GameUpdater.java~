@@ -26,7 +26,7 @@ public class GameUpdater extends JApplet{
 	private double y_offset = 0.5;
 	
 	private int maxScore = 5;
-	
+	//Constructor
 	public GameUpdater(Handler h, Receiver r, GameState g){
 
 	    this.r = r;
@@ -47,16 +47,16 @@ public class GameUpdater extends JApplet{
     {
         
     }
-
+    //Life lost
 	public void upScore(String side) {
 		for (Player p : gamestate.players) {
 			if (p.side.equals(side)){
 				p.score++;
-				h.broadcast("Update~score~"+p.name+"~"+p.score);
+				h.broadcast("Update~score~"+p.UID+"~"+p.score);
 			}
 		}
 	}
-
+    //Begin new round
 	public void startRound() {
 		if(h.isServer){
      
@@ -65,7 +65,7 @@ public class GameUpdater extends JApplet{
 				p.y = gamestate.board.height/2;
 				p.vx = (v_offset + Math.random() * v_factor )*(Math.random()*2-1);
 				p.vy = (v_offset + Math.random() * v_factor)* (Math.random()*2-1);
-				h.broadcast("Update~puckmove~"+p.name+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
+				h.broadcast("Update~puckmove~"+p.UID+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
 			}
 		}
 	//	else{
@@ -74,7 +74,7 @@ public class GameUpdater extends JApplet{
 	//			p.y = Double.parseDouble(nm.get(p.name+"-y"));
 	//			p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
 	//			p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
-			}
+	//		}
 	//	}
 		playersLeft = gamestate.players.size();
 	}
@@ -84,7 +84,7 @@ public class GameUpdater extends JApplet{
         gamestate.gameStatus = 1;
 		startRound();
 	}
-
+    //Move AI Paddles
 	public void movePaddles(){
 	
 		for(Player p : gamestate.players){
@@ -144,7 +144,7 @@ public class GameUpdater extends JApplet{
 					}
 				}
 				
-				h.braodcast("Update~movepaddle~"+p.name+"~"+p.paddle.xc+"~"+p.paddle.yc);
+				h.braodcast("Update~movepaddle~"+p.UID+"~"+p.paddle.xc+"~"+p.paddle.yc);
 			}
 	//		else if (! p.equals(gamestate.me)){
 //				p.paddle.xc = Double.parseDouble(nm.get(p.name+"-xc"));
@@ -153,13 +153,13 @@ public class GameUpdater extends JApplet{
 
 		}
 	}
-	
+	//Update Puck data
 	public void updatePuck(Puck p, int i) { // Change for friction
 		
 		p.x+=p.vx;
 		p.y+=p.vy;	
 		
-		h.broadcast("Update~puckmove~"+p.name+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
+		h.broadcast("Update~puckmove~"+p.UID+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
 		
 //		nm.put(p.name+"-x", p.x+"");
 //		nm.put(p.name+"-y", p.y+"");
@@ -173,7 +173,7 @@ public class GameUpdater extends JApplet{
 		if(p.y > board.height)
 			p.y = board.height - p.radius -100; */
 	}
-	
+	//Update overall and check for collissions
 	public void update(int i) {
 		
 		if(h.isServer){
@@ -246,7 +246,7 @@ public class GameUpdater extends JApplet{
 		
 
 	}
-
+    //Check for  Wall and ball crash
 	private boolean checkForCrash(Puck p, Player pl) {
 	double d = 0;
 		if(pl.paddle.orientation == "VERTICAL")
@@ -282,7 +282,7 @@ public class GameUpdater extends JApplet{
 		}
 		return false;
 	}
-
+    //Check for bounce between paddle and ball
 	private void checkForBounce(Puck p, Player player) {
 		if(player.side == "LEFT"){
 			if(( p.x - player.paddle.xc - padWidth/2  <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2) && (p.vx < 0)){
