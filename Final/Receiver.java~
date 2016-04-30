@@ -78,7 +78,8 @@ public class Receiver implements Runnable{
                     }
                     else if(splitt[1].equals("gameStatus"))
                     {
-                        h.gamestate.gameStatus = Integer.parseInt(splitt[2]);
+                        if(splitt[2] =="1") h.gamestate.gameStatus = 1;
+                        else h.gamestate.gameStatus = 2;
                     }
                     
                     else if(splitt[1].equals("alive"))
@@ -113,12 +114,12 @@ public class Receiver implements Runnable{
 						if(ipss[i].length()!=0)
 						{
 							h.listOfIps.add(ipss[i]);
-							Sender s = new Sender(ipss[i]);
+							Sender s = new Sender(Port,ipss[i]);
 							h.listOfSenders.add(s);
 						}
 					}
 					
-						h.getGameStateOnJoin(splitted[1],splitted[3],splitted[5]);
+						h.getGameStateOnJoin(splitt[1],splitt[3],splitt[5]);
 					
 				}
 				if(h.isServer)
@@ -139,8 +140,8 @@ public class Receiver implements Runnable{
 							ips = ips+ipss+"^";
 						}
 						
-						double xc,yc;
-						String orient;
+						int xc=0,yc=0;
+						String orient="HORIZONTAL";
 						if(splitter[1] == "TOP"){
 						    orient = "HORIZONTAL";
 						    xc = 350;
@@ -161,7 +162,7 @@ public class Receiver implements Runnable{
 						    xc = 684;
 						    yc = 350;
 						}
-					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),gamestate.getWall(side));
+					    Player pl = new Player(i+"",IP,splitter[1], new Paddle(150,orient,xc,yc),h.gamestate.getWall(splitter[1]));
 					    h.gamestate.addPlayer(pl);
 					
 					Sender s = new Sender(20000,IP);
@@ -182,7 +183,7 @@ public class Receiver implements Runnable{
 						Sender s = new Sender(20000,ip);
 						h.listOfSenders.add(s);
 						h.listOfIps.add(ip);
-						h.handleFWDData(data);
+						h.handleFWDData(data,ip,splitted[3]);
 					}
 					
 				}
