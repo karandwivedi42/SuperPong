@@ -21,6 +21,9 @@ public class Collaborate {
 			System.out.println("Details :");
 			String hello = s.nextLine();
 			h.joinGame(serverIP,hello);
+			Scanner see = new Scanner(System.in);
+			String srr = see.nextLine();
+			h.broadcast("MUHMEHLELO");
 		}
 	}
 

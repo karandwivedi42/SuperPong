@@ -32,7 +32,7 @@ public class Handler {
 		this.listOfIps.add(serverIP);
 		this.listOfSenders.add(s);
 		
-		String message = "hello~FUCK";
+		String message = "Hello~"+hello;
 		s.normalSend(message);
 	}	
 	
@@ -45,8 +45,67 @@ public class Handler {
 		}
 	}
 	
-	public String sendGameState()
+	public void broadcast(String data)
+	{
+		for(Sender s: listOfSenders)
+		{
+			s.normalSend(data);
+		}
+	}
+	
+	public String sendGameStateOnJoin()
 	{
 		return "THE CURRENt GAME STATE";
 	}
+	
+//	public String getGameStateOnJoin()
+//	{
+//		
+//	}
+//	/*
+//	 *Ack~
+//	 *Hello~
+//	 *FWD~
+//	 *Update~
+//	 *Broken~
+//	 */
+//	public String getGameStateOnAck()
+//	{
+//		
+//	}
+//	
+//	public String setGameStateOnAck()
+//	{
+//		
+//	}
+//	
+//	public String setGameStateOnFWD()
+//	{
+//		
+//	}
+//	
+//	public String getGameStateOnFWD()
+//	{
+//		
+//	}
+//	
+//	public String getGameStateOnUpdate()
+//	{
+//		
+//	}
+//	
+//	public String setGameStateOnUpdate()
+//	{
+//		
+//	}
+//	
+//	public String getGameStateOnBroken()
+//	{
+//		
+//	}
+//	
+//	public String setGameStateonBroken()
+//	{
+//		
+//	}
 }

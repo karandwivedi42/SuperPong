@@ -45,7 +45,7 @@ public class Receiver implements Runnable{
 				if(h.isServer)
 				{
 					String[] splitter = str.split("~");
-					if(splitter[0].equals("hello"))
+					if(splitter[0].equals("Hello"))
 					{
 						for(Sender send: h.listOfSenders)
 						{
@@ -56,7 +56,7 @@ public class Receiver implements Runnable{
 					Sender s = new Sender(IP);
 					h.listOfSenders.add(s);
 					h.listOfIps.add(IP);
-					s.normalSend("ack" + h.sendGameState());
+					s.normalSend("ack" + h.sendGameStateOnJoin());
 					
 					
 				}
