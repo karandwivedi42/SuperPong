@@ -10,8 +10,8 @@ import javax.swing.JApplet;
 
 public class GameUpdater extends JApplet{
 	
-//	PlayerNetworkManager nm;
-//	Receiver r;
+	Handler h;
+	Receiver r;
 	GameState gamestate;
     AudioClip bounce;
     AudioClip crash;
@@ -27,11 +27,11 @@ public class GameUpdater extends JApplet{
 	
 	private int maxScore = 5;
 	
-//	public GameUpdater(PlayerNetworkManager nm, Receiver r, GameState g){
-    public GameUpdater(GameState g){
-//	    this.r = r;
+	public GameUpdater(Handler h, Receiver r, GameState g){
+
+	    this.r = r;
 	    gamestate = g;
-//        this.nm = nm;
+        this.h = h;
         bounce = JApplet.newAudioClip(getClass().getResource("res/0614.aiff"));
         crash = JApplet.newAudioClip(getClass().getResource("res/0342.aiff"));
         
@@ -52,38 +52,35 @@ public class GameUpdater extends JApplet{
 		for (Player p : gamestate.players) {
 			if (p.side.equals(side)){
 				p.score++;
-//				nm.put(p.name+"-score", p.score+"");
+				h.broadcast("Update~score~"+p.name+"~"+p.score);
 			}
 		}
 	}
 
 	public void startRound() {
-//		if(nm.isServer){
-        if(true){
+		if(h.isServer){
+     
 			for (Puck p : gamestate.board.pucks) {
 				p.x = gamestate.board.width/2;
 				p.y = gamestate.board.height/2;
 				p.vx = (v_offset + Math.random() * v_factor )*(Math.random()*2-1);
 				p.vy = (v_offset + Math.random() * v_factor)* (Math.random()*2-1);
-//				nm.put(p.name+"-x",""+p.x);
-//				nm.put(p.name+"-y",""+p.y);
-//				nm.put(p.name+"-vx",""+p.vx);
-//				nm.put(p.name+"-vy",""+p.vy);
+				h.broadcast("Update~puckmove~"+p.name+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
 			}
 		}
-		else{
-			for (Puck p : gamestate.board.pucks) {
-//				p.x = Double.parseDouble(nm.get(p.name+"-x"));
-//				p.y = Double.parseDouble(nm.get(p.name+"-y"));
-//				p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
-//				p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
+	//	else{
+	//		for (Puck p : gamestate.board.pucks) {
+	//			p.x = Double.parseDouble(nm.get(p.name+"-x"));
+	//			p.y = Double.parseDouble(nm.get(p.name+"-y"));
+	//			p.vx = Double.parseDouble(nm.get(p.name+"-vx"));
+	//			p.vy = Double.parseDouble(nm.get(p.name+"-vy"));
 			}
-		}
+	//	}
 		playersLeft = gamestate.players.size();
 	}
 
 	public void beginGame() {
-//	    nm.put("game-status", "GameOn");
+	    h.broadcast("Update~gameStatus~1");
         gamestate.gameStatus = 1;
 		startRound();
 	}
@@ -147,13 +144,12 @@ public class GameUpdater extends JApplet{
 					}
 				}
 				
-//				nm.put(p.name+"-xc", p.paddle.xc+"");
-//				nm.put(p.name+"-yc", p.paddle.yc+"");
+				h.braodcast("Update~movepaddle~"+p.name+"~"+p.paddle.xc+"~"+p.paddle.yc);
 			}
-			else if (! p.equals(gamestate.me)){
+	//		else if (! p.equals(gamestate.me)){
 //				p.paddle.xc = Double.parseDouble(nm.get(p.name+"-xc"));
 //				p.paddle.yc = Double.parseDouble(nm.get(p.name+"-yc"));
-			}
+	//		}
 
 		}
 	}
@@ -162,8 +158,12 @@ public class GameUpdater extends JApplet{
 		
 		p.x+=p.vx;
 		p.y+=p.vy;	
+		
+		h.broadcast("Update~puckmove~"+p.name+"~"+p.x+"~"+p.y+"~"+p.vx+"~"+p.vy);
+		
 //		nm.put(p.name+"-x", p.x+"");
 //		nm.put(p.name+"-y", p.y+"");
+	
 	/*	if(p.x < 0)
 			p.x = p.radius + 1;
 		if(p.x > board.width)
@@ -176,8 +176,8 @@ public class GameUpdater extends JApplet{
 	
 	public void update(int i) {
 		
-//		if(nm.isServer){
-		if(true){	
+		if(h.isServer){
+		
 			movePaddles();
 			
 			for (Puck p : gamestate.board.pucks) {
@@ -190,15 +190,18 @@ public class GameUpdater extends JApplet{
 						upScore(pl.side);
 						if(pl.score > maxScore ){
 							pl.alive = false;
-//							nm.put(p.name+"-alive", p.alive+"");
+							h.braodcast("Update~alive~"+pl.name+"~false");
 							playersLeft --;
 							if (playersLeft ==1 ){
 								System.out.println("Game OVER!");
 								gamestate.gameStatus = 2;
 								for(Player plw : gamestate.players){
-								    if(plw.alive) gamestate.winner = plw.side;
+								    if(plw.alive){
+								        gamestate.winner = plw.side;
+							            h.braodcast("Update~winner~"+pl.side);
+							        }
 								}
-//								nm.put("game-status", "GameOver");
+								h.broadcast("Update~gameStatus~2");
 							}
 						}
 					}
@@ -208,11 +211,11 @@ public class GameUpdater extends JApplet{
 
 			}
 		}
-		else{
+	/*	else{
 		    
-//		    String state = nm.get("game-status");
-//		    if (state == "GameOn"){
-		    if(true){
+
+		    if (state == "GameOn"){
+
 		        
 		        for(Player pl : gamestate.players){
 //		            pl.score = Integer.parseInt(nm.get(p.name+"-score"));
@@ -239,7 +242,7 @@ public class GameUpdater extends JApplet{
 			    System.out.println("Game Over received");
 			}
 			
-		}
+		}*/
 		
 
 	}

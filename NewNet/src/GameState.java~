@@ -4,9 +4,9 @@ public class GameState{
 
     double puckRadius = 10;
     
-    public ArrayList<Player> players;
-    public Player me;
-    public Board board;
+    ArrayList<Player> players;
+    Player me;
+    Board board;
     
     //Constructor
     //Input : number of pucks, dimensions of the board
@@ -44,6 +44,5 @@ public class GameState{
     public void addPuck(Puck p){
         board.pucks.add(p);
     }
-    
-       
+        
 }
