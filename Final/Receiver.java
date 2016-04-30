@@ -78,7 +78,8 @@ public class Receiver implements Runnable{
                     }
                     else if(splitt[1].equals("gameStatus"))
                     {
-                        h.gamestate.gameStatus = Integer.parseInt(splitt[2]);
+                        if(splitt[2] =="1") h.gamestate.gameStatus = 1;
+                        else h.gamestate.gameStatus = 2;
                     }
                     
                     else if(splitt[1].equals("alive"))
