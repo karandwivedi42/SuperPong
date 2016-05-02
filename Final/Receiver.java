@@ -32,6 +32,7 @@ public class Receiver implements Runnable{
 
 		while(isRunning)
 		{
+			//packing the data received
 			byte[] receiveData = new byte[2048];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
 			try{
@@ -44,8 +45,9 @@ public class Receiver implements Runnable{
 				System.out.println("IPofSender "+IP );
 				
 				String[] splitt = str.split("~");
+				//Parsing the data ....................
 				if(splitt[0].equals("Update"))
-				{
+				{//for updating the positions to render
 					if(splitt[1].equals("movepaddle"))
 					{
 					    String playerNo = splitt[2];
@@ -106,6 +108,7 @@ public class Receiver implements Runnable{
 				}
 				if(splitt[0].equals("Ack"))
 				{
+					//acknowldegement message on the player just joined side
 					String[] splitter = splitt[1].split("#");
 					for(int i=0;i<splitt.length;i++)
 					{
@@ -140,9 +143,11 @@ public class Receiver implements Runnable{
 				
 				if(h.isServer)
 				{
+					//for adding a new player
 					String[] splitter = str.split("~");
 					if(splitter[0].equals("Hello"))
 					{	
+						//sending data to all connected players
 						String ips ="";
 						int i=h.listOfSenders.size()+1;
 						for(Sender send: h.listOfSenders)
@@ -193,6 +198,7 @@ public class Receiver implements Runnable{
 				}
 				else if(!h.isServer)
 				{
+					//adding player for a non server player
 					String[] splitted = str.split("~");
 					if(splitted[0].equals("FWD"))
 					{

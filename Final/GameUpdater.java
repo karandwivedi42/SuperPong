@@ -13,8 +13,8 @@ public class GameUpdater extends JApplet{
 	Handler h;
 	Receiver r;
 	GameState gamestate;
-    AudioClip bounce;
-    AudioClip crash;
+    //AudioClip bounce;
+    //AudioClip crash;
 
 	private static final double v_factor = 4.2;
 	private static final double v_offset = 4.7;
@@ -32,9 +32,9 @@ public class GameUpdater extends JApplet{
 	    this.r = r;
 	    gamestate = g;
         this.h = h;
-        bounce = JApplet.newAudioClip(getClass().getResource("res/0614.aiff"));
-        crash = JApplet.newAudioClip(getClass().getResource("res/0342.aiff"));
-        
+//        bounce = JApplet.newAudioClip(getClass().getResource("res/0614.aiff"));
+//        crash = JApplet.newAudioClip(getClass().getResource("res/0342.aiff"));
+//        
         System.out.print(gamestate.me.side);
         System.out.print(gamestate.me.UID);
         for (Player p : gamestate.players){
@@ -260,12 +260,12 @@ public class GameUpdater extends JApplet{
 
                 {
                     p.vx = -p.vx;
-                    crash.play();
+                   // crash.play();
                 }
 				else
                 {
                     p.vy = - p.vy;
-                    crash.play();
+                    //crash.play();
                 }
 
 				return true;
@@ -273,10 +273,10 @@ public class GameUpdater extends JApplet{
 			if (pl.side == "TOP" || pl.side == "BOTTOM") {
 				p.vy = -p.vy;
 
-                crash.play();
+                //crash.play();
 			} else {
 				p.vx = -p.vx;
-                crash.play();
+                //crash.play();
 
 			}
 		}
@@ -289,7 +289,7 @@ public class GameUpdater extends JApplet{
 				System.out.println(p.vx);
 				p.vx = -p.vx;
 
-                bounce.play();
+                //bounce.play();
 
 			//	p.vy =p.vy +  p.vy*Math.abs(p.y-player.paddle.yc-y_offset)*y_factor;
 			}
@@ -298,7 +298,7 @@ public class GameUpdater extends JApplet{
 			if((player.paddle.xc - padWidth/2- p.x <= p.radius) && (p.y <= player.paddle.yc + player.paddle.length/2 && p.y >= player.paddle.yc - player.paddle.length/2)&& (p.vx > 0)){
 				p.vx = -p.vx;
 
-                bounce.play();
+               // bounce.play();
 
 				//p.vy = p.vy +  p.vy*Math.abs(p.y-player.paddle.yc-y_offset)*y_factor;
 			}
@@ -307,7 +307,7 @@ public class GameUpdater extends JApplet{
 			if((player.paddle.yc - padWidth/2 - p.y <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)&& (p.vy > 0)){
 				p.vy = -p.vy;
 
-                bounce.play();
+                //bounce.play();
 
 				//p.vx = p.vx + p.vx*Math.abs(p.x-player.paddle.xc-y_offset)*y_factor;
 			}
@@ -316,7 +316,7 @@ public class GameUpdater extends JApplet{
 			if((p.y - player.paddle.yc - padWidth/2 <= p.radius) && (p.x <= player.paddle.xc + player.paddle.length/2 && p.x >= player.paddle.xc - player.paddle.length/2)&& (p.vy < 0)){
 				p.vy = -p.vy;
 
-                bounce.play();
+                //bounce.play();
 
 				//p.vx = p.vx + p.vx*Math.abs(p.x-player.paddle.xc-y_offset)*y_factor;
 			}

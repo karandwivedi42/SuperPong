@@ -25,7 +25,7 @@ public class Welcome extends JPanel{
     JRadioButton button1;
     JRadioButton button2;
     JRadioButton button3;
-    AudioClip intro;
+    //AudioClip intro;
     JButton b;
     JButton b1;
     JLabel textArea;
@@ -51,7 +51,7 @@ public class Welcome extends JPanel{
         button3 = new JRadioButton("");
         b = new JButton("Create Game");
         b1 = new JButton("Join Game");
-        intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
+        //intro = JApplet.newAudioClip(getClass().getResource("res/0783.aiff"));
         textArea = new JLabel("");
         textArea1 = new JTextField("Enter Host IP");
         textArea2 = new JTextField("Number of pucks");
@@ -229,7 +229,7 @@ public class Welcome extends JPanel{
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         this.setVisible(false);
         frame.setVisible(true);
-        intro.stop();
+        //intro.stop();
 
     }
 
@@ -292,7 +292,7 @@ public class Welcome extends JPanel{
         frame.setSize(width, height);
         frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
         frame.setVisible(true);
-        game.intro.play();
+        //game.intro.play();
         
 
         

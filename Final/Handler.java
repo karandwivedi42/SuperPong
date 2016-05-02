@@ -8,6 +8,7 @@ import java.util.HashSet;
 
 public class Handler {
 	
+	//This is a network handler class for each machine to send data and receive the data and make the changes to the global variables
 	public HashSet<String> listOfIps;
 	public ArrayList<Sender> listOfSenders;
 	boolean isServer;
@@ -15,6 +16,7 @@ public class Handler {
 	GameState gamestate;
 	public Handler()
 	{
+		//init as non server
 		listOfIps = new HashSet<String>();
 		listOfSenders = new ArrayList<Sender>();
 		this.isServer = false;
@@ -24,6 +26,7 @@ public class Handler {
 	
 	public void createGame(GameState gamestate)
 	{
+		//if this function is called then the player becomes the pseudo server
 		System.out.println("Server started waiitng ....");
 		this.isServer = true;
 		System.out.println(this.isServer);
@@ -32,6 +35,7 @@ public class Handler {
 	
 	public void joinGame(String serverIP,String side)
 	{
+		//sendsdata to the pseudo server and then the pseudo server to the already connected computers
 		this.isServer = false;
 		System.out.println(this.isServer);
 	    gamestate = new GameState(1,700);
@@ -70,6 +74,7 @@ public class Handler {
 		if(side.equals("LEFT"))
 			playerNo = playerNo+4;
 		
+		//init a player to rebder
 		Player p = new Player(playerNo,getMachineAddress(),side,new Paddle(150,orient,xc,yc),gamestate.getWall(side));
 		gamestate.addMe(p);
 		
@@ -82,6 +87,8 @@ public class Handler {
 	
 	public void handleFWDData(String side,String ip,String playerNo)
 	{
+
+		//function to handle the data that the already connected players recieve
 		int xc=0,yc=0;
 		String orient="HORIZONTAL";
 		if(side == "TOP"){
@@ -121,6 +128,7 @@ public class Handler {
 	 */
 	public void broadcast(String message)
 	{
+		//send to all connected players
 			for(Sender s: listOfSenders)
 			{
 				s.normalSend(message);
@@ -130,6 +138,7 @@ public class Handler {
 	
 	public String sendGameStateOnJoin(String side)
 	{
+		//the new connected player receives this state to render all other players
 		String str = "";
 		
 		for(Puck p:this.gamestate.board.pucks)
@@ -169,6 +178,7 @@ public class Handler {
 
 	public void getGameStateOnJoin(String sendGameState,String ips,String playerNo)
 	{
+		//function to compute the ganestate on join
 		String[] splitt = sendGameState.split("#");
 
 		for(int i=0;i<splitt.length;i++)
@@ -177,8 +187,8 @@ public class Handler {
 			if(splitter[0].equals("PUCK"))
 			{
 			    Puck p = new Puck(splitter[1],10);
-			    p.x = Integer.parseInt(splitter[2]);
-			    p.y = Integer.parseInt(splitter[3]);
+			    p.x = Double.parseDouble(splitter[2]);
+			    p.y = Double.parseDouble(splitter[3]);
 			    p.vx = Double.parseDouble(splitter[4]);
 			    p.vy = Double.parseDouble(splitter[5]);
 			    gamestate.addPuck(p);
@@ -205,7 +215,7 @@ public class Handler {
 	
     public static String getMachineAddress() throws RuntimeException
 	{
-		
+		//returns the machine address of the computer
 		String requiredIp = "localhost";
 		String ip;
     	try {

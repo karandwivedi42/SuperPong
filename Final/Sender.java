@@ -25,6 +25,7 @@ public class Sender{
 	
 	public void normalSend(String message)
 	{
+		//sends data to init IP and port
 		System.out.println("Sending message: " + message);
 		if(senderSocket == null)
 		{
